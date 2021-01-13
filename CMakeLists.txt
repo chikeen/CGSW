@@ -10,6 +10,12 @@ add_library(
         # library name
         CGSW20
 
+        # library type
+        STATIC
+
+        # library include
+        include/cgsw/cgsw.h
+
         # library util files
         src/cgsw/utils/numth.h
         src/cgsw/utils/numth.cpp
@@ -58,20 +64,28 @@ add_library(
         examples/examples.cpp
 
         ## tests
+        tests/utils/utils.cpp
         tests/catch.hpp
         tests/utils.cpp)
 
 
+target_include_directories(CGSW20 PUBLIC ../include)
+
 # CMake instructions to test using the static lib
 
 SET( APP_EXE example )
+SET( TESTS_EXE tests)
 
 ADD_EXECUTABLE( ${APP_EXE}
         examples/examples.cpp )
 
-ADD_EXECUTABLE( tests
-        tests/utils.cpp )
+ADD_EXECUTABLE( ${TESTS_EXE}
+        tests/utils.cpp
+        tests/utils/utils.cpp)
 
 TARGET_LINK_LIBRARIES( ${APP_EXE}
+        CGSW20)
+
+TARGET_LINK_LIBRARIES( ${TESTS_EXE}
         CGSW20)
 

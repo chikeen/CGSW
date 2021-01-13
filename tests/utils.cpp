@@ -4,8 +4,7 @@
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
 
-
-TEST_CASE("sample test", "test1"){
+TEST_CASE("sample test2", "test2"){
     REQUIRE(1 ==1);
 }
 

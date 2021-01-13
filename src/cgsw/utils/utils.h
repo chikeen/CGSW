@@ -29,7 +29,7 @@ namespace cgsw {
             return mat;
         }
 
-        inline dynMatrix bit_decompose_matrix(const dynMatrix & mat, uint64_t l);
+        dynMatrix bit_decompose_matrix(dynMatrix & mat, uint64_t l);
 
         dynMatrix gen_random_matrix(size_t rows, size_t cols, uint64_t modulus);
 

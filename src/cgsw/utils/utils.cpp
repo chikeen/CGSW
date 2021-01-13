@@ -15,11 +15,11 @@ namespace cgsw {
             dynMatrix random_matrix = dynMatrix::Random(rows, cols);
             modulo_matrix(random_matrix, modulus);
             return random_matrix;
-        }
+        };
 
         dynMatrix gen_empty_matrix(size_t rows, size_t cols) {
             return dynMatrix(rows, cols);
-        }
+        };
 
         dynMatrix gen_normal_matrix(size_t rows, size_t cols, uint64_t modulus) {
             const int mean = 0;
@@ -43,8 +43,7 @@ namespace cgsw {
 //            std::cout << "normal_matrix" << normal_matrix << std::endl;
 
             return normal_matrix;
-
-        }
+        };
 
         dynMatrix gen_gadget_matrix(size_t rows, size_t cols) {
             if(cols < rows) throw std::runtime_error("gadget matrix cols must > rows");
@@ -60,30 +59,28 @@ namespace cgsw {
 
 //            std::cout << "gadget_matrix" << gadget_matrix << std::endl;
             return gadget_matrix;
-        }
+        };
 
-        dynMatrix bit_decompose_matrix(const dynMatrix & mat, uint64_t l){
+        dynMatrix bit_decompose_matrix(dynMatrix & mat, uint64_t l){
             /*
-             * Take a mxn matrix and make it mxm
+             * Take a nxc matrix and make it mxc
              */
-            uint64_t m = mat.cols();
             uint64_t n = mat.rows();
+            uint64_t c = mat.cols();
+            uint64_t m = n * l;
 
-            if(n*l != m)
-                throw std::runtime_error("bit_decompose_matrix: input mat size inconsistent with l");
+            dynMatrix mat_return = dynMatrix (m, c);
 
-            dynMatrix mat_return = dynMatrix (m, m);
-
-            for(int i = 0; i < m; i ++){
-                for(int j = 0; j < n; j++){
+            for(int j = 0; j < c; j ++){
+                for(int i = 0; i < n; i++){
                     for(int k = 0; k < l; k++){
-                        mat_return(i, j*l + k) = mat(i, j) & (uint64_t ) pow(2, k);
+                        mat_return((i * l + k), j) = (mat(i, j) & (uint64_t ) pow(2, k))? 1 :0;
                     }
                 }
             }
 
             return mat_return;
-        }
+        };
 
 
 
