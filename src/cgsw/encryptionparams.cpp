@@ -21,9 +21,10 @@ namespace cgsw {
         // TODO:- set modulus properly with a good random prime
 //        q:  5429093  k: 24  l:  23#
 
-        modulus_ = 5429093;
+        modulus_ = 89;
         lattice_dimension_ = sec_level_;
-        m_ = lattice_dimension_ * ceil(log2(modulus_));
+        l_ = ceil(log2(modulus_));
+        m_ = lattice_dimension_ * l_;
 
     }
 
@@ -45,6 +46,10 @@ namespace cgsw {
 
     uint64_t EncryptionParameters::getM() const {
         return m_;
+    }
+
+    uint64_t EncryptionParameters::getL() const {
+        return l_;
     }
 
     uint64_t EncryptionParameters::getErrorDist() const {

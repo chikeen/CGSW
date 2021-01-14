@@ -5,7 +5,6 @@
 
 #include "common.h"
 #include "thirdparty/Eigen/dense"
-#include "utils/matrixgenerator.h"
 
 typedef Eigen::Matrix<uint64_t, Eigen::Dynamic, Eigen::Dynamic> dynMatrix;
 //typedef Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> dynFMatrix;

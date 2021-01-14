@@ -3,7 +3,7 @@
 //
 
 #include "decryptor.h"
-#include <utility>
+
 
 dynMatrix powers_of_2(dynMatrix m, uint64_t l){
 //    if (m.rows() != 1) return m; // only do column
@@ -27,59 +27,84 @@ namespace cgsw {
 //        }
 
         // generate gadget matrix
-        util::MatrixGenerator matrixGen_ = util::MatrixGenerator();
-        gadget_matrix_ = matrixGen_.gen_gadget_matrix(context_.parms().getLatticeDimension(),
+        gadget_matrix_ = util::gen_gadget_matrix(context_.parms().getLatticeDimension(),
                                                       context_.parms().getM());
     }
 
-    void Decryptor::decrypt(const Ciphertext &encrypted, Plaintext &destination){
-//        util::MatrixGenerator matrix_gen_;
+    void Decryptor::decrypt(const Ciphertext &encrypted, Plaintext &decrypted){
 
-//        dynMatrix w = matrix_gen_.gen_empty_matrix(1, context_.parms().getLatticeDimension());
 
-//        dynMatrix inverse_gadget = gadget_matrix_.inverse();
-
-//         PowersOf2
-        uint64_t l = context_.parms().getM()/context_.parms().getLatticeDimension();
+//      PowersOf2
+        uint64_t l = context_.parms().getL();
         uint64_t q = context_.parms().getModulus();
-        dynMatrix v = powers_of_2(secret_key_.sk(),l);
-        v = v.unaryExpr([&](const int x) { return x % context_.parms().getModulus(); });
-        std::cout << "s: " << secret_key_.sk() << std::endl;
-        std::cout << "v: " << v << std::endl;
 
-        // Find i so that q/4 < w_i < q/2
-        int index;
-        for (int i = 0; i < v.cols(); i ++){
-            if ((v(0, i) > q/4 ) && (v(0, i) < q/2)){
-                index = i;
-                break;
-            }
+
+
+        dynMatrix SC = secret_key_.sk() * encrypted.data();
+        util::modulo_matrix(SC, q);
+
+        std::cout << "SC: "<< std::endl << SC << std::endl;
+
+        dynMatrix SG = secret_key_.sk() * gadget_matrix_;
+        util::modulo_matrix(SG, q);
+
+        std::cout << "SG: "<< std::endl << SG << std::endl;
+
+        dynMatrix div = dynMatrix (SC.rows(), SC.cols());
+
+        for(int i = 0; i < div.cols(); i++){
+//            div(0, i) = (SC(0, i) < SG(0, i)/2)? 0 : 1;
+            div(0, i) = (SC(0, i) / SG(0, i));
         }
 
-        dynMatrix element = encrypted.data().row(index);
-
-        dynMatrix ans = element * v.transpose() ;
-
-        std::cout << "index, i = " << index << std::endl;
-        std::cout <<"element = " << element << std::endl;
-        std::cout <<"answer = " << ans << std::endl;
-        std::cout << "final anwer = " << (ans(0, 0)/v(0, index)) % q << std::endl;
+        std::cout << "DIV: " << std::endl << div << std::endl;
+        std::cout << "sum DIV: " << div.sum() << std::endl;
 
 
-        dynMatrix w = secret_key_.sk() * encrypted.data();
-        w = w.unaryExpr([&](const int x) { return x % context_.parms().getModulus(); });
+        decrypted.set_data(1);
 
-//        dynMatrix z = secret_key_.sk() * gadget_matrix_;
-//        z = z.unaryExpr([&](const int x) { return x % context_.parms().getModulus(); });
 
-//        dynMatrix a = w.colPivHouseholderQr().solve(z);
-        uint64_t q_4 = context_.parms().getModulus()/2;
-        std::cout << "w: " << w << std::endl;
-        w = w.unaryExpr([&](const int x) { if ( x < q_4) {return (uint64_t ) 0;} else return (uint64_t ) 1; });
+//        dynMatrix v = powers_of_2(secret_key_.sk(),l);
+//
+//        util::modulo_matrix(v, q);
+//
+//        std::cout << "s: " << secret_key_.sk() << std::endl;
+//        std::cout << "v: " << v << std::endl;
 
-        std::cout << std::endl;
-        std::cout << "ans: " << w << std::endl;
-        std::cout << "ans mean: " << w.sum()<< std::endl;
+
+//        // Find i so that q/4 < w_i < q/2
+//        int index;
+//        for (int i = 0; i < v.cols(); i ++){
+//            if ((v(0, i) > q/4 ) && (v(0, i) < q/2)){
+//                index = i;
+//                break;
+//            }
+//        }
+//
+//        dynMatrix element = encrypted.data().row(index);
+//
+//        dynMatrix ans = element * v.transpose() ;
+//
+//        std::cout << "index, i = " << index << std::endl;
+//        std::cout <<"element = " << element << std::endl;
+//        std::cout <<"answer = " << ans << std::endl;
+//        std::cout << "final anwer = " << (ans(0, 0)/v(0, index)) % q << std::endl;
+
+
+//        dynMatrix w = secret_key_.sk() * encrypted.data();
+//        w = w.unaryExpr([&](const int x) { return x % context_.parms().getModulus(); });
+//
+////        dynMatrix z = secret_key_.sk() * gadget_matrix_;
+////        z = z.unaryExpr([&](const int x) { return x % context_.parms().getModulus(); });
+//
+////        dynMatrix a = w.colPivHouseholderQr().solve(z);
+//        uint64_t q_4 = context_.parms().getModulus()/2;
+//        std::cout << "w: " << w << std::endl;
+//        w = w.unaryExpr([&](const int x) { if ( x < q_4) {return (uint64_t ) 0;} else return (uint64_t ) 1; });
+//
+//        std::cout << std::endl;
+//        std::cout << "ans: " << w << std::endl;
+//        std::cout << "ans mean: " << w.sum()<< std::endl;
 //        std::cout << "final answer: " << v(0, context_.parms().getM()-1) >= context_.parms().getModulus()/4? 1 :0 << std::endl;
 //        std::cout << "z: " << z << std::endl;
 //

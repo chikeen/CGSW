@@ -63,6 +63,11 @@ namespace cgsw {
                 compute_parms();
             }
 
+            // Optional setters
+
+            inline void set_modulus(uint64_t modulus){
+                modulus_ = modulus;
+            }
             // getters
 
             size_t getDepth() const;
@@ -74,6 +79,8 @@ namespace cgsw {
             uint64_t getLatticeDimension() const;
 
             uint64_t getM() const;
+
+            uint64_t getL() const;
 
             uint64_t getErrorDist() const;
 
@@ -200,6 +207,8 @@ namespace cgsw {
             uint64_t lattice_dimension_; //n,
 
             uint64_t m_; // m = n log q TODO:- come out with better naming for this
+
+            uint64_t l_;
 
             uint64_t error_dist_; //? TODO:- create a datatype to represent this
 //

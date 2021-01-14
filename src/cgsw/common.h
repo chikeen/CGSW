@@ -6,14 +6,13 @@
 
 #include <iostream>
 #include "modulus.h"
-#include "utils/matrixgenerator.h"
-
 
 
 
 // Common typedef
+typedef uint64_t matrixElemType;
 
-typedef Eigen::Matrix<uint64_t, Eigen::Dynamic, Eigen::Dynamic> dynMatrix;
+typedef Eigen::Matrix<matrixElemType , Eigen::Dynamic, Eigen::Dynamic> dynMatrix;
 
 typedef Eigen::Matrix<cgsw::Modulus, Eigen::Dynamic, Eigen::Dynamic> dynModulusMatrix;
 

@@ -17,7 +17,7 @@ void example_gsw_basics() {
     */
     EncryptionParameters parms(scheme_type::gsw);
     parms.set_circuit_depth(3); // circuit depth == multiplicative depth
-    parms.set_security_level(24);
+    parms.set_security_level(8);
     CGSWContext context(parms);
 
     print_line(__LINE__);
@@ -36,8 +36,8 @@ void example_gsw_basics() {
     PublicKey public_key;
     keygen.create_public_key(public_key);
 
-//    cout << "secret_key: " << endl << secret_key.sk() << endl;
-//    cout << "public_key: " << endl << public_key.data() << endl;
+    cout << "secret_key: " << endl << secret_key.sk() << endl;
+    cout << "public_key: " << endl << public_key.data() << endl;
 
     // Initialisation
     Encryptor encryptor(context, public_key);

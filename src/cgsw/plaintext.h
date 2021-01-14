@@ -18,6 +18,10 @@ namespace cgsw {
             Plaintext(){};
             //for eg. 6 -> [0 0 0 0 0 1 0 0
 
+            inline void set_data(matrixElemType data){
+                data_ = data;
+            }
+
             inline auto &data() noexcept
             {
                 return data_;
@@ -31,7 +35,7 @@ namespace cgsw {
 
         private:
 //            dynMatrix data_;
-            uint64_t data_;
+            matrixElemType data_;
 
             void to_matrix();
 

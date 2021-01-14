@@ -9,8 +9,6 @@
 namespace cgsw {
 
     KeyGenerator::KeyGenerator(const cgsw::CGSWContext &context) : context_(context) {
-        //initialize matrix generator
-        matrix_gen_ = util::MatrixGenerator();
 
         // generate secret matrix/key
         generate_sk();
@@ -30,8 +28,8 @@ namespace cgsw {
         uint64_t m = context_.parms().getM();
         uint64_t q = context_.parms().getModulus();
 
-        dynMatrix s = matrix_gen_.gen_random_matrix(1, n - 1, q);
-        dynMatrix t = matrix_gen_.gen_empty_matrix(1, n);
+        dynMatrix s = util::gen_random_matrix(1, n - 1, q);
+        dynMatrix t = util::gen_empty_matrix(1, n);
 
         // negate s
         util::negate_matrix(s, q);
@@ -55,14 +53,15 @@ namespace cgsw {
         uint64_t q = context_.parms().getModulus();
 
         // Generating error matrix (vector) 1 x M
-        dynMatrix e = matrix_gen_.gen_normal_matrix(1, m , q);
+        dynMatrix e = util::gen_normal_matrix(1, m , q);
+        std::cout << "e: " << e << std::endl;
 
         // Generating random matrix B (n x m)
-        dynMatrix B = matrix_gen_.gen_random_matrix(n - 1, m, q);
+        dynMatrix B = util::gen_random_matrix(n - 1, m, q);
 
         dynMatrix b_ = secret_key_.sv() * B + e;
         util::modulo_matrix(b_, q);
-        dynMatrix A = matrix_gen_.gen_empty_matrix(n, m);
+        dynMatrix A = util::gen_empty_matrix(n,m);
 
         A << B, b_;
 

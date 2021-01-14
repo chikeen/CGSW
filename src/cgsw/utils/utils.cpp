@@ -2,11 +2,10 @@
 // Created by Chi Keen Tan on 12/01/2021.
 //
 #include "utils.h"
-#include <cstdlib>
-#include <ctime>
-#include <iostream>
-#include <random>
-#include "matrixgenerator.h"
+#include <boost/random/normal_distribution.hpp>
+
+#include "../common.h"
+//#include <boost/random.hpp>
 
 namespace cgsw {
     namespace util{
@@ -22,8 +21,9 @@ namespace cgsw {
         };
 
         dynMatrix gen_normal_matrix(size_t rows, size_t cols, uint64_t modulus) {
+            srand((unsigned) time(0));
             const int mean = 0;
-            const double stddev = 2.0;// TODO:- how to calculate the standard deviation?
+            const double stddev = 1.0;// TODO:- how to calculate the standard deviation?
 
             dynMatrix normal_matrix(rows, cols);
 

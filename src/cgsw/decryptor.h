@@ -9,7 +9,8 @@
 #include "ciphertext.h"
 #include "secretkey.h"
 
-#include "utils/matrixgenerator.h"
+#include "utils/utils.h"
+#include <utility>
 
 namespace cgsw {
 
@@ -18,7 +19,7 @@ namespace cgsw {
         public:
             Decryptor(const CGSWContext &context, const SecretKey &secret_key);
 
-            void decrypt(const Ciphertext &encrypted, Plaintext &destination);
+            void decrypt(const Ciphertext &encrypted, Plaintext &decrypted);
 
             int invariant_noise_budget(const Ciphertext &encrypted); // TODO:- somehow implement this
 

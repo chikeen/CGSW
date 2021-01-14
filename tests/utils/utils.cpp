@@ -27,3 +27,18 @@ TEST_CASE("test G then G-1", "[Utils]"){
     REQUIRE(random.rows() == random_p.rows());
     REQUIRE(random == random_p);
 }
+
+TEST_CASE("test gen_normal_matrix"){
+    dynMatrix a = gen_normal_matrix(10,10, 10);
+    dynMatrix b = gen_normal_matrix(10,10, 10);
+
+    REQUIRE_FALSE(a == b);
+}
+
+
+TEST_CASE("test gen_random_matrix"){
+    dynMatrix a = gen_random_matrix(10,10, 10);
+    dynMatrix b = gen_random_matrix(10,10, 10);
+
+    REQUIRE_FALSE(a == b);
+}

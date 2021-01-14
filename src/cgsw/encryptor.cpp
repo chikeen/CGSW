@@ -3,7 +3,8 @@
 //
 
 #include "encryptor.h"
-#include <iostream>
+
+
 
 namespace cgsw{
 
@@ -18,15 +19,13 @@ namespace cgsw{
         set_public_key(public_key);
 
         // generate gadget matrix
-        util::MatrixGenerator matrixGen_ = util::MatrixGenerator();
-        gadget_matrix_ = matrixGen_.gen_gadget_matrix(context_.parms().getLatticeDimension(),
+        gadget_matrix_ = util::gen_gadget_matrix(context_.parms().getLatticeDimension(),
                                                       context_.parms().getM());
     }
 
     void Encryptor::encrypt(Plaintext &plain, Ciphertext &destination) {
         // generate random matrix of size (m x m) { 0, 1 }
-        util::MatrixGenerator matrixGen_ = util::MatrixGenerator();
-        dynMatrix r = matrixGen_.gen_random_matrix(context_.parms().getM(),
+        dynMatrix r = util::gen_random_matrix(context_.parms().getM(),
                                                    context_.parms().getM(),
                                                    2);
 

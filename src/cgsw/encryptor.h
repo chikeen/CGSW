@@ -11,7 +11,7 @@
 #include "publickey.h"
 #include "secretkey.h"
 
-#include "utils/matrixgenerator.h"
+#include "utils/utils.h"
 
 namespace cgsw {
 

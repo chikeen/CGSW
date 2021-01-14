@@ -8,7 +8,7 @@
 #include "context.h"
 #include <cstddef>
 #include "common.h"
-#include "thirdparty/Eigen/dense"
+#include "utils/utils.h"
 #include "secretkey.h"
 #include "publickey.h"
 
@@ -66,8 +66,6 @@ namespace cgsw {
 
 
             CGSWContext context_;
-
-            util::MatrixGenerator matrix_gen_;
 
             Eigen::Matrix<uint64_t, Eigen::Dynamic, Eigen::Dynamic> gadget_matrix_;
 
