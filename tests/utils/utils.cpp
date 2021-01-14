@@ -7,6 +7,7 @@
 #include "../../src/cgsw/utils/utils.h"
 
 using namespace cgsw::util;
+using namespace std;
 
 TEST_CASE("test G then G-1", "[Utils]"){
     uint64_t row = 24, col = 24;
@@ -31,6 +32,9 @@ TEST_CASE("test G then G-1", "[Utils]"){
 TEST_CASE("test gen_normal_matrix"){
     dynMatrix a = gen_normal_matrix(10,10, 10);
     dynMatrix b = gen_normal_matrix(10,10, 10);
+
+    cout << a << endl;
+    cout << "b" << b << endl;
 
     REQUIRE_FALSE(a == b);
 }

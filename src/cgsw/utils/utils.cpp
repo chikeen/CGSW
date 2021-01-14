@@ -21,13 +21,14 @@ namespace cgsw {
         };
 
         dynMatrix gen_normal_matrix(size_t rows, size_t cols, uint64_t modulus) {
-            srand((unsigned) time(0));
+            std::random_device rd;
             const int mean = 0;
             const double stddev = 1.0;// TODO:- how to calculate the standard deviation?
 
             dynMatrix normal_matrix(rows, cols);
 
             std::default_random_engine generator;
+            generator.seed(rd());
             std::normal_distribution<double> distribution(mean,stddev);
             double random_num;
 
