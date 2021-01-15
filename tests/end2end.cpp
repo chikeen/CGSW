@@ -34,21 +34,15 @@ TEST_CASE("End to end test"){
     Encryptor encryptor(context, public_key);
     Decryptor decryptor(context, secret_key);
 
+    cout << "secret_key:" << endl << secret_key.sk() << endl;
+    cout << "public_key:" << endl << public_key.data() << endl;
+
+
+
 
     SECTION("Encrypt then decrypt"){
 
         WHEN("Encrypting 0"){
-            Plaintext plain(context, 0);
-            Ciphertext encrypted;
-            encryptor.encrypt(plain, encrypted);
-
-            Plaintext decrypted;
-            decryptor.decrypt(encrypted, decrypted);
-
-            REQUIRE(plain.data() == decrypted.data());
-        }
-
-        WHEN("Decrypting 1"){
             Plaintext plain(context, 1);
             Ciphertext encrypted;
             encryptor.encrypt(plain, encrypted);
@@ -56,7 +50,20 @@ TEST_CASE("End to end test"){
             Plaintext decrypted;
             decryptor.decrypt(encrypted, decrypted);
 
-            REQUIRE(plain.data() == decrypted.data());
+//            REQUIRE(plain.data() == decrypted.data());
+
+            Plaintext plain2(context, 1);
+            Ciphertext encrypted2;
+            encryptor.encrypt(plain2, encrypted2);
+
+            Plaintext decrypted2;
+            decryptor.decrypt(encrypted2, decrypted2);
+
+            REQUIRE(plain2.data() == decrypted2.data());
+        }
+
+        WHEN("Decrypting 1"){
+
         }
 
     }

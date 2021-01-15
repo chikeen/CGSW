@@ -7,12 +7,22 @@
 #include "../common.h"
 //#include <boost/random.hpp>
 
+std::random_device rd;
+std::mt19937 generator(rd());
+
 namespace cgsw {
     namespace util{
 
         dynMatrix gen_random_matrix(size_t rows, size_t cols, uint64_t modulus) {
+            std::uniform_int_distribution<uint64_t> distribution(0,modulus);
             dynMatrix random_matrix = dynMatrix::Random(rows, cols);
-            modulo_matrix(random_matrix, modulus);
+
+            for(int i = 0; i < cols; i ++){
+                for(int j = 0; j < rows; j ++){
+                    random_matrix(j, i) = (uint64_t) distribution(generator);
+                }
+            }
+
             return random_matrix;
         };
 
@@ -21,14 +31,12 @@ namespace cgsw {
         };
 
         dynMatrix gen_normal_matrix(size_t rows, size_t cols, uint64_t modulus) {
-            std::random_device rd;
+
             const int mean = 0;
-            const double stddev = 1.0;// TODO:- how to calculate the standard deviation?
+            const double stddev = 0.5;// TODO:- how to calculate the standard deviation?
 
             dynMatrix normal_matrix(rows, cols);
 
-            std::default_random_engine generator;
-            generator.seed(rd());
             std::normal_distribution<double> distribution(mean,stddev);
             double random_num;
 
@@ -42,7 +50,6 @@ namespace cgsw {
             }
 
 //            std::cout << "normal_matrix" << normal_matrix << std::endl;
-
             return normal_matrix;
         };
 

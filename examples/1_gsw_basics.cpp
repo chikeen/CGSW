@@ -49,7 +49,7 @@ void example_gsw_basics() {
     */
 
     print_line(__LINE__);
-    int x = 0, y = 1;
+    int x = 1, y = 9;
     Plaintext x_plain(context, x);
     Plaintext y_plain(context, y);
 //    cout << "Express x = " + to_string(x) + " as a plaintext matrix" << x_plain.data() << "." << endl;

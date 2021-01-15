@@ -54,7 +54,11 @@ namespace cgsw {
 
         for(int i = 0; i < div.cols(); i++){
 //            div(0, i) = (SC(0, i) < SG(0, i)/2)? 0 : 1;
-            div(0, i) = (SC(0, i) / SG(0, i));
+            // handle division by zero
+            if(SG(0, 1) == 0)
+                div(0, i) = q;
+            else
+                div(0, i) = (SC(0, i) / SG(0, i));
         }
 
         std::cout << "DIV: " << std::endl << div << std::endl;
