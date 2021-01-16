@@ -27,13 +27,13 @@ namespace cgsw {
         };
 
         dynMatrix gen_empty_matrix(size_t rows, size_t cols) {
-            return dynMatrix(rows, cols);
+            return dynMatrix::Zero(rows, cols);
         };
 
         dynMatrix gen_normal_matrix(size_t rows, size_t cols, uint64_t modulus) {
 
             const int mean = 0;
-            const double stddev = 0.5;// TODO:- how to calculate the standard deviation?
+            const double stddev = 1;// TODO:- how to calculate the standard deviation?
 
             dynMatrix normal_matrix(rows, cols);
 
@@ -44,12 +44,12 @@ namespace cgsw {
                 for(int j = 0; j < rows; j ++){
                     // TODO:- are we sure that wrapping around modulus won't change the dist ?
                     random_num = distribution(generator);
-                    if(random_num < 0) random_num = modulus + random_num;
+                    if(random_num < 0) random_num = -random_num; // TODO:- negate or modulo?
                     normal_matrix(j, i) = (uint64_t) random_num % modulus;
                 }
             }
 
-//            std::cout << "normal_matrix" << normal_matrix << std::endl;
+            std::cout << "normal_matrix" << normal_matrix << std::endl;
             return normal_matrix;
         };
 
@@ -69,7 +69,7 @@ namespace cgsw {
             return gadget_matrix;
         };
 
-        dynMatrix bit_decompose_matrix(dynMatrix & mat, uint64_t l){
+        dynMatrix bit_decompose_matrix(dynMatrix mat, uint64_t l){
             /*
              * Take a nxc matrix and make it mxc
              */
@@ -77,7 +77,7 @@ namespace cgsw {
             uint64_t c = mat.cols();
             uint64_t m = n * l;
 
-            dynMatrix mat_return = dynMatrix (m, c);
+            dynMatrix mat_return = dynMatrix(m, c);
 
             for(int j = 0; j < c; j ++){
                 for(int i = 0; i < n; i++){

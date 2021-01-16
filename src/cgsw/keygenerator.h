@@ -79,8 +79,6 @@ namespace cgsw {
 
             bool sk_generated_ = false;
 
-
-
     };
 
 }

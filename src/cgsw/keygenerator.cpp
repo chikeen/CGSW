@@ -39,6 +39,7 @@ namespace cgsw {
         secret_key_ = SecretKey();
         secret_key_.sk_ = t;
         secret_key_.sv_ = s;
+        std::cout << secret_key_.sv() << std::endl;
 //        std::cout<< "secret key generated: "<< secret_key_.sk() <<std::endl;
     }
 
@@ -62,6 +63,7 @@ namespace cgsw {
         dynMatrix b_ = secret_key_.sv() * B + e;
         util::modulo_matrix(b_, q);
         dynMatrix A = util::gen_empty_matrix(n,m);
+        util::negate_matrix(B, q);
 
         A << B, b_;
 

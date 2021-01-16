@@ -3,7 +3,8 @@
 //
 #pragma once
 
-#include "thirdparty/Eigen/dense"
+#include "common.h"
+#include "utils/utils.h"
 #include "encryptionparams.h"
 #include "ciphertext.h"
 
@@ -133,6 +134,12 @@ namespace cgsw {
                 sub_inplace(destination, encrypted2);
             }
         }
+
+        void multiply_inplace(Ciphertext &encrypted1, const Ciphertext &encrypted2);
+
+        inline void multiply(const Ciphertext &encrypted1, const Ciphertext &encrypted2, Ciphertext &destination);
+
+        inline void divide(const Ciphertext &encrypted1, const Ciphertext &encrypted2, Ciphertext &destination);
 
 
     private:

@@ -15,7 +15,7 @@ using namespace std;
  *  3. 24, 7332551
  */
 
-std::vector<std::pair<int, int>> cases = {{8, 89}};
+std::vector<std::pair<int, int>> cases = {{16, 25523}};
 
 
 TEST_CASE("End to end test"){
@@ -37,12 +37,27 @@ TEST_CASE("End to end test"){
     cout << "secret_key:" << endl << secret_key.sk() << endl;
     cout << "public_key:" << endl << public_key.data() << endl;
 
+    dynMatrix noise = secret_key.sk() * public_key.data();
+    util::modulo_matrix(noise, 89);
+    cout << "Noise: " << noise << std::endl;
+
 
 
 
     SECTION("Encrypt then decrypt"){
 
         WHEN("Encrypting 0"){
+            Plaintext plain(context, 0);
+            Ciphertext encrypted;
+            encryptor.encrypt(plain, encrypted);
+
+            Plaintext decrypted;
+            decryptor.decrypt(encrypted, decrypted);
+
+            REQUIRE(decrypted.data() == 0);
+        }
+
+        WHEN("Decrypting 1"){
             Plaintext plain(context, 1);
             Ciphertext encrypted;
             encryptor.encrypt(plain, encrypted);
@@ -50,20 +65,7 @@ TEST_CASE("End to end test"){
             Plaintext decrypted;
             decryptor.decrypt(encrypted, decrypted);
 
-//            REQUIRE(plain.data() == decrypted.data());
-
-            Plaintext plain2(context, 1);
-            Ciphertext encrypted2;
-            encryptor.encrypt(plain2, encrypted2);
-
-            Plaintext decrypted2;
-            decryptor.decrypt(encrypted2, decrypted2);
-
-            REQUIRE(plain2.data() == decrypted2.data());
-        }
-
-        WHEN("Decrypting 1"){
-
+            REQUIRE(decrypted.data() == 1);
         }
 
     }
