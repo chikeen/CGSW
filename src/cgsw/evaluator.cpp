@@ -29,8 +29,8 @@ namespace cgsw {
     }
 
     void Evaluator::multiply_inplace(Ciphertext &encrypted1, const Ciphertext &encrypted2){
-        uint64_t q = context_.parms().getModulus();
-        dynMatrix decomposed = util::bit_decompose_matrix(encrypted2.data(),q);
+        uint64_t l = context_.parms().getL();
+        dynMatrix decomposed = util::bit_decompose_matrix(encrypted2.data(), l);
 
         dynMatrix result = encrypted1.data() * decomposed;
         encrypted1.set_data(result);

@@ -137,7 +137,17 @@ namespace cgsw {
 
         void multiply_inplace(Ciphertext &encrypted1, const Ciphertext &encrypted2);
 
-        inline void multiply(const Ciphertext &encrypted1, const Ciphertext &encrypted2, Ciphertext &destination);
+        inline void multiply(const Ciphertext &encrypted1, const Ciphertext &encrypted2, Ciphertext &destination){
+            if (&encrypted2 == &destination)
+            {
+                multiply_inplace(destination, encrypted1);
+            }
+            else
+            {
+                destination = encrypted1;
+                multiply_inplace(destination, encrypted2);
+            }
+        }
 
         inline void divide(const Ciphertext &encrypted1, const Ciphertext &encrypted2, Ciphertext &destination);
 

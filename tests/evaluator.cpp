@@ -42,63 +42,103 @@ TEST_CASE("Evaluator") {
     encryptor.encrypt(plain_1, encrypted_1);
 
     SECTION("Addition"){
+        Ciphertext added;
+        Plaintext decrypted;
 
         WHEN("0 + 0"){
-            Ciphertext added;
             evaluator.add(encrypted_0, encrypted_0, added);
 
             REQUIRE(added.data().rows() == encrypted_0.data().rows());
             REQUIRE(added.data().cols() == encrypted_0.data().cols());
 
             THEN( "= 0") {
-                Plaintext decrypted;
                 decryptor.decrypt(added, decrypted);
                 REQUIRE(decrypted.data() == plain_0.data());
             }
         }
 
         WHEN("1 + 0"){
-            THEN( "= 1") {
+            evaluator.add(encrypted_1, encrypted_0, added);
 
+            REQUIRE(added.data().rows() == encrypted_0.data().rows());
+            REQUIRE(added.data().cols() == encrypted_0.data().cols());
+
+            THEN( "= 1") {
+                decryptor.decrypt(added, decrypted);
+                REQUIRE(decrypted.data() == plain_1.data());
             }
         }
 
         WHEN("0 + 1"){
+            evaluator.add(encrypted_0, encrypted_1, added);
+
+            REQUIRE(added.data().rows() == encrypted_0.data().rows());
+            REQUIRE(added.data().cols() == encrypted_0.data().cols());
+
             THEN( "= 1") {
-
+                decryptor.decrypt(added, decrypted);
+                REQUIRE(decrypted.data() == plain_1.data());
             }
         }
 
-        WHEN("1 + 1"){
-            THEN( "= 0") {
-
-            }
-        }
-
+//        WHEN("1 + 1"){
+//            evaluator.add(encrypted_0, encrypted_1, added);
+//
+//            REQUIRE(added.data().rows() == encrypted_0.data().rows());
+//            REQUIRE(added.data().cols() == encrypted_0.data().cols());
+//
+//            THEN( "= 0") {
+//                decryptor.decrypt(added, decrypted);
+//                REQUIRE(decrypted.data() == plain_0.data());
+//            }
+//        }
     }
 
     SECTION("Multiplication"){
-        WHEN("0 * 0"){
-            THEN( "= 0") {
+        Ciphertext multiplied;
+        Plaintext decrypted;
 
+        WHEN("0 * 0"){
+            evaluator.multiply(encrypted_0, encrypted_0, multiplied);
+            REQUIRE(multiplied.data().rows() == encrypted_0.data().rows());
+            REQUIRE(multiplied.data().cols() == encrypted_0.data().cols());
+
+            THEN( "= 0") {
+                decryptor.decrypt(multiplied, decrypted);
+                REQUIRE(decrypted.data() == plain_0.data());
             }
         }
 
         WHEN("1 * 0"){
-            THEN( "= 0") {
+            evaluator.multiply(encrypted_1, encrypted_0, multiplied);
+            REQUIRE(multiplied.data().rows() == encrypted_0.data().rows());
+            REQUIRE(multiplied.data().cols() == encrypted_0.data().cols());
 
+            THEN( "= 0") {
+                decryptor.decrypt(multiplied, decrypted);
+                REQUIRE(decrypted.data() == plain_0.data());
             }
         }
 
         WHEN("0 * 1"){
-            THEN( "= 0") {
+            evaluator.multiply(encrypted_0, encrypted_1, multiplied);
+            REQUIRE(multiplied.data().rows() == encrypted_0.data().rows());
+            REQUIRE(multiplied.data().cols() == encrypted_0.data().cols());
 
+            THEN( "= 0") {
+                decryptor.decrypt(multiplied, decrypted);
+                REQUIRE(decrypted.data() == plain_0.data());
             }
         }
 
         WHEN("1 * 1"){
-            THEN( "= 1") {
+            evaluator.multiply(encrypted_1, encrypted_1, multiplied);
+            REQUIRE(multiplied.data().rows() == encrypted_0.data().rows());
+            REQUIRE(multiplied.data().cols() == encrypted_0.data().cols());
 
+            THEN( "= 1") {
+                decryptor.decrypt(multiplied, decrypted);
+                REQUIRE(decrypted.data() == plain_1.data());
             }
         }
 
