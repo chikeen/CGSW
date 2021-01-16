@@ -40,6 +40,7 @@ namespace cgsw {
         dynMatrix SC = secret_key_.sk() * encrypted.data();
         util::modulo_matrix(SC, q);
 
+        std::cout << "q: " << q << std::endl;
         std::cout << "SC: " << SC << std::endl;
         std::cout << "SC norm():" << SC.norm() << std::endl;
         std::cout << "threshold: " << n * q/8 * 3 << std::endl;

@@ -15,15 +15,24 @@ using namespace std;
  *  3. 24, 7332551
  */
 
-std::vector<std::pair<int, int>> cases = {{16, 25523}};
+TEST_CASE("End to end tests"){
 
-
-TEST_CASE("End to end test"){
+    using record = std::tuple<uint64_t , uint64_t>;
+    auto extent = GENERATE(table<uint64_t , uint64_t>({
+                      record{8, 89},
+                      record{16, 25523},
+                      record{24, 7332551}}));
+    uint64_t d = 3,
+            k = std::get<0>(extent),
+            n = k,
+            q = std::get<1>(extent),
+            l = ceil(log2(q)),
+            m = l * n;
 
     EncryptionParameters parms(scheme_type::gsw);
     parms.set_circuit_depth(3);
-    parms.set_security_level(8);
-    parms.set_modulus(89);
+    parms.set_security_level(std::get<0>(extent));
+    parms.set_modulus(std::get<1>(extent));
     CGSWContext context(parms);
 
     KeyGenerator keygen(context);
@@ -33,16 +42,6 @@ TEST_CASE("End to end test"){
 
     Encryptor encryptor(context, public_key);
     Decryptor decryptor(context, secret_key);
-
-    cout << "secret_key:" << endl << secret_key.sk() << endl;
-    cout << "public_key:" << endl << public_key.data() << endl;
-
-    dynMatrix noise = secret_key.sk() * public_key.data();
-    util::modulo_matrix(noise, 89);
-    cout << "Noise: " << noise << std::endl;
-
-
-
 
     SECTION("Encrypt then decrypt"){
 
@@ -67,6 +66,5 @@ TEST_CASE("End to end test"){
 
             REQUIRE(decrypted.data() == 1);
         }
-
     }
 }

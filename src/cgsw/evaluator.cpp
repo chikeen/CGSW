@@ -15,7 +15,7 @@ namespace cgsw {
     }
 
     void Evaluator::add_inplace(Ciphertext &encrypted1, const Ciphertext &encrypted2) {
-        dynMatrix result = encrypted1.data() * encrypted2.data();
+        dynMatrix result = encrypted1.data() + encrypted2.data();
         util::modulo_matrix(result, context_.parms().getModulus());
         encrypted1.set_data(result);
     }
@@ -30,8 +30,9 @@ namespace cgsw {
 
     void Evaluator::multiply_inplace(Ciphertext &encrypted1, const Ciphertext &encrypted2){
         uint64_t q = context_.parms().getModulus();
+        dynMatrix decomposed = util::bit_decompose_matrix(encrypted2.data(),q);
 
-        dynMatrix result = encrypted1.data() * util::bit_decompose_matrix(encrypted2.data(),q);
+        dynMatrix result = encrypted1.data() * decomposed;
         encrypted1.set_data(result);
     }
 

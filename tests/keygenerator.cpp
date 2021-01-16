@@ -17,7 +17,19 @@ using namespace std;
  */
 
 TEST_CASE("Key Generator"){
-    uint64_t d = 3,  k = 8, n = k, q = 89, l = ceil(log2(q));
+
+    using record = std::tuple<uint64_t , uint64_t>;
+    auto extent = GENERATE(table<uint64_t , uint64_t>({
+                              record{8, 89},
+                              record{16, 25523},
+                              record{24, 7332551}}));
+    uint64_t d = 3,
+            k = std::get<0>(extent),
+            n = k,
+            q = std::get<1>(extent),
+            l = ceil(log2(q)),
+            m = l * n;
+
     EncryptionParameters parms(scheme_type::gsw);
     parms.set_circuit_depth(d);
     parms.set_security_level(k);

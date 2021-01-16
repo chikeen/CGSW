@@ -14,7 +14,6 @@ namespace cgsw {
         generate_sk();
     }
 
-
     const SecretKey &KeyGenerator::secret_key() const {
         if (!sk_generated_) {
             throw std::logic_error("secret key has not been generated");
@@ -25,21 +24,20 @@ namespace cgsw {
     void KeyGenerator::generate_sk() {
 
         uint64_t n = context_.parms().getLatticeDimension();
-        uint64_t m = context_.parms().getM();
         uint64_t q = context_.parms().getModulus();
 
         dynMatrix s = util::gen_random_matrix(1, n - 1, q);
         dynMatrix t = util::gen_empty_matrix(1, n);
 
         // negate s
-        util::negate_matrix(s, q);
+//        util::negate_matrix(s, q);
         t << s, 1;
 
         sk_generated_ = true;
         secret_key_ = SecretKey();
         secret_key_.sk_ = t;
         secret_key_.sv_ = s;
-        std::cout << secret_key_.sv() << std::endl;
+//        std::cout << secret_key_.sv() << std::endl;
 //        std::cout<< "secret key generated: "<< secret_key_.sk() <<std::endl;
     }
 

@@ -3,7 +3,7 @@
 //
 
 #include "catch.hpp"
-#include "../src/cgsw.h"
+#include "../src/cgsw/cgsw.h"
 
 using namespace cgsw;
 using namespace std;
@@ -28,10 +28,32 @@ TEST_CASE("Evaluator") {
     PublicKey public_key;
     keygen.create_public_key(public_key);
 
-    SECTION("Addition"){
-        WHEN("0 + 0"){
-            THEN( "= 0") {
+    Encryptor encryptor(context, public_key);
+    Decryptor decryptor(context, secret_key);
+    Evaluator evaluator(context);
 
+    Plaintext plain_0(context, 0);
+    Plaintext plain_1(context, 1);
+
+    Ciphertext encrypted_0;
+    encryptor.encrypt(plain_0, encrypted_0);
+
+    Ciphertext encrypted_1;
+    encryptor.encrypt(plain_1, encrypted_1);
+
+    SECTION("Addition"){
+
+        WHEN("0 + 0"){
+            Ciphertext added;
+            evaluator.add(encrypted_0, encrypted_0, added);
+
+            REQUIRE(added.data().rows() == encrypted_0.data().rows());
+            REQUIRE(added.data().cols() == encrypted_0.data().cols());
+
+            THEN( "= 0") {
+                Plaintext decrypted;
+                decryptor.decrypt(added, decrypted);
+                REQUIRE(decrypted.data() == plain_0.data());
             }
         }
 

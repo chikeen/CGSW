@@ -4,8 +4,7 @@
 
 #pragma once
 
-
-#include "thirdparty/Eigen/dense"
+#include "common.h"
 
 namespace cgsw {
 

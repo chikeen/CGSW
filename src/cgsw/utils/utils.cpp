@@ -2,10 +2,6 @@
 // Created by Chi Keen Tan on 12/01/2021.
 //
 #include "utils.h"
-#include <boost/random/normal_distribution.hpp>
-
-#include "../common.h"
-//#include <boost/random.hpp>
 
 std::random_device rd;
 std::mt19937 generator(rd());
@@ -14,7 +10,7 @@ namespace cgsw {
     namespace util{
 
         dynMatrix gen_random_matrix(size_t rows, size_t cols, uint64_t modulus) {
-            std::uniform_int_distribution<uint64_t> distribution(0,modulus);
+            std::uniform_int_distribution<uint64_t> distribution(0, modulus-1);
             dynMatrix random_matrix = dynMatrix::Random(rows, cols);
 
             for(int i = 0; i < cols; i ++){
@@ -49,7 +45,7 @@ namespace cgsw {
                 }
             }
 
-            std::cout << "normal_matrix" << normal_matrix << std::endl;
+//            std::cout << "normal_matrix" << normal_matrix << std::endl;
             return normal_matrix;
         };
 

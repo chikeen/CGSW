@@ -5,21 +5,20 @@ set(CMAKE_CXX_STANDARD 14)
 
 # third party libraries
 
-find_package(Boost 1.50 REQUIRED COMPONENTS random)
-message(STATUS "Boost version: ${Boost_VERSION}")
-
-if(Boost_FOUND)
-        include_directories(${Boost_INCLUDE_DIRS})
-endif()
-
-if(NOT TARGET Boost::random)
-        add_library(Boost::random IMPORTED INTERFACE)
-        set_property(TARGET Boost::random PROPERTY
-                INTERFACE_INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIR})
-        set_property(TARGET Boost::random PROPERTY
-                INTERFACE_LINK_LIBRARIES ${Boost_LIBRARIES})
-endif()
-
+#find_package(Boost 1.50 REQUIRED COMPONENTS random)
+#message(STATUS "Boost version: ${Boost_VERSION}")
+#
+#if(Boost_FOUND)
+#        include_directories(${Boost_INCLUDE_DIRS})
+#endif()
+#
+#if(NOT TARGET Boost::random)
+#        add_library(Boost::random IMPORTED INTERFACE)
+#        set_property(TARGET Boost::random PROPERTY
+#                INTERFACE_INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIR})
+#        set_property(TARGET Boost::random PROPERTY
+#                INTERFACE_LINK_LIBRARIES ${Boost_LIBRARIES})
+#endif()
 
 # CMake instructions to make the static lib
 
@@ -83,7 +82,7 @@ add_library(
         )
 
 
-target_include_directories(CGSW20 PUBLIC ${BOOST_INCLUDE_DIRS})
+#target_include_directories(CGSW20 PUBLIC ${BOOST_INCLUDE_DIRS})
 
 
 # CMake instructions to test using the static lib
@@ -97,8 +96,9 @@ ADD_EXECUTABLE( ${APP_EXE}
 
 TARGET_LINK_LIBRARIES( ${APP_EXE}
         CGSW20
-        Boost::random
-        ${BOOST_LIBRARIES})
+#        Boost::random
+#        ${BOOST_LIBRARIES}
+        )
 
 # Link thirdparties libraries
 
@@ -110,10 +110,13 @@ ADD_EXECUTABLE( ${TESTS_EXE}
         tests/keygenerator.cpp
         tests/encryptor.cpp
         tests/decryptor.cpp
+        tests/evaluator.cpp
+        tests/encryptionparams.cpp
         tests/utils/utils.cpp
         tests/end2end.cpp)
 
 
 TARGET_LINK_LIBRARIES( ${TESTS_EXE}
         CGSW20
-        Boost::random)
+#        Boost::random
+        )

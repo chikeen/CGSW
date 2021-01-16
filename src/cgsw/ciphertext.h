@@ -44,6 +44,15 @@ namespace cgsw {
         public:
             Ciphertext();
 
+            Ciphertext& operator=(const Ciphertext& other)
+            {
+                if (this != &other) // not a self-assignment
+                {
+                    data_ = other.data_;
+                }
+                return *this;
+            }
+
             inline std::size_t size() const noexcept
             {
                 return size_;

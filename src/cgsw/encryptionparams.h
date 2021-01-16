@@ -64,9 +64,9 @@ namespace cgsw {
             }
 
             // Optional setters
-
             inline void set_modulus(uint64_t modulus){
                 modulus_ = modulus;
+                compute_parms();
             }
             // getters
 
@@ -84,64 +84,6 @@ namespace cgsw {
 
             uint64_t getErrorDist() const;
 
-//
-//            inline void set_poly_modulus_degree(std::size_t poly_modulus_degree)
-//            {
-//                if (scheme_ == scheme_type::none && poly_modulus_degree)
-//                {
-//                    throw std::logic_error("poly_modulus_degree is not supported for this scheme");
-//                }
-//
-//                // Set the degree
-//                poly_modulus_degree_ = poly_modulus_degree;
-//
-//                // Re-compute the parms_id
-//                compute_parms_id();
-//            }
-//
-//
-//            inline void set_ciphertext_modulus(const std::vector<Modulus> &coeff_modulus)
-//            {
-//                // Check that a scheme is set
-//                if (scheme_ == scheme_type::none)
-//                {
-//                    if (!coeff_modulus.empty())
-//                    {
-//                        throw std::logic_error("coeff_modulus is not supported for this scheme");
-//                    }
-//                }
-////                else if (coeff_modulus.size() > SEAL_COEFF_MOD_COUNT_MAX || coeff_modulus.size() < SEAL_COEFF_MOD_COUNT_MIN)
-////                {
-////                    throw std::invalid_argument("coeff_modulus is invalid");
-////                }
-//
-//                coeff_modulus_ = coeff_modulus;
-//
-//                // Re-compute the parms_id
-//                compute_parms_id();
-//            }
-//
-//
-//            inline void set_plain_modulus(const Modulus &plain_modulus)
-//            {
-//                // Check that scheme is GSW
-//                if (scheme_ != scheme_type::gsw && !plain_modulus.is_zero())
-//                {
-//                    throw std::logic_error("plain_modulus is not supported for this scheme");
-//                }
-//
-//                plain_modulus_ = plain_modulus;
-//
-//                // Re-compute the parms_id
-//                compute_parms_id();
-//            }
-//
-//
-//            inline void set_plain_modulus(std::uint64_t plain_modulus)
-//            {
-//                set_plain_modulus(Modulus(plain_modulus));
-//                plain_modulus_in_bits_ = plain_modulus;
-//            }
 
             /**
             Returns the encryption scheme type.
@@ -151,42 +93,6 @@ namespace cgsw {
                 return scheme_;
             }
 
-//            /**
-//            Returns the degree of the polynomial modulus parameter.
-//            */
-//            inline std::size_t poly_modulus_degree() const noexcept
-//            {
-//                return poly_modulus_degree_;
-//            }
-//
-//            /**
-//            Returns a const reference to the currently set coefficient modulus parameter.
-//            */
-//            inline auto coeff_modulus() const noexcept -> const std::vector<Modulus> &
-//            {
-//                return coeff_modulus_;
-//            }
-//
-//            /**
-//            Returns a const reference to the currently set plaintext modulus parameter.
-//            */
-//            inline const Modulus &plain_modulus() const noexcept
-//            {
-//                return plain_modulus_;
-//            }
-//
-//            inline const uint64_t &plain_modulus_in_bits() const noexcept
-//            {
-//                return plain_modulus_in_bits_;
-//            }
-
-//            /**
-//            Returns a pointer to the random number generator factory to use for encryption.
-//            */
-//            inline auto random_generator() const noexcept -> std::shared_ptr<UniformRandomGeneratorFactory>
-//            {
-//                return random_generator_;
-//            }
 
 
         private:
@@ -211,28 +117,6 @@ namespace cgsw {
             uint64_t l_;
 
             uint64_t error_dist_; //? TODO:- create a datatype to represent this
-//
-//            std::size_t poly_modulus_degree_ = 0; // what is this for again?
-//
-//            std::vector<Modulus> coeff_modulus_{}; // ! for Ring GSW
-//
-//            Modulus plain_modulus_{}; // plaintext modulus
-//
-//            uint64_t plain_modulus_in_bits_;
-
 
     };
 }
-
-
-//            uint32_t k_; // security parameter, k
-//
-//            uint64_t p_; // ciphertext moduli
-//
-//            uint64_t q_; // plaintext moduli
-//
-//            uint32_t l_; // ceil[log(p)]
-//
-//            uint32_t n_; // no of gadget matrix cols
-//
-//            uint32_t m_; // no of gadget matrix rows

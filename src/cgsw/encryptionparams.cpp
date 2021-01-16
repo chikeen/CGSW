@@ -20,8 +20,6 @@ namespace cgsw {
         //TODO:- add a bunch of condition checking and if statement to select the proper params
         // TODO:- set modulus properly with a good random prime
 //        q:  5429093  k: 24  l:  23#
-
-        modulus_ = 89;
         lattice_dimension_ = sec_level_;
         l_ = ceil(log2(modulus_));
         m_ = lattice_dimension_ * l_;
