@@ -5,6 +5,7 @@ Getting Started:
 Installation:
 
 brew install boost
+brew install ntl
 
 
 paper: 

@@ -94,7 +94,6 @@ namespace cgsw {
             }
 
 
-
         private:
 
             void compute_parms_id();

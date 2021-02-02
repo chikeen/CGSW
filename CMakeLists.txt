@@ -22,6 +22,9 @@ set(CMAKE_CXX_STANDARD 14)
 
 # CMake instructions to make the static lib
 
+
+find_package(NTL)
+
 add_library(
         # library name
         CGSW20
@@ -32,10 +35,6 @@ add_library(
         # library include
         include/cgsw/cgsw.h
 
-        # library util files
-        src/cgsw/utils/numth.h
-        src/cgsw/utils/numth.cpp
-
         # library files
 
         ## export
@@ -43,11 +42,12 @@ add_library(
 
         ## utils
         src/cgsw/utils/utils.h
-        src/cgsw/utils/utils.cpp
+        src/cgsw/utils/numth.h
+        src/cgsw/utils/numth.cpp
+        src/cgsw/utils/matrix.h
+        src/cgsw/utils/matrix.cpp
 
         ## basic object
-        src/cgsw/modulus.h
-        src/cgsw/modulus.cpp
         src/cgsw/matrix.h
         src/cgsw/matrix.cpp
         src/cgsw/ciphertext.h

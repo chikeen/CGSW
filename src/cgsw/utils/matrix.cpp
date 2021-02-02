@@ -1,7 +1,8 @@
 //
-// Created by Chi Keen Tan on 12/01/2021.
+// Created by Chi Keen Tan on 02/02/2021.
 //
-#include "utils.h"
+
+#include "matrix.h"
 
 std::random_device rd;
 std::mt19937 generator(rd());
@@ -85,9 +86,6 @@ namespace cgsw {
 
             return mat_return;
         };
-
-
-
 
     } // util
 } // cgsw

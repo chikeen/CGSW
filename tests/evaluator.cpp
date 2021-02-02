@@ -16,7 +16,20 @@ using namespace std;
  */
 
 TEST_CASE("Evaluator") {
-    uint64_t d = 3, k = 8, n = k, q = 89, l = ceil(log2(q));
+
+    using record = std::tuple<uint64_t , uint64_t>;
+    auto extent = GENERATE(table<uint64_t , uint64_t>({
+//                      record{8, 89},
+                      record{16, 25523},
+//                      record{24, 7332551}
+                      }));
+    uint64_t d = 3,
+            k = std::get<0>(extent),
+            n = k,
+            q = std::get<1>(extent),
+            l = ceil(log2(q)),
+            m = l * n;
+
     EncryptionParameters parms(scheme_type::gsw);
     parms.set_circuit_depth(d);
     parms.set_security_level(k);
@@ -46,6 +59,7 @@ TEST_CASE("Evaluator") {
         Plaintext decrypted;
 
         WHEN("0 + 0"){
+            cout << "k: " << k << endl;
             evaluator.add(encrypted_0, encrypted_0, added);
 
             REQUIRE(added.data().rows() == encrypted_0.data().rows());
@@ -94,55 +108,55 @@ TEST_CASE("Evaluator") {
 //        }
     }
 
-    SECTION("Multiplication"){
-        Ciphertext multiplied;
-        Plaintext decrypted;
-
-        WHEN("0 * 0"){
-            evaluator.multiply(encrypted_0, encrypted_0, multiplied);
-            REQUIRE(multiplied.data().rows() == encrypted_0.data().rows());
-            REQUIRE(multiplied.data().cols() == encrypted_0.data().cols());
-
-            THEN( "= 0") {
-                decryptor.decrypt(multiplied, decrypted);
-                REQUIRE(decrypted.data() == plain_0.data());
-            }
-        }
-
-        WHEN("1 * 0"){
-            evaluator.multiply(encrypted_1, encrypted_0, multiplied);
-            REQUIRE(multiplied.data().rows() == encrypted_0.data().rows());
-            REQUIRE(multiplied.data().cols() == encrypted_0.data().cols());
-
-            THEN( "= 0") {
-                decryptor.decrypt(multiplied, decrypted);
-                REQUIRE(decrypted.data() == plain_0.data());
-            }
-        }
-
-        WHEN("0 * 1"){
-            evaluator.multiply(encrypted_0, encrypted_1, multiplied);
-            REQUIRE(multiplied.data().rows() == encrypted_0.data().rows());
-            REQUIRE(multiplied.data().cols() == encrypted_0.data().cols());
-
-            THEN( "= 0") {
-                decryptor.decrypt(multiplied, decrypted);
-                REQUIRE(decrypted.data() == plain_0.data());
-            }
-        }
-
-        WHEN("1 * 1"){
-            evaluator.multiply(encrypted_1, encrypted_1, multiplied);
-            REQUIRE(multiplied.data().rows() == encrypted_0.data().rows());
-            REQUIRE(multiplied.data().cols() == encrypted_0.data().cols());
-
-            THEN( "= 1") {
-                decryptor.decrypt(multiplied, decrypted);
-                REQUIRE(decrypted.data() == plain_1.data());
-            }
-        }
-
-    }
+//    SECTION("Multiplication"){
+//        Ciphertext multiplied;
+//        Plaintext decrypted;
+//
+//        WHEN("0 * 0"){
+//            evaluator.multiply(encrypted_0, encrypted_0, multiplied);
+//            REQUIRE(multiplied.data().rows() == encrypted_0.data().rows());
+//            REQUIRE(multiplied.data().cols() == encrypted_0.data().cols());
+//
+//            THEN( "= 0") {
+//                decryptor.decrypt(multiplied, decrypted);
+//                REQUIRE(decrypted.data() == plain_0.data());
+//            }
+//        }
+//
+//        WHEN("1 * 0"){
+//            evaluator.multiply(encrypted_1, encrypted_0, multiplied);
+//            REQUIRE(multiplied.data().rows() == encrypted_0.data().rows());
+//            REQUIRE(multiplied.data().cols() == encrypted_0.data().cols());
+//
+//            THEN( "= 0") {
+//                decryptor.decrypt(multiplied, decrypted);
+//                REQUIRE(decrypted.data() == plain_0.data());
+//            }
+//        }
+//
+//        WHEN("0 * 1"){
+//            evaluator.multiply(encrypted_0, encrypted_1, multiplied);
+//            REQUIRE(multiplied.data().rows() == encrypted_0.data().rows());
+//            REQUIRE(multiplied.data().cols() == encrypted_0.data().cols());
+//
+//            THEN( "= 0") {
+//                decryptor.decrypt(multiplied, decrypted);
+//                REQUIRE(decrypted.data() == plain_0.data());
+//            }
+//        }
+//
+//        WHEN("1 * 1"){
+//            evaluator.multiply(encrypted_1, encrypted_1, multiplied);
+//            REQUIRE(multiplied.data().rows() == encrypted_0.data().rows());
+//            REQUIRE(multiplied.data().cols() == encrypted_0.data().cols());
+//
+//            THEN( "= 1") {
+//                decryptor.decrypt(multiplied, decrypted);
+//                REQUIRE(decrypted.data() == plain_1.data());
+//            }
+//        }
+//
+//    }
 
 
 

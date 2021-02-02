@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include "thirdparty/Eigen/Dense"
+#include <NTL/ZZ.h>
 
 
 // Common typedef
