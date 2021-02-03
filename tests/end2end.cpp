@@ -17,37 +17,25 @@ using namespace std;
 
 TEST_CASE("End to end tests"){
 
-    using record = std::tuple<uint64_t , uint64_t>;
-    auto extent = GENERATE(table<uint64_t , uint64_t>({
-                      record{8, 89},
-                      record{16, 25523},
-//                      record{24, 7332551}
-    }));
-    uint64_t d = 3,
-            k = std::get<0>(extent),
-            n = k,
-            q = std::get<1>(extent),
-            l = ceil(log2(q)),
-            m = l * n;
+    auto k = GENERATE(8, 16);
+    uint64_t d = 3;
 
     EncryptionParameters parms(scheme_type::gsw);
     parms.set_circuit_depth(3);
-    parms.set_security_level(std::get<0>(extent));
-    parms.set_modulus(std::get<1>(extent));
-    CGSWContext context(parms);
+    parms.set_security_level(k);
 
-    KeyGenerator keygen(context);
+    KeyGenerator keygen(parms);
     SecretKey secret_key = keygen.secret_key();
     PublicKey public_key;
     keygen.create_public_key(public_key);
 
-    Encryptor encryptor(context, public_key);
-    Decryptor decryptor(context, secret_key);
+    Encryptor encryptor(parms, public_key);
+    Decryptor decryptor(parms, secret_key);
 
     SECTION("Encrypt then decrypt"){
 
         WHEN("Encrypting 0"){
-            Plaintext plain(context, 0);
+            Plaintext plain(0);
             Ciphertext encrypted;
             encryptor.encrypt(plain, encrypted);
 
@@ -58,13 +46,13 @@ TEST_CASE("End to end tests"){
         }
 
         WHEN("Decrypting 1"){
-            Plaintext plain(context, 1);
+            Plaintext plain(1);
             Ciphertext encrypted;
             encryptor.encrypt(plain, encrypted);
 
             Plaintext decrypted;
             decryptor.decrypt(encrypted, decrypted);
-
+            INFO("modulus,q = " << parms.getModulus() );
             REQUIRE(decrypted.data() == 1);
         }
     }

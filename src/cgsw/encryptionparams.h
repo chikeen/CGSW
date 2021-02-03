@@ -48,12 +48,12 @@ namespace cgsw {
             EncryptionParameters(scheme_type scheme = scheme_type::none) : scheme_(scheme)
             {
                 depth_ = 0;
-                sec_level_ = 0;
+                sec_level_ = 64; //default
             }
 
             inline void set_circuit_depth(size_t depth){
                 depth_ = depth;
-                compute_parms();
+//                compute_parms();
             }
 
             inline void set_security_level(uint64_t sec_level){
@@ -63,9 +63,10 @@ namespace cgsw {
             }
 
             // Optional setters
-            inline void set_modulus(uint64_t modulus){
+            inline void set_modulus(matrixElemType modulus){
                 modulus_ = modulus;
-                compute_parms();
+                l_ = ceil(log2(modulus_));
+                m_ = lattice_dimension_ * l_;
             }
             // getters
 

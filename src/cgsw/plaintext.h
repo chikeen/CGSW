@@ -14,6 +14,7 @@ namespace cgsw {
         public:
 //            Plaintext(const EncryptionParameters &params){}; //TODO:- how to convert this into a matrix ?
 
+            Plaintext(uint64_t data_in):data_(data_in){}
             Plaintext(){};
 
             inline void set_data(matrixElemType data){

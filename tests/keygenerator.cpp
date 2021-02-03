@@ -22,13 +22,13 @@ TEST_CASE("Key Generator"){
     auto extent = GENERATE(table<uint64_t , uint64_t>({
                               record{8, 89},
                               record{16, 25523},
-//                              record{24, 7332551} //TODO:- need to support larger number
+                              record{24, 7332551}
     }));
     uint64_t d = 3,
             k = std::get<0>(extent),
-            n = k,
-            q = std::get<1>(extent),
-            l = ceil(log2(q)),
+            n = k;
+    matrixElemType q(std::get<1>(extent));
+    uint64_t l = ceil(log2(q)),
             m = l * n;
 
     EncryptionParameters parms(scheme_type::gsw);
@@ -49,16 +49,21 @@ TEST_CASE("Key Generator"){
     }
 
     SECTION("Public_key size"){
+        INFO("Modulus, q" << q);
+        INFO("Modulus2, q " << parms.getModulus());
+
         REQUIRE(public_key.data().rows() == n);
-        REQUIRE(public_key.data().cols() == n * l);
+        REQUIRE(public_key.data().cols() == m);
     }
 
     SECTION("Public_key * Secret_key must equal small errors"){
+
         INFO("q: " << q );
         dynMatrix product =  secret_key.sk() * public_key.data();
         INFO("product(before): " << product );
         util::modulo_matrix(product, matrixElemType (q));
         INFO("product: " << product );
+        cout << "error: " << product << endl;
         REQUIRE(product.norm() < n * q/2); // average size less than q/2
     }
 

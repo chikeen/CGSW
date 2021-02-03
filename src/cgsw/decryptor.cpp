@@ -33,24 +33,24 @@ namespace cgsw {
 
     void Decryptor::decrypt(const Ciphertext &encrypted, Plaintext &decrypted){
 
-//        uint64_t l = params_.getL();
-//        uint64_t n = params_.getLatticeDimension();
-//        matrixElemType q = params_.getModulus();
-//
-//        dynMatrix SC = secret_key_.sk() * encrypted.data();
-//        util::modulo_matrix(SC, q);
-//
+        uint64_t l = params_.getL();
+        uint64_t n = params_.getLatticeDimension();
+        matrixElemType q = params_.getModulus();
+
+        dynMatrix SC = secret_key_.sk() * encrypted.data();
+        util::modulo_matrix(SC, q);
+
 //        std::cout << "q: " << q << std::endl;
 //        std::cout << "SC: " << SC << std::endl;
-////        std::cout << "SC norm():" << SC.norm() << std::endl;
+//        std::cout << "SC norm():" << SC.norm() << std::endl;
 //        std::cout << "threshold: " << n * q/8 * 3 << std::endl;
-//
-//        if(SC.norm() < n * q/8 * 3){
-//            decrypted.set_data(matrixElemType (0));
-//        }
-//        else{
-//            decrypted.set_data(matrixElemType (1));
-//        }
+
+        if(SC.norm() < n * q/8 * 3){
+            decrypted.set_data(matrixElemType (0));
+        }
+        else{
+            decrypted.set_data(matrixElemType (1));
+        }
 
         return;
     }

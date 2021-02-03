@@ -42,5 +42,11 @@ namespace NTL {
     inline matrixElemType sqrt(const matrixElemType & x){
         return SqrRoot(x);
     }
+
+    inline double log2(const matrixElemType & x){
+        double tmp = log(x);
+        double tmp2 = log10(2);
+        return log(x) / log(matrixElemType (2));
+    }
 }
 

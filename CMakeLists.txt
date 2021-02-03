@@ -169,13 +169,14 @@ TARGET_LINK_LIBRARIES( ${APP_EXE}
 
 ADD_EXECUTABLE( ${TESTS_EXE}
         tests/catch.hpp
+        tests/common.cpp
         tests/keygenerator.cpp
-#        tests/encryptor.cpp
-#        tests/decryptor.cpp
+        tests/encryptor.cpp
+        tests/decryptor.cpp
 #        tests/evaluator.cpp
-#        tests/encryptionparams.cpp
+        tests/encryptionparams.cpp
         tests/utils/utils.cpp
-#        tests/end2end.cpp
+        tests/end2end.cpp
         )
 
 

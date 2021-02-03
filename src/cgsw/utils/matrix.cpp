@@ -40,6 +40,7 @@ namespace cgsw {
             for(int i = 0; i < cols; i ++){
                 for(int j = 0; j < rows; j ++){
                     random_num = distribution(generator);
+                    if (random_num < 0) {random_num = -random_num;}
                     normal_matrix(j, i) =  (matrixElemType) random_num % modulus; // no need to modulus since its small?
                 }
             }
@@ -76,7 +77,6 @@ namespace cgsw {
                 for(int i = 0; i < n; i++){
                     for(int k = 0; k < l; k++){
                         mat_return((i * l + k), j) = NTL::bit(mat(i,j), k)? 1 : 0;
-//                        mat_return((i * l + k), j) = (mat(i, j) & (uint64_t ) pow(2, k))? 1 : 0;
                     }
                 }
             }

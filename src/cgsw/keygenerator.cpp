@@ -41,9 +41,9 @@ namespace cgsw {
 
     PublicKey KeyGenerator::generate_pk() {
 
-        if(!sk_generated_){
+//        if(!sk_generated_){
 //            return; //TODO:- error
-        }
+//        }
 
         uint64_t n = params_.getLatticeDimension();
         uint64_t m = params_.getM();
@@ -61,7 +61,8 @@ namespace cgsw {
         dynMatrix A = util::gen_empty_matrix(n,m);
         util::negate_matrix(B, q);
 
-        A << B, b_;
+        A << B,
+             b_;
 
         PublicKey pk = PublicKey();
         pk.pk_ = A;

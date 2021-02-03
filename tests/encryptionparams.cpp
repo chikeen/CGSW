@@ -24,9 +24,9 @@ TEST_CASE("Encryption Parameters Tests"){
                       record{24, 7332551}}));
     uint64_t d = 3,
              k = std::get<0>(extent),
-             n = k,
-             q = std::get<1>(extent),
-             l = ceil(log2(q)),
+             n = k;
+    matrixElemType q = (matrixElemType) std::get<1>(extent);
+    uint64_t l = ceil(log2(q)),
              m = l * n;
     EncryptionParameters parms(scheme_type::gsw);
 
@@ -48,5 +48,30 @@ TEST_CASE("Encryption Parameters Tests"){
 
     SECTION("Test m"){
         REQUIRE(parms.getM() == m);
+    }
+}
+
+
+TEST_CASE("Encryption Params Test: Given security level"){
+
+    auto k = GENERATE(4, 8, 16, 32, 64, 128, 256);
+
+    SECTION("Generate correct prime"){
+        EncryptionParameters parms(scheme_type::gsw);
+
+        parms.set_circuit_depth(3);
+        parms.set_security_level(k);
+        cout << k << ": " << parms.getModulus() << endl;
+        REQUIRE(NTL::NumBits(parms.getModulus()) == k);
+    }
+
+    SECTION("Generate correct l"){
+        EncryptionParameters parms(scheme_type::gsw);
+
+        parms.set_circuit_depth(3);
+        parms.set_security_level(k);
+        INFO("Modulus, q = " << parms.getModulus());
+        REQUIRE(parms.getL() == ceil(log2(parms.getModulus())));
+        REQUIRE(ceil(log2(parms.getModulus())) == k);
     }
 }
