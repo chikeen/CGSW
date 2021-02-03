@@ -6,7 +6,6 @@
 
 #include <cstdint>
 #include <vector>
-#include "modulus.h"
 #include "utils/numth.h"
 
 namespace cgsw {

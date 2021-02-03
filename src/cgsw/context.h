@@ -8,7 +8,6 @@
 #include <cstdint>
 #include <vector>
 
-#include "modulus.h"
 #include "encryptionparams.h"
 
 namespace cgsw {

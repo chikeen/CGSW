@@ -18,6 +18,15 @@ namespace cgsw {
 
         uint64_t get_prime(int bit_size);
 
+        inline matrixLongElemType gen_prime(size_t bits){
+            // A (Sophie) Germain prime is a prime p such that p' = 2*p+1 is also a prime.
+            // Such primes are useful for cryptographic applications...cryptographers
+            // sometimes call p' a "strong" or "safe" prime.
+            // GenGermainPrime generates a random Germain prime n of length l
+            // so that the probability that either n or 2*n+1 is not a prime
+            // is bounded by 2^(-err).
+            return NTL::GenGermainPrime_ZZ(bits);
+        }
 
     } // namespace util
 } // namespace cgsw

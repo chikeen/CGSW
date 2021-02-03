@@ -8,7 +8,19 @@
 using namespace cgsw::util;
 using namespace std;
 
-TEST_CASE("Utils Tests"){
+
+TEST_CASE("Utils Number Theory Tests"){
+    auto bits = GENERATE(8, 16, 32, 64, 128, 256);
+
+    SECTION("Test getPrime bitSize"){
+        matrixLongElemType p = gen_prime(bits);
+        cout << p << endl;
+        REQUIRE(NTL::NumBits(p) == bits);
+    }
+}
+
+
+TEST_CASE("Utils Matrix Tests"){
     using record = std::tuple<uint64_t , uint64_t>;
     auto extent = GENERATE(table<uint64_t , uint64_t>({
                           record{8, 89},
