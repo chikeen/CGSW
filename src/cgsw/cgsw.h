@@ -5,7 +5,6 @@
 #pragma once
 
 #include "encryptionparams.h"
-#include "context.h"
 
 #include "plaintext.h"
 #include "secretkey.h"

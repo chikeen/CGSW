@@ -35,9 +35,8 @@ TEST_CASE("Key Generator"){
     parms.set_circuit_depth(d);
     parms.set_security_level(k);
     parms.set_modulus(q);
-    CGSWContext context(parms);
 
-    KeyGenerator keygen(context);
+    KeyGenerator keygen(parms);
     SecretKey secret_key = keygen.secret_key();
     PublicKey public_key;
     keygen.create_public_key(public_key);
@@ -58,7 +57,7 @@ TEST_CASE("Key Generator"){
         INFO("q: " << q );
         dynMatrix product =  secret_key.sk() * public_key.data();
         INFO("product(before): " << product );
-        util::modulo_matrix(product, q);
+        util::modulo_matrix(product, matrixElemType (q));
         INFO("product: " << product );
         REQUIRE(product.norm() < n * q/2); // average size less than q/2
     }

@@ -7,7 +7,7 @@
 
 namespace cgsw {
 
-    Evaluator::Evaluator(const CGSWContext &context): context_(context){
+    Evaluator::Evaluator(const EncryptionParameters &params): params_(params){
     }
 
     void Evaluator::negate_inplace(Ciphertext &encrypted) {
@@ -16,7 +16,7 @@ namespace cgsw {
 
     void Evaluator::add_inplace(Ciphertext &encrypted1, const Ciphertext &encrypted2) {
         dynMatrix result = encrypted1.data() + encrypted2.data();
-        util::modulo_matrix(result, context_.parms().getModulus());
+        util::modulo_matrix(result, params_.getModulus());
         encrypted1.set_data(result);
     }
 
@@ -29,7 +29,7 @@ namespace cgsw {
     }
 
     void Evaluator::multiply_inplace(Ciphertext &encrypted1, const Ciphertext &encrypted2){
-        uint64_t l = context_.parms().getL();
+        uint64_t l = params_.getL();
         dynMatrix decomposed = util::bit_decompose_matrix(encrypted2.data(), l);
 
         dynMatrix result = encrypted1.data() * decomposed;

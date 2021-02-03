@@ -19,7 +19,7 @@ dynMatrix powers_of_2(dynMatrix m, uint64_t l){
 
 namespace cgsw {
 
-    Decryptor::Decryptor(const CGSWContext &context, const SecretKey &secret_key): context_(context), secret_key_(secret_key) {
+    Decryptor::Decryptor(const EncryptionParameters &params, const SecretKey &secret_key): params_(params), secret_key_(secret_key) {
         // Verify parameters
 //        if (!context_.parameters_set()) // TODO:- check if i need parameters_set?
 //        {
@@ -27,30 +27,30 @@ namespace cgsw {
 //        }
 
         // generate gadget matrix
-        gadget_matrix_ = util::gen_gadget_matrix(context_.parms().getLatticeDimension(),
-                                                      context_.parms().getM());
+        gadget_matrix_ = util::gen_gadget_matrix(params_.getLatticeDimension(),
+                                                      params_.getM());
     }
 
     void Decryptor::decrypt(const Ciphertext &encrypted, Plaintext &decrypted){
 
-        uint64_t l = context_.parms().getL();
-        uint64_t n = context_.parms().getLatticeDimension();
-        uint64_t q = context_.parms().getModulus();
-
-        dynMatrix SC = secret_key_.sk() * encrypted.data();
-        util::modulo_matrix(SC, q);
-
-        std::cout << "q: " << q << std::endl;
-        std::cout << "SC: " << SC << std::endl;
-        std::cout << "SC norm():" << SC.norm() << std::endl;
-        std::cout << "threshold: " << n * q/8 * 3 << std::endl;
-
-        if(SC.norm() < n * q/8 * 3){
-            decrypted.set_data(0);
-        }
-        else{
-            decrypted.set_data(1);
-        }
+//        uint64_t l = params_.getL();
+//        uint64_t n = params_.getLatticeDimension();
+//        matrixElemType q = params_.getModulus();
+//
+//        dynMatrix SC = secret_key_.sk() * encrypted.data();
+//        util::modulo_matrix(SC, q);
+//
+//        std::cout << "q: " << q << std::endl;
+//        std::cout << "SC: " << SC << std::endl;
+////        std::cout << "SC norm():" << SC.norm() << std::endl;
+//        std::cout << "threshold: " << n * q/8 * 3 << std::endl;
+//
+//        if(SC.norm() < n * q/8 * 3){
+//            decrypted.set_data(matrixElemType (0));
+//        }
+//        else{
+//            decrypted.set_data(matrixElemType (1));
+//        }
 
         return;
     }

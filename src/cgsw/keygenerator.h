@@ -5,7 +5,6 @@
 #pragma once
 
 #include "encryptionparams.h"
-#include "context.h"
 #include <cstddef>
 #include "common.h"
 #include "utils/utils.h"
@@ -33,7 +32,7 @@ namespace cgsw {
             @param[in] context The SEALContext
             @throws std::invalid_argument if the encryption parameters are not valid
             */
-            KeyGenerator(const CGSWContext &context);
+            KeyGenerator(const EncryptionParameters &params);
 
             /**
             Returns a const reference to the secret key.
@@ -56,29 +55,17 @@ namespace cgsw {
 
     private:
 
-            void generate_gadget_matrix();
-
-            void generate_error_matrix();
-
             void generate_sk();
 
             PublicKey generate_pk();
 
+            EncryptionParameters params_;
 
-            CGSWContext context_;
-
-            Eigen::Matrix<uint64_t, Eigen::Dynamic, Eigen::Dynamic> gadget_matrix_;
+            dynMatrix gadget_matrix_;
 
             SecretKey secret_key_;
 
-            size_t secret_key_array_size_ = 0;
-
-//            util::Pointer<std::uint64_t> secret_key_array_;
-//
-//            mutable util::ReaderWriterLocker secret_key_array_locker_;
-
             bool sk_generated_ = false;
-
     };
 
 }

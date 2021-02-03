@@ -13,16 +13,15 @@ void example_gsw_basics() {
      */
 
     /*
-    Set params and initialise CGSW context
+    Set params and initialise CGSW parms
     */
     EncryptionParameters parms(scheme_type::gsw);
     parms.set_circuit_depth(3); // circuit depth == multiplicative depth
     parms.set_security_level(8);
-    CGSWContext context(parms);
 
     print_line(__LINE__);
     cout << "Set encryption parameters and print" << endl;
-    print_parameters(context);
+    print_parameters(parms);
 
     cout << endl;
     cout << "~~~~~~ A naive way to calculate 4(x^2+1)(x+1)^2. ~~~~~~" << endl;
@@ -31,18 +30,18 @@ void example_gsw_basics() {
     /*
      * Generate keys
     */
-    KeyGenerator keygen(context);
+    KeyGenerator keygen(parms);
     SecretKey secret_key = keygen.secret_key();
     PublicKey public_key;
     keygen.create_public_key(public_key);
 
-    cout << "secret_key: " << endl << secret_key.sk() << endl;
-    cout << "public_key: " << endl << public_key.data() << endl;
+//    cout << "secret_key: " << endl << secret_key.sk() << endl;
+//    cout << "public_key: " << endl << public_key.data() << endl;
 
     // Initialisation
-    Encryptor encryptor(context, public_key);
-    Evaluator evaluator(context);
-    Decryptor decryptor(context, secret_key);
+    Encryptor encryptor(parms, public_key);
+    Evaluator evaluator(parms);
+    Decryptor decryptor(parms, secret_key);
 
     /*
     To get started, we create a plaintext containing the constant 6.
@@ -50,8 +49,8 @@ void example_gsw_basics() {
 
     print_line(__LINE__);
     int x = 1, y = 9;
-    Plaintext x_plain(context, x);
-    Plaintext y_plain(context, y);
+//    Plaintext x_plain(parms, x);
+//    Plaintext y_plain(parms, y);
 //    cout << "Express x = " + to_string(x) + " as a plaintext matrix" << x_plain.data() << "." << endl;
 
     /*
@@ -61,8 +60,8 @@ void example_gsw_basics() {
     Ciphertext x_encrypted;
     Ciphertext y_encrypted;
 //    cout << "Encrypt x_plain to x_encrypted." << endl;
-    encryptor.encrypt(x_plain, x_encrypted);
-    encryptor.encrypt(y_plain, y_encrypted);
+//    encryptor.encrypt(x_plain, x_encrypted);
+//    encryptor.encrypt(y_plain, y_encrypted);
 
 //    cout << "    + size of freshly encrypted x: " << x_encrypted.data().size() << endl;
 //    cout << "Ciphertext: " << x_encrypted.data() << endl;

@@ -9,16 +9,10 @@
 
 using namespace NTL;
 
-// TODO:- support 128, 192, 256 bit prime number
-
 namespace cgsw {
     namespace util {
 
-        bool is_prime(const uint64_t value, size_t num_rounds);
-
-        uint64_t get_prime(int bit_size);
-
-        inline matrixLongElemType gen_prime(size_t bits){
+        inline matrixElemType gen_prime(size_t bits){
             // A (Sophie) Germain prime is a prime p such that p' = 2*p+1 is also a prime.
             // Such primes are useful for cryptographic applications...cryptographers
             // sometimes call p' a "strong" or "safe" prime.

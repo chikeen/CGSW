@@ -8,7 +8,7 @@
 
 namespace cgsw {
 
-    KeyGenerator::KeyGenerator(const cgsw::CGSWContext &context) : context_(context) {
+    KeyGenerator::KeyGenerator(const EncryptionParameters &params) : params_(params) {
 
         // generate secret matrix/key
         generate_sk();
@@ -23,15 +23,13 @@ namespace cgsw {
 
     void KeyGenerator::generate_sk() {
 
-        uint64_t n = context_.parms().getLatticeDimension();
-        uint64_t q = context_.parms().getModulus();
+        uint64_t n = params_.getLatticeDimension();
+        matrixElemType q = params_.getModulus();
 
         dynMatrix s = util::gen_random_matrix(1, n - 1, q);
         dynMatrix t = util::gen_empty_matrix(1, n);
 
-        // negate s
-//        util::negate_matrix(s, q);
-        t << s, 1;
+        t << s, matrixElemType (1);
 
         sk_generated_ = true;
         secret_key_ = SecretKey();
@@ -47,13 +45,13 @@ namespace cgsw {
 //            return; //TODO:- error
         }
 
-        uint64_t n = context_.parms().getLatticeDimension();
-        uint64_t m = context_.parms().getM();
-        uint64_t q = context_.parms().getModulus();
+        uint64_t n = params_.getLatticeDimension();
+        uint64_t m = params_.getM();
+        matrixElemType q = params_.getModulus();
 
         // Generating error matrix (vector) 1 x M
         dynMatrix e = util::gen_normal_matrix(1, m , q);
-        std::cout << "e: " << e << std::endl;
+//        std::cout << "e: " << e << std::endl;
 
         // Generating random matrix B (n x m)
         dynMatrix B = util::gen_random_matrix(n - 1, m, q);

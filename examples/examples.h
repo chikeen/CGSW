@@ -41,14 +41,14 @@ inline void print_line(int line_number)
 /*
 Helper function: Prints the parameters in a SEALContext.
 */
-inline void print_parameters(const cgsw::CGSWContext &context) {
+inline void print_parameters(const cgsw::EncryptionParameters &params) {
 
 
     /*
     Which scheme are we using?
     */
     std::string scheme_name;
-    switch (context.parms().scheme())
+    switch (params.scheme())
     {
         case cgsw::scheme_type::gsw:
             scheme_name = "GSW";
@@ -62,11 +62,11 @@ inline void print_parameters(const cgsw::CGSWContext &context) {
     std::cout << "/" << std::endl;
     std::cout << "| Encryption parameters :" << std::endl;
     std::cout << "|   scheme: " << scheme_name << std::endl;
-    std::cout << "|   sec_level (k): " << context.parms().getSecLevel() << std::endl;
-    std::cout << "|   depth (d): " << context.parms().getDepth() << std::endl;
-    std::cout << "|   modulus (p): " << context.parms().getModulus() << std::endl;
-    std::cout << "|   lattice_dimension (n): " << context.parms().getLatticeDimension()<< std::endl;
-    std::cout << "|   M (lattice_dimension * log(modulus)): " << context.parms().getM() << std::endl;
+    std::cout << "|   sec_level (k): " << params.getSecLevel() << std::endl;
+    std::cout << "|   depth (d): " << params.getDepth() << std::endl;
+    std::cout << "|   modulus (p): " << params.getModulus() << std::endl;
+    std::cout << "|   lattice_dimension (n): " << params.getLatticeDimension()<< std::endl;
+    std::cout << "|   M (lattice_dimension * log(modulus)): " << params.getM() << std::endl;
 
     std::cout << "\\" << std::endl;
 }

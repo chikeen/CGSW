@@ -73,15 +73,13 @@ namespace cgsw {
 
             uint64_t getSecLevel() const;
 
-            uint64_t getModulus() const;
+            matrixElemType getModulus() const;
 
             uint64_t getLatticeDimension() const;
 
             uint64_t getM() const;
 
             uint64_t getL() const;
-
-            uint64_t getErrorDist() const;
 
 
             /**
@@ -95,8 +93,6 @@ namespace cgsw {
 
         private:
 
-            void compute_parms_id();
-
             void compute_parms();
 
             // encryption params
@@ -106,15 +102,13 @@ namespace cgsw {
 
             uint64_t sec_level_;
 
-            uint64_t modulus_; // q, also equal to plaintext modulus
+            matrixElemType modulus_; // q, also equal to plaintext modulus
 
             uint64_t lattice_dimension_; //n,
 
-            uint64_t m_; // m = n log q TODO:- come out with better naming for this
+            uint64_t m_; // m = n log q
 
             uint64_t l_;
-
-            uint64_t error_dist_; //? TODO:- create a datatype to represent this
 
     };
 }

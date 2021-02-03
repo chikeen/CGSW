@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include "context.h"
 #include "plaintext.h"
 #include "ciphertext.h"
 #include "secretkey.h"
@@ -17,14 +16,14 @@ namespace cgsw {
     class Decryptor{
 
         public:
-            Decryptor(const CGSWContext &context, const SecretKey &secret_key);
+            Decryptor(const EncryptionParameters &context, const SecretKey &secret_key);
 
             void decrypt(const Ciphertext &encrypted, Plaintext &decrypted);
 
             int invariant_noise_budget(const Ciphertext &encrypted); // TODO:- somehow implement this
 
         private:
-            CGSWContext context_;
+            EncryptionParameters params_;
 
             SecretKey secret_key_;
 

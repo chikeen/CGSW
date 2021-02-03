@@ -63,17 +63,7 @@ namespace cgsw {
                 return pk_;
             }
 
-            /**
-            Returns an upper bound on the size of the PublicKey, as if it was written
-            to an output stream.
-
-            @param[in] compr_mode The compression mode
-            @throws std::invalid_argument if the compression mode is not supported
-            @throws std::logic_error if the size does not fit in the return type
-            */
-
         private:
-    //        Ciphertext pk_;
             dynMatrix pk_;
 
     };

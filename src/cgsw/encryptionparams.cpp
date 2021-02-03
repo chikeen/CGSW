@@ -11,17 +11,13 @@
 
 namespace cgsw {
 
-    void EncryptionParameters::compute_parms_id() {
-        return;
-    }
-
     void EncryptionParameters::compute_parms() {
 
         //TODO:- add a bunch of condition checking and if statement to select the proper params
         // TODO:- set modulus properly with a good random prime
 //        q:  5429093  k: 24  l:  23#
         lattice_dimension_ = sec_level_;
-        l_ = ceil(log2(modulus_));
+        l_ = ceil(NTL::NumBits(modulus_));
         m_ = lattice_dimension_ * l_;
 
     }
@@ -34,7 +30,7 @@ namespace cgsw {
         return sec_level_;
     }
 
-    uint64_t EncryptionParameters::getModulus() const {
+    matrixElemType EncryptionParameters::getModulus() const {
         return modulus_;
     }
 
@@ -48,10 +44,6 @@ namespace cgsw {
 
     uint64_t EncryptionParameters::getL() const {
         return l_;
-    }
-
-    uint64_t EncryptionParameters::getErrorDist() const {
-        return error_dist_;
     }
 
 }

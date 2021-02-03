@@ -10,13 +10,12 @@ std::mt19937 generator(rd());
 namespace cgsw {
     namespace util{
 
-        dynMatrix gen_random_matrix(size_t rows, size_t cols, uint64_t modulus) {
-            std::uniform_int_distribution<uint64_t> distribution(0, modulus-1);
-            dynMatrix random_matrix = dynMatrix::Random(rows, cols);
+        dynMatrix gen_random_matrix(size_t rows, size_t cols, matrixElemType modulus) {
+            dynMatrix random_matrix = dynMatrix::Zero(rows, cols);
 
             for(int i = 0; i < cols; i ++){
                 for(int j = 0; j < rows; j ++){
-                    random_matrix(j, i) = (uint64_t) distribution(generator);
+                    random_matrix(j, i) = NTL::RandomBnd(modulus);
                 }
             }
 
@@ -27,26 +26,24 @@ namespace cgsw {
             return dynMatrix::Zero(rows, cols);
         };
 
-        dynMatrix gen_normal_matrix(size_t rows, size_t cols, uint64_t modulus) {
+        dynMatrix gen_normal_matrix(size_t rows, size_t cols, matrixElemType modulus) {
 
-            const int mean = 0;
-            const double stddev = 1;// TODO:- how to calculate the standard deviation?
+            const int mean(0);
+            const double stddev(1);// TODO:- how to calculate the standard deviation?
 
             dynMatrix normal_matrix(rows, cols);
 
-            std::normal_distribution<double> distribution(mean,stddev);
+            // Since the normal distribution matrix centered around 0, can use int instead of NTL:ZZ
+            std::normal_distribution<double> distribution(mean, stddev);
             double random_num;
 
             for(int i = 0; i < cols; i ++){
                 for(int j = 0; j < rows; j ++){
-                    // TODO:- are we sure that wrapping around modulus won't change the dist ?
                     random_num = distribution(generator);
-                    if(random_num < 0) random_num = -random_num; // TODO:- negate or modulo?
-                    normal_matrix(j, i) = (uint64_t) random_num % modulus;
+                    normal_matrix(j, i) =  (matrixElemType) random_num % modulus; // no need to modulus since its small?
                 }
             }
 
-//            std::cout << "normal_matrix" << normal_matrix << std::endl;
             return normal_matrix;
         };
 
@@ -62,7 +59,6 @@ namespace cgsw {
                 }
             }
 
-//            std::cout << "gadget_matrix" << gadget_matrix << std::endl;
             return gadget_matrix;
         };
 
@@ -79,7 +75,8 @@ namespace cgsw {
             for(int j = 0; j < c; j ++){
                 for(int i = 0; i < n; i++){
                     for(int k = 0; k < l; k++){
-                        mat_return((i * l + k), j) = (mat(i, j) & (uint64_t ) pow(2, k))? 1 :0;
+                        mat_return((i * l + k), j) = NTL::bit(mat(i,j), k)? 1 : 0;
+//                        mat_return((i * l + k), j) = (mat(i, j) & (uint64_t ) pow(2, k))? 1 : 0;
                     }
                 }
             }

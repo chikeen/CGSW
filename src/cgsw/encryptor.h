@@ -5,11 +5,10 @@
 #pragma once
 
 #include <iostream>
-#include "context.h"
+#include "encryptionparams.h"
 #include "plaintext.h"
 #include "ciphertext.h"
 #include "publickey.h"
-#include "secretkey.h"
 
 #include "utils/utils.h"
 
@@ -18,7 +17,7 @@ namespace cgsw {
     class Encryptor {
 
         public:
-            Encryptor(const CGSWContext &context, const PublicKey &public_key);
+            Encryptor(const EncryptionParameters &params, const PublicKey &public_key);
 
             void encrypt(Plaintext &plain, Ciphertext &destination);
 
@@ -29,12 +28,10 @@ namespace cgsw {
 
 
     private:
+            EncryptionParameters params_;
+
             dynMatrix gadget_matrix_;
 
-            CGSWContext context_;
-
             PublicKey public_key_;
-
-            SecretKey secret_key_;
     };
 }

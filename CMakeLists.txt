@@ -115,8 +115,6 @@ add_library(
         src/cgsw/utils/matrix.cpp
 
         ## basic object
-        src/cgsw/matrix.h
-        src/cgsw/matrix.cpp
         src/cgsw/ciphertext.h
         src/cgsw/ciphertext.cpp
         src/cgsw/plaintext.h
@@ -125,8 +123,6 @@ add_library(
         src/cgsw/publickey.h
         src/cgsw/encryptionparams.h
         src/cgsw/encryptionparams.cpp
-        src/cgsw/context.h
-        src/cgsw/context.cpp
 
         ## tools
         src/cgsw/keygenerator.h
@@ -174,12 +170,13 @@ TARGET_LINK_LIBRARIES( ${APP_EXE}
 ADD_EXECUTABLE( ${TESTS_EXE}
         tests/catch.hpp
         tests/keygenerator.cpp
-        tests/encryptor.cpp
-        tests/decryptor.cpp
-        tests/evaluator.cpp
-        tests/encryptionparams.cpp
+#        tests/encryptor.cpp
+#        tests/decryptor.cpp
+#        tests/evaluator.cpp
+#        tests/encryptionparams.cpp
         tests/utils/utils.cpp
-        tests/end2end.cpp)
+#        tests/end2end.cpp
+        )
 
 
 TARGET_LINK_LIBRARIES( ${TESTS_EXE}

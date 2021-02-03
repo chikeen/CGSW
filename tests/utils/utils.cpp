@@ -13,12 +13,10 @@ TEST_CASE("Utils Number Theory Tests"){
     auto bits = GENERATE(8, 16, 32, 64, 128, 256);
 
     SECTION("Test getPrime bitSize"){
-        matrixLongElemType p = gen_prime(bits);
-        cout << p << endl;
+        matrixElemType p = gen_prime(bits);
         REQUIRE(NTL::NumBits(p) == bits);
     }
 }
-
 
 TEST_CASE("Utils Matrix Tests"){
     using record = std::tuple<uint64_t , uint64_t>;
@@ -28,14 +26,15 @@ TEST_CASE("Utils Matrix Tests"){
                           record{24, 7332551}}));
     uint64_t d = 3,
             k = std::get<0>(extent),
-            n = k,
-            q = std::get<1>(extent),
-            l = ceil(log2(q)),
-            m = l * n;
+            n = k;
+
+    matrixElemType q (std::get<1>(extent));
+    uint64_t l = NTL::NumBits(q),
+             m = l * n;
 
     SECTION("test gen_random_matrix"){
-        dynMatrix a = gen_random_matrix(n, n, q);
-        dynMatrix b = gen_random_matrix(n, n, q);
+        dynMatrix a = gen_random_matrix(n, n, matrixElemType (q));
+        dynMatrix b = gen_random_matrix(n, n, matrixElemType (q));
 
         SECTION("random ? "){
             REQUIRE_FALSE(a == b);
@@ -55,8 +54,8 @@ TEST_CASE("Utils Matrix Tests"){
     }
 
     SECTION("test gen_normal_matrix"){
-        dynMatrix a = gen_normal_matrix(n,n, q);
-        dynMatrix b = gen_normal_matrix(n,n, q);
+        dynMatrix a = gen_normal_matrix(n, n, q);
+        dynMatrix b = gen_normal_matrix(n, n, q);
 
         SECTION("random? "){
             REQUIRE_FALSE(a == b);
