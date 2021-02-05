@@ -11,7 +11,7 @@ namespace cgsw {
     class Ciphertext {
 
         public:
-            Ciphertext();
+            Ciphertext(){};
 
             Ciphertext& operator=(const Ciphertext& other)
             {

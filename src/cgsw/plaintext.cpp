@@ -8,16 +8,21 @@
 
 namespace cgsw {
 
-//    Plaintext::Plaintext(const EncryptionParameters &params, const int data_in) {
-//
-//        // get length of array == plaintext space
-//        matrixElemType length = params.getModulus();
-//
-////        // from data_in = 6 -> [0 0 0 0 0 0 6 ... 0 0 ]
-////        data_ = dynMatrix(1, length);
-////        data_(0, data_in) = 1;
-//        data_ = data_in;
-//
-////        std::cout << data_ << std::endl;
-//    }
+    void CGSWPlaintext::generate_bit_decomposed_plaintexts() {
+        // from data_ -> bit_decomposed_data_
+
+        uint l = ceil(log2(params_.getPlainModulus())); // l = no of decomposed plaintexts matrices
+        uint64_t rows = data_.rows(),
+                 cols = data_.cols();
+
+        bit_decomposed_data_ = std::vector<dynUintMatrix>(l, dynUintMatrix::Zero(rows, cols));
+
+        for(int k = 0; k < l; k++){
+            for (int i = 0; i < rows; i++){
+                for(int j = 0; j < cols; j++) {
+                    bit_decomposed_data_[k](i, j) = bit(data_(i, j), k);
+                }
+            }
+        }
+    }
 }

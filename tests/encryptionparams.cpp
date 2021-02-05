@@ -32,10 +32,10 @@ TEST_CASE("Encryption Parameters Tests"){
 
     parms.set_circuit_depth(d);
     parms.set_security_level(k);
-    parms.set_modulus(q);
+    parms.set_cipher_modulus(q);
 
     SECTION("Test q"){
-        REQUIRE(parms.getModulus() == q);
+        REQUIRE(parms.getCipherModulus() == q);
     }
 
     SECTION("Test n"){
@@ -61,8 +61,8 @@ TEST_CASE("Encryption Params Test: Given security level"){
 
         parms.set_circuit_depth(3);
         parms.set_security_level(k);
-        cout << k << ": " << parms.getModulus() << endl;
-        REQUIRE(NTL::NumBits(parms.getModulus()) == k);
+        cout << k << ": " << parms.getCipherModulus() << endl;
+        REQUIRE(NTL::NumBits(parms.getCipherModulus()) == k);
     }
 
     SECTION("Generate correct l"){
@@ -70,8 +70,8 @@ TEST_CASE("Encryption Params Test: Given security level"){
 
         parms.set_circuit_depth(3);
         parms.set_security_level(k);
-        INFO("Modulus, q = " << parms.getModulus());
-        REQUIRE(parms.getL() == ceil(log2(parms.getModulus())));
-        REQUIRE(ceil(log2(parms.getModulus())) == k);
+        INFO("Modulus, q = " << parms.getCipherModulus());
+        REQUIRE(parms.getL() == ceil(log2(parms.getCipherModulus())));
+        REQUIRE(ceil(log2(parms.getCipherModulus())) == k);
     }
 }

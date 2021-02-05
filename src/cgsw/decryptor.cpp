@@ -35,7 +35,7 @@ namespace cgsw {
 
         uint64_t l = params_.getL();
         uint64_t n = params_.getLatticeDimension();
-        matrixElemType q = params_.getModulus();
+        matrixElemType q = params_.getCipherModulus();
 
         dynMatrix SC = secret_key_.sk() * encrypted.data();
         util::modulo_matrix(SC, q);

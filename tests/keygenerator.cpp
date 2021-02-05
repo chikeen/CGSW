@@ -34,7 +34,7 @@ TEST_CASE("Key Generator"){
     EncryptionParameters parms(scheme_type::gsw);
     parms.set_circuit_depth(d);
     parms.set_security_level(k);
-    parms.set_modulus(q);
+    parms.set_cipher_modulus(q);
 
     KeyGenerator keygen(parms);
     SecretKey secret_key = keygen.secret_key();
@@ -50,7 +50,7 @@ TEST_CASE("Key Generator"){
 
     SECTION("Public_key size"){
         INFO("Modulus, q" << q);
-        INFO("Modulus2, q " << parms.getModulus());
+        INFO("Modulus2, q " << parms.getCipherModulus());
 
         REQUIRE(public_key.data().rows() == n);
         REQUIRE(public_key.data().cols() == m);

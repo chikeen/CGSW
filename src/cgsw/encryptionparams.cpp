@@ -13,11 +13,23 @@ namespace cgsw {
 
     void EncryptionParameters::compute_parms() {
 
-        lattice_dimension_ = sec_level_;
-        modulus_ = util::gen_prime(sec_level_);
-        l_ = ceil(log2(modulus_));
-        m_ = lattice_dimension_ * l_;
+        if (scheme_ == scheme_type::gsw){
+            lattice_dimension_ = sec_level_;
+            cipher_modulus_ = util::gen_prime(sec_level_);
+            l_ = ceil(log2(cipher_modulus_));
+            m_ = lattice_dimension_ * l_;
+        }
+        else if (scheme_ == scheme_type::cgsw){
+            lattice_dimension_ = sec_level_;
+            cipher_modulus_ = util::gen_prime(sec_level_);
+            plain_modulus_ = util::gen_prime(3); // TODO:- 3 bits for now, details follows later
+            l_ = ceil(log2(cipher_modulus_));
+            m_ = lattice_dimension_ * l_;
 
+            long tmp;
+            conv(tmp, cipher_modulus_ / plain_modulus_);
+            f_ = (uint64_t ) tmp; //TODO:- f is now floored. Implement rounding of ZZ/ZZ for greater accuracy
+        }
     }
 
     size_t EncryptionParameters::getDepth() const {
@@ -28,8 +40,12 @@ namespace cgsw {
         return sec_level_;
     }
 
-    matrixElemType EncryptionParameters::getModulus() const {
-        return modulus_;
+    matrixElemType EncryptionParameters::getCipherModulus() const {
+        return cipher_modulus_;
+    }
+
+    matrixElemType EncryptionParameters::getPlainModulus() const {
+        return plain_modulus_;
     }
 
     uint64_t EncryptionParameters::getLatticeDimension() const {
@@ -42,6 +58,10 @@ namespace cgsw {
 
     uint64_t EncryptionParameters::getL() const {
         return l_;
+    }
+
+    uint64_t EncryptionParameters::getF() const {
+        return f_;
     }
 
 }

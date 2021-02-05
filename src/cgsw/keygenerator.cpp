@@ -24,7 +24,7 @@ namespace cgsw {
     void KeyGenerator::generate_sk() {
 
         uint64_t n = params_.getLatticeDimension();
-        matrixElemType q = params_.getModulus();
+        matrixElemType q = params_.getCipherModulus();
 
         dynMatrix s = util::gen_random_matrix(1, n - 1, q);
         dynMatrix t = util::gen_empty_matrix(1, n);
@@ -47,7 +47,7 @@ namespace cgsw {
 
         uint64_t n = params_.getLatticeDimension();
         uint64_t m = params_.getM();
-        matrixElemType q = params_.getModulus();
+        matrixElemType q = params_.getCipherModulus();
 
         // Generating error matrix (vector) 1 x M
         dynMatrix e = util::gen_normal_matrix(1, m , q);

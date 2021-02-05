@@ -84,5 +84,18 @@ namespace cgsw {
             return mat_return;
         };
 
+        dynUintMatrix gen_random_uint_matrix(size_t rows, size_t cols, uint64_t modulus) {
+            std::uniform_int_distribution<uint64_t> distribution(0, modulus-1);
+            dynUintMatrix random_matrix = dynUintMatrix ::Zero(rows, cols);
+
+            for(int i = 0; i < cols; i ++){
+                for(int j = 0; j < rows; j ++){
+                    random_matrix(j, i) = (uint64_t) distribution(generator);
+                }
+            }
+
+            return random_matrix;
+        };
+
     } // util
 } // cgsw

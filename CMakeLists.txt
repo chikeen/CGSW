@@ -116,7 +116,6 @@ add_library(
 
         ## basic object
         src/cgsw/ciphertext.h
-        src/cgsw/ciphertext.cpp
         src/cgsw/plaintext.h
         src/cgsw/plaintext.cpp
         src/cgsw/secretkey.h
@@ -170,13 +169,14 @@ TARGET_LINK_LIBRARIES( ${APP_EXE}
 ADD_EXECUTABLE( ${TESTS_EXE}
         tests/catch.hpp
         tests/common.cpp
+        tests/plaintext.cpp
         tests/keygenerator.cpp
         tests/encryptor.cpp
         tests/decryptor.cpp
 #        tests/evaluator.cpp
         tests/encryptionparams.cpp
         tests/utils/utils.cpp
-        tests/end2end.cpp
+        tests/BDT/encryptdecrypt.cpp
         )
 
 

@@ -22,6 +22,11 @@ namespace cgsw {
             return mat;
         }
 
+        inline dynUintMatrix modulo_matrix(dynUintMatrix & mat, uint64_t modulus){
+            mat = mat.unaryExpr([&](const uint64_t x) { return x % modulus; });
+            return mat;
+        }
+
         inline dynMatrix negate_matrix(dynMatrix & mat, matrixElemType modulus){
             mat = mat.unaryExpr([&](const matrixElemType x) { return modulus - x; });
             return mat;
@@ -36,6 +41,8 @@ namespace cgsw {
         dynMatrix gen_normal_matrix(size_t rows, size_t cols, matrixElemType modulus);
 
         dynMatrix gen_gadget_matrix(size_t rows, size_t cols);
+
+        dynUintMatrix gen_random_uint_matrix(size_t rows, size_t cols, uint64_t modulus);
 
 
     } // util

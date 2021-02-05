@@ -15,6 +15,8 @@
 
 typedef NTL::ZZ matrixElemType;
 
+typedef Eigen::Matrix<uint64_t, Eigen::Dynamic, Eigen::Dynamic> dynUintMatrix;
+
 typedef Eigen::Matrix<matrixElemType , Eigen::Dynamic, Eigen::Dynamic> dynMatrix;
 
 // Overriding Eigen with custom scalar types: see https://eigen.tuxfamily.org/dox/TopicCustomizing_CustomScalar.html
@@ -48,5 +50,6 @@ namespace NTL {
         double tmp2 = log10(2);
         return log(x) / log(matrixElemType (2));
     }
+
 }
 

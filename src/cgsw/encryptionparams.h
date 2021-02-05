@@ -53,7 +53,6 @@ namespace cgsw {
 
             inline void set_circuit_depth(size_t depth){
                 depth_ = depth;
-//                compute_parms();
             }
 
             inline void set_security_level(uint64_t sec_level){
@@ -62,11 +61,15 @@ namespace cgsw {
                 compute_parms();
             }
 
-            // Optional setters
-            inline void set_modulus(matrixElemType modulus){
-                modulus_ = modulus;
-                l_ = ceil(log2(modulus_));
+            // Warning: Only used for testing
+            inline void set_cipher_modulus(matrixElemType modulus){
+                cipher_modulus_ = modulus;
+                l_ = ceil(log2(cipher_modulus_));
                 m_ = lattice_dimension_ * l_;
+            }
+
+            inline void set_plain_modulus(matrixElemType modulus){
+                plain_modulus_ = modulus;
             }
             // getters
 
@@ -74,13 +77,17 @@ namespace cgsw {
 
             uint64_t getSecLevel() const;
 
-            matrixElemType getModulus() const;
+            matrixElemType getCipherModulus() const;
+
+            matrixElemType getPlainModulus() const;
 
             uint64_t getLatticeDimension() const;
 
             uint64_t getM() const;
 
             uint64_t getL() const;
+
+            uint64_t getF() const;
 
 
             /**
@@ -103,13 +110,19 @@ namespace cgsw {
 
             uint64_t sec_level_;
 
-            matrixElemType modulus_; // q, also equal to plaintext modulus
+            matrixElemType cipher_modulus_; // q
 
-            uint64_t lattice_dimension_; //n,
+            uint64_t lattice_dimension_; // n
 
             uint64_t m_; // m = n log q
 
             uint64_t l_;
+
+            // Only CGSW --------
+
+            matrixElemType plain_modulus_; // p
+
+            uint64_t f_; // f = round (q/p)
 
     };
 }

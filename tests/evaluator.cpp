@@ -34,7 +34,6 @@ TEST_CASE("Evaluator") {
     parms.set_circuit_depth(d);
     parms.set_security_level(k);
     parms.set_modulus(q);
-    CGSWContext context(parms);
 
     KeyGenerator keygen(context);
     SecretKey secret_key = keygen.secret_key();

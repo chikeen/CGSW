@@ -64,7 +64,7 @@ inline void print_parameters(const cgsw::EncryptionParameters &params) {
     std::cout << "|   scheme: " << scheme_name << std::endl;
     std::cout << "|   sec_level (k): " << params.getSecLevel() << std::endl;
     std::cout << "|   depth (d): " << params.getDepth() << std::endl;
-    std::cout << "|   modulus (p): " << params.getModulus() << std::endl;
+    std::cout << "|   modulus (p): " << params.getCipherModulus() << std::endl;
     std::cout << "|   lattice_dimension (n): " << params.getLatticeDimension()<< std::endl;
     std::cout << "|   M (lattice_dimension * log(modulus)): " << params.getM() << std::endl;
 
