@@ -12,7 +12,13 @@
 
 #include "utils/utils.h"
 
+
 namespace cgsw {
+
+    typedef std::vector<std::vector<Ciphertext>> ddCipherMatrix;
+    typedef std::vector<std::vector<std::vector<Ciphertext>>> dddCipherMatrix;
+
+
 
     class Encryptor {
 
@@ -23,20 +29,22 @@ namespace cgsw {
 
             /*
              * Takes in one single matrix m (with binary entries only),
-             * , and output a vector of ciphertexts
+             * , and output 2D vector of ciphertexts
              */
-            void encrypt_many(const dynUintMatrix &plains, std::vector<Ciphertext> &destination);
+            void encrypt_many(const dynUintMatrix &plains, ddCipherMatrix &destination);
 
             /*
-             * Takes in a vector of bit-decomposed matrices (all with binary entries),
-             * , and output a vector of vector of ciphertexts
+             * Takes in 1d vector of bit-decomposed matrices (all with binary entries),
+             * , and output a 3D vector of ciphertexts
              */
-            void encrypt_many(const std::vector<dynUintMatrix> &plains, std::vector<std::vector<Ciphertext>> &destination);
+            void encrypt_many(const std::vector<dynUintMatrix> &plains, dddCipherMatrix &destination);
 
             /*
-             * Compress a vector of ciphertexts into a single result ciphertext
+             * Compress a vector of vector of ciphertexts into a single result ciphertext
              */
-            void compress(const std::vector<Ciphertext> &ciphertexts, Ciphertext &results);
+            void compress(const dddCipherMatrix &ciphertexts, Ciphertext &results);
+
+            Ciphertext compress(const dddCipherMatrix &ciphertexts);
 
             inline void set_public_key(const PublicKey &public_key)
             {
@@ -45,7 +53,8 @@ namespace cgsw {
 
 
     private:
-            dynUintMatrix construct_T_prime_matrix();
+
+            inline dynVector generate_t_vector(uint64_t scalar, uint64_t v, uint64_t l, uint64_t length);
 
             EncryptionParameters params_;
 

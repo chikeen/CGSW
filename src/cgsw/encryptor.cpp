@@ -35,42 +35,101 @@ namespace cgsw{
         return;
     }
 
-    void Encryptor::encrypt_many(const dynUintMatrix &plains, std::vector<Ciphertext> &destination) {
+    void Encryptor::encrypt_many(const dynUintMatrix &plains, ddCipherMatrix &destination) {
         for (int i = 0; i < plains.rows(); i ++){
+            std::vector<Ciphertext> ciphertexts;
             for (int j = 0; j < plains.cols(); j ++){
                 Ciphertext c;
                 Plaintext p(plains(i, j));
                 encrypt(p, c);
-                destination.push_back(c);
+                ciphertexts.push_back(c);
             }
+            destination.push_back(ciphertexts);
         }
+        // iterate order is: u(row) -> v(col)
 
         return;
     }
 
-    void Encryptor::encrypt_many(const std::vector<dynUintMatrix> &plains, std::vector<std::vector<Ciphertext>> &destination){
+    void Encryptor::encrypt_many(const std::vector<dynUintMatrix> &plains, dddCipherMatrix &destination){
         for (auto i: plains){
-            std::vector<Ciphertext> ciphertexts;
+            ddCipherMatrix ciphertexts;
             encrypt_many(i, ciphertexts);
             destination.push_back(ciphertexts);
         }
+        // the iterate order is now: w(low bit -> high bit) -> u (up to down) -> v(left to right)
 
         return;
     }
 
-    void Encryptor::compress(const std::vector<Ciphertext> &ciphertexts, Ciphertext &results) {
+    void Encryptor::compress(const dddCipherMatrix &ciphertexts, Ciphertext &results) {
 
+        // variables
+        uint64_t rows = params_.getM(),
+                 cols = params_.getM(),
+                 f = params_.getF(),
+                 l = params_.getL();
 
-        // construct T' matrix
+        // sizes
+        uint64_t no_w = ciphertexts.size(),
+                 no_u = ciphertexts[0].size(),
+                 no_v = ciphertexts[0][0].size(),
+                 t_size = ciphertexts[0][0][0].data().cols();
 
+        // create a final result
+        dynMatrix result = results.data();
 
-        //
+        // loop through u, v, w
+        for(int w = 0; w < no_w ; w ++){
+            // calculate the scalar f * 2^w
+            uint64_t scalar = f * pow(2, w);
+
+            for(int u = 0; u < no_u; u ++){ // cols
+                for(int v = 0; v < no_v; v ++){ // rows
+
+                    // construct the vector t
+                    dynVector t = generate_t_vector(scalar, v, l, t_size);
+                    std::cout << "t   : " << t.transpose()  << std::endl;
+                    std::cout << "rows: " << ciphertexts[w][u][v].data().row(v) << std::endl;
+
+                    // multiply row v with t and add it to col u
+                    result(u, v) += ciphertexts[w][u][v].data().row(v) * t;
+                }
+            }
+        }
+
+        results.set_data(result);
+        return;
+    }
+
+    Ciphertext Encryptor::compress(const dddCipherMatrix &ciphertexts){
+        uint64_t rows = ciphertexts[0][0][0].data().rows(),
+                 cols = ciphertexts[0][0][0].data().cols();
+
+        dynMatrix result = dynMatrix::Zero(rows, cols);
+        Ciphertext cresult;
+        cresult.set_data(result);
+        compress(ciphertexts, cresult);
+        return cresult;
+    }
+
+    inline dynVector Encryptor::generate_t_vector(uint64_t scalar, uint64_t v, uint64_t l, uint64_t length){
+        dynVector result(length);
+
+        for(int i = 0; i < length; i++){
+            if((i >= v)  && (i < v + l)) {
+                result(i) = (bit(scalar, i - v)); // current_l = i - v
+            }
+            else{
+                result(i) = 0;
+            }
+        }
+
+        return result;
     }
 
 
-    dynUintMatrix Encryptor::construct_T_prime_matrix() {
 
-    }
 
 }
 

@@ -17,6 +17,8 @@ typedef NTL::ZZ matrixElemType;
 
 typedef Eigen::Matrix<uint64_t, Eigen::Dynamic, Eigen::Dynamic> dynUintMatrix;
 
+typedef Eigen::Matrix<matrixElemType , Eigen::Dynamic, 1> dynVector;
+
 typedef Eigen::Matrix<matrixElemType , Eigen::Dynamic, Eigen::Dynamic> dynMatrix;
 
 // Overriding Eigen with custom scalar types: see https://eigen.tuxfamily.org/dox/TopicCustomizing_CustomScalar.html
