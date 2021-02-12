@@ -23,20 +23,32 @@ namespace cgsw {
 
     void KeyGenerator::generate_sk() {
 
-        uint64_t n = params_.getLatticeDimension();
+        uint64_t n0 = params_.getLatticeDimension0();
+        uint64_t n1 = params_.getLatticeDimension1();
+        uint64_t k = params_.getSecLevel();
         matrixElemType q = params_.getCipherModulus();
+        dynMatrix s, t;
 
-        dynMatrix s = util::gen_random_matrix(1, n - 1, q);
-        dynMatrix t = util::gen_empty_matrix(1, n);
+        switch(params_.getScheme()){
+            case scheme_type::gsw:
+                s = util::gen_random_matrix(1, n0 - 1, q);
+                t = util::gen_empty_matrix(1, n0);
 
-        t << s, matrixElemType (1);
+                t << s, matrixElemType (1);
+                break;
+
+            case scheme_type::cgsw:
+                s = util::gen_random_matrix(n0, k, q);
+                t = util::gen_empty_matrix(n0, n1);
+
+                t << s, util::gen_identity_matrix(n0);
+                break;
+        }
 
         sk_generated_ = true;
         secret_key_ = SecretKey();
         secret_key_.sk_ = t;
         secret_key_.sv_ = s;
-//        std::cout << secret_key_.sv() << std::endl;
-//        std::cout<< "secret key generated: "<< secret_key_.sk() <<std::endl;
     }
 
     PublicKey KeyGenerator::generate_pk() {
@@ -44,24 +56,37 @@ namespace cgsw {
 //        if(!sk_generated_){
 //            return; //TODO:- error
 //        }
-
-        uint64_t n = params_.getLatticeDimension();
+        uint64_t k = params_.getSecLevel();
+        uint64_t n0 = params_.getLatticeDimension0();
         uint64_t m = params_.getM();
         matrixElemType q = params_.getCipherModulus();
 
-        // Generating error matrix (vector) 1 x M
-        dynMatrix e = util::gen_normal_matrix(1, m , q);
-//        std::cout << "e: " << e << std::endl;
+        dynMatrix e, B;
 
-        // Generating random matrix B (n x m)
-        dynMatrix B = util::gen_random_matrix(n - 1, m, q);
+        switch(params_.getScheme()){
+            case scheme_type::gsw:
+                // Generating error matrix (vector) 1 x M
+                e = util::gen_normal_matrix(1, m, q);
+
+                // Generating random matrix B (n x m)
+                B = util::gen_random_matrix(n0 - 1, m, q);
+                break;
+
+            case scheme_type::cgsw:
+                // Generating error matrix n0 x M
+                e = util::gen_normal_matrix(n0, m, q);
+
+                // Generating random matrix B (n x m)
+                B = util::gen_random_matrix(k, m, q);
+                break;
+        }
 
         dynMatrix b_ = secret_key_.sv() * B + e;
         util::modulo_matrix(b_, q);
-        dynMatrix A = util::gen_empty_matrix(n,m);
+        dynMatrix A = util::gen_empty_matrix(n0, m);
         util::negate_matrix(B, q);
 
-        A << B,
+        A << B, //-B
              b_;
 
         PublicKey pk = PublicKey();

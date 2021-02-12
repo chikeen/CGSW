@@ -15,7 +15,7 @@ using namespace std;
  *  3. 24, 7332551
  */
 
-TEST_CASE("Encryption Parameters Tests"){
+TEST_CASE("GSW: Encryption Parameters Tests"){
 
     using record = std::tuple<uint64_t , uint64_t>;
     auto extent = GENERATE(table<uint64_t , uint64_t>({
@@ -39,7 +39,7 @@ TEST_CASE("Encryption Parameters Tests"){
     }
 
     SECTION("Test n"){
-        REQUIRE(parms.getLatticeDimension() == n);
+        REQUIRE(parms.getLatticeDimension0() == n);
     }
 
     SECTION("Test l"){
@@ -52,7 +52,7 @@ TEST_CASE("Encryption Parameters Tests"){
 }
 
 
-TEST_CASE("Encryption Params Test: Given security level"){
+TEST_CASE("GSW: Encryption Params Test: Given security level"){
 
     auto k = GENERATE(4, 8, 16, 32, 64, 128, 256);
 
@@ -74,4 +74,34 @@ TEST_CASE("Encryption Params Test: Given security level"){
         REQUIRE(parms.getL() == ceil(log2(parms.getCipherModulus())));
         REQUIRE(ceil(log2(parms.getCipherModulus())) == k);
     }
+}
+
+
+TEST_CASE("CGSW: EncryptionParameters tests"){
+    auto k = GENERATE(16, 32, 64, 128, 256);
+    auto p_bits = GENERATE(4, 8, 16, 32);
+//    auto k = GENERATE(16);
+//    auto p_bits = GENERATE(32);
+
+    EncryptionParameters parms(scheme_type::cgsw);
+    parms.set_circuit_depth(3);
+
+    SECTION("compute_parms text"){
+
+        SECTION("not set should give default values"){
+
+        }
+
+
+        parms.set_plaintext_space_in_bit(p_bits);
+        parms.set_security_level(k);
+        parms.set_rate(0.8);
+
+        INFO("k" << k);
+        INFO("p_bits" << p_bits);
+        INFO("Parms: " << parms);
+
+        REQUIRE(1 == 2);
+    }
+
 }

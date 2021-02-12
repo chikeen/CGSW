@@ -53,7 +53,7 @@ inline void print_parameters(const cgsw::EncryptionParameters &params) {
         case cgsw::scheme_type::gsw:
             scheme_name = "GSW";
             break;
-        case cgsw::scheme_type::rgsw:
+        case cgsw::scheme_type::cgsw:
             scheme_name = "RGSW";
             break;
         default:
@@ -65,7 +65,7 @@ inline void print_parameters(const cgsw::EncryptionParameters &params) {
     std::cout << "|   sec_level (k): " << params.getSecLevel() << std::endl;
     std::cout << "|   depth (d): " << params.getDepth() << std::endl;
     std::cout << "|   modulus (p): " << params.getCipherModulus() << std::endl;
-    std::cout << "|   lattice_dimension (n): " << params.getLatticeDimension()<< std::endl;
+    std::cout << "|   lattice_dimension (n): " << params.getLatticeDimension0() << std::endl;
     std::cout << "|   M (lattice_dimension * log(modulus)): " << params.getM() << std::endl;
 
     std::cout << "\\" << std::endl;

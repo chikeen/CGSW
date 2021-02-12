@@ -14,7 +14,7 @@ namespace cgsw{
         set_public_key(public_key);
 
         // generate gadget matrix
-        gadget_matrix_ = util::gen_gadget_matrix(params_.getLatticeDimension(),
+        gadget_matrix_ = util::gen_gadget_matrix(params_.getLatticeDimension0(),
                                                       params_.getM());
     }
 

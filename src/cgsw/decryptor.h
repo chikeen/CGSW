@@ -20,6 +20,8 @@ namespace cgsw {
 
             void decrypt(const Ciphertext &encrypted, Plaintext &decrypted);
 
+            void compressed_decrypt(const Ciphertext &encrypted, CGSWPlaintext &decrypted);
+
             int invariant_noise_budget(const Ciphertext &encrypted); // TODO:- somehow implement this
 
         private:

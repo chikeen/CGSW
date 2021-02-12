@@ -17,7 +17,7 @@ TEST_CASE("Plaintext Tests"){
     params.set_plain_modulus((matrixElemType) p);
 
     SECTION("test generate_bit_decomposed_plaintexts: first bit"){
-        uint64_t n = params.getLatticeDimension();
+        uint64_t n = params.getLatticeDimension0();
         int p;
         NTL::conv(p, params.getPlainModulus());
         dynUintMatrix m = util::gen_random_uint_matrix(n, n, (uint64_t) p);

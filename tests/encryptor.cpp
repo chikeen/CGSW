@@ -16,7 +16,7 @@ TEST_CASE("Encryptor Tests"){
     parms.set_circuit_depth(3);
     parms.set_security_level(k);
 
-    uint64_t n = parms.getLatticeDimension();
+    uint64_t n = parms.getLatticeDimension0();
 
     KeyGenerator keygen(parms);
     SecretKey secret_key = keygen.secret_key();
@@ -38,7 +38,7 @@ TEST_CASE("Test compress"){
     parms.set_circuit_depth(3);
     parms.set_security_level(k);
 
-    uint64_t n = parms.getLatticeDimension();
+    uint64_t n = parms.getLatticeDimension0();
 
     KeyGenerator keygen(parms);
     SecretKey secret_key = keygen.secret_key();

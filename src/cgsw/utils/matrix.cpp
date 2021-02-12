@@ -26,6 +26,10 @@ namespace cgsw {
             return dynMatrix::Zero(rows, cols);
         };
 
+        dynMatrix gen_identity_matrix(size_t size){
+            return dynMatrix::Identity(size, size);
+        }
+
         dynMatrix gen_normal_matrix(size_t rows, size_t cols, matrixElemType modulus) {
 
             const int mean(0);

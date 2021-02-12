@@ -38,6 +38,8 @@ namespace cgsw {
 
         dynMatrix gen_empty_matrix(size_t rows, size_t cols);
 
+        dynMatrix gen_identity_matrix(size_t size);
+
         dynMatrix gen_normal_matrix(size_t rows, size_t cols, matrixElemType modulus);
 
         dynMatrix gen_gadget_matrix(size_t rows, size_t cols);

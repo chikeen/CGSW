@@ -21,11 +21,11 @@ namespace cgsw {
         // GSW13 scheme
         gsw = 0x1,
 
-        // Ring-GSW scheme
-        rgsw = 0x2,
+        // Compressed-GSW Scheme, PVW variant
+        cgsw = 0x2,
 
-        // Compressed-GSW scheme
-        cgsw = 0x3
+        // Compressed-GSW scheme, nearly-square variant
+        cgsw2 = 0x3
     };
 
 
@@ -47,8 +47,11 @@ namespace cgsw {
             */
             EncryptionParameters(scheme_type scheme = scheme_type::none) : scheme_(scheme)
             {
+                //default values
                 depth_ = 0;
-                sec_level_ = 64; //default
+                sec_level_ = 64;
+                plain_modulus_bit_ = 8;
+                rate_ = 0.8;
             }
 
             inline void set_circuit_depth(size_t depth){
@@ -61,11 +64,23 @@ namespace cgsw {
                 compute_parms();
             }
 
+            inline void set_rate(double rate){
+                // According to the FHE convention docs
+                rate_ = rate;
+                compute_parms();
+            }
+
+            inline void set_plaintext_space_in_bit(uint64_t bit){
+                plain_modulus_bit_ = bit;
+                compute_parms();
+            }
+
+
             // Warning: Only used for testing
             inline void set_cipher_modulus(matrixElemType modulus){
                 cipher_modulus_ = modulus;
                 l_ = ceil(log2(cipher_modulus_));
-                m_ = lattice_dimension_ * l_;
+                m_ = lattice_dimension_0_ * l_;
             }
 
             inline void set_plain_modulus(matrixElemType modulus){
@@ -81,7 +96,9 @@ namespace cgsw {
 
             matrixElemType getPlainModulus() const;
 
-            uint64_t getLatticeDimension() const;
+            uint64_t getLatticeDimension0() const;
+
+            uint64_t getLatticeDimension1() const;
 
             uint64_t getM() const;
 
@@ -89,12 +106,20 @@ namespace cgsw {
 
             uint64_t getF() const;
 
+            scheme_type getScheme() const;
+
+            uint64_t getCipherModulusBit() const;
+
+            double getRate() const;
+
+            uint64_t getPlainModulusBit() const;
+
+            friend std::ostream& operator<<(std::ostream& os, const EncryptionParameters& encp);
 
             /**
             Returns the encryption scheme type.
             */
-            inline scheme_type scheme() const noexcept
-            {
+            inline scheme_type scheme() const noexcept{
                 return scheme_;
             }
 
@@ -112,7 +137,11 @@ namespace cgsw {
 
             matrixElemType cipher_modulus_; // q
 
-            uint64_t lattice_dimension_; // n
+            uint64_t cipher_modulus_bit_;
+
+            uint64_t lattice_dimension_0_; // n_0
+
+            uint64_t lattice_dimension_1_; //n_1
 
             uint64_t m_; // m = n log q
 
@@ -120,7 +149,11 @@ namespace cgsw {
 
             // Only CGSW --------
 
+            double rate_;
+
             matrixElemType plain_modulus_; // p
+
+            uint64_t plain_modulus_bit_;
 
             uint64_t f_; // f = round (q/p)
 

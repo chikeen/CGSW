@@ -27,14 +27,14 @@ namespace cgsw {
 //        }
 
         // generate gadget matrix
-        gadget_matrix_ = util::gen_gadget_matrix(params_.getLatticeDimension(),
+        gadget_matrix_ = util::gen_gadget_matrix(params_.getLatticeDimension0(),
                                                       params_.getM());
     }
 
     void Decryptor::decrypt(const Ciphertext &encrypted, Plaintext &decrypted){
 
         uint64_t l = params_.getL();
-        uint64_t n = params_.getLatticeDimension();
+        uint64_t n = params_.getLatticeDimension0();
         matrixElemType q = params_.getCipherModulus();
 
         dynMatrix SC = secret_key_.sk() * encrypted.data();
@@ -51,6 +51,25 @@ namespace cgsw {
         else{
             decrypted.set_data(matrixElemType (1));
         }
+
+        return;
+    }
+
+
+    void Decryptor::compressed_decrypt(const Ciphertext &encrypted, CGSWPlaintext &decrypted) {
+        uint64_t l = params_.getL();
+        uint64_t n = params_.getLatticeDimension0();
+        matrixElemType q = params_.getCipherModulus();
+
+        dynMatrix SC = secret_key_.sk() * encrypted.data();
+        util::modulo_matrix(SC, q);
+
+
+        // transform back to plaintext
+        std::cout << "q: " << q << std::endl;
+        std::cout << "SC: " << SC << std::endl;
+        std::cout << "SC norm():" << SC.norm() << std::endl;
+        std::cout << "threshold: " << n * q/8 * 3 << std::endl;
 
         return;
     }

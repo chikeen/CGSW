@@ -66,7 +66,7 @@ TEST_CASE("EncryptCompressDecrypt CGSW tests"){
     params.set_circuit_depth(3);
     params.set_security_level(k);
 
-    uint64_t n = params.getLatticeDimension();
+    uint64_t n = params.getLatticeDimension0();
 
     KeyGenerator keygen(params);
     SecretKey secret_key = keygen.secret_key();
@@ -103,13 +103,19 @@ TEST_CASE("EncryptCompressDecrypt CGSW tests"){
         }
 
         // 3. Compressing the ciphertexts
+        Ciphertext c = encryptor.compress(ciphertexts);
+        INFO("Compressed: " << c.data());
 
         THEN("compressed ciphertext should be correct"){
-            Ciphertext c = encryptor.compress(ciphertexts);
-            INFO("Compressed: " << c.data());
-            REQUIRE( 1== 2);
+//            REQUIRE( 1== 2);
         }
 
+        // 4. Compressed decryptions
+        CGSWPlaintext decrypted;
+        decryptor.compressed_decrypt(c, decrypted);
+        THEN("decrypted message should match orginal"){
+            REQUIRE(1 == 2);
+        }
     }
 
 }
