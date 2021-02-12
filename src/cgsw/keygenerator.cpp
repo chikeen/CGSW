@@ -56,12 +56,14 @@ namespace cgsw {
 //        if(!sk_generated_){
 //            return; //TODO:- error
 //        }
+
         uint64_t k = params_.getSecLevel();
         uint64_t n0 = params_.getLatticeDimension0();
+        uint64_t n1 = params_.getLatticeDimension1();
         uint64_t m = params_.getM();
         matrixElemType q = params_.getCipherModulus();
 
-        dynMatrix e, B;
+        dynMatrix e, B, b_, A;
 
         switch(params_.getScheme()){
             case scheme_type::gsw:
@@ -70,21 +72,26 @@ namespace cgsw {
 
                 // Generating random matrix B (n x m)
                 B = util::gen_random_matrix(n0 - 1, m, q);
+
+                b_ = secret_key_.sv() * B + e;
+                util::modulo_matrix(b_, q);
+                A = util::gen_empty_matrix(n0, m);
+                util::negate_matrix(B, q);
                 break;
 
             case scheme_type::cgsw:
                 // Generating error matrix n0 x M
                 e = util::gen_normal_matrix(n0, m, q);
 
-                // Generating random matrix B (n x m)
+                // Generating random matrix B (k x m)
                 B = util::gen_random_matrix(k, m, q);
+
+                b_ = secret_key_.sv() * B + e;
+                util::modulo_matrix(b_, q);
+                A = util::gen_empty_matrix(n1, m);
+                util::negate_matrix(B, q);
                 break;
         }
-
-        dynMatrix b_ = secret_key_.sv() * B + e;
-        util::modulo_matrix(b_, q);
-        dynMatrix A = util::gen_empty_matrix(n0, m);
-        util::negate_matrix(B, q);
 
         A << B, //-B
              b_;

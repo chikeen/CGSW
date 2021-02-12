@@ -69,7 +69,7 @@ TEST_CASE("GSW: Key Generator"){
 }
 
 TEST_CASE("CGSW: Key Generator"){
-    auto k = GENERATE(16, 32, 64);
+    auto k = GENERATE(16);
     auto p_bits = 16;
 
     EncryptionParameters parms(scheme_type::cgsw);
@@ -83,33 +83,29 @@ TEST_CASE("CGSW: Key Generator"){
     PublicKey public_key;
     keygen.create_public_key(public_key);
 
-    auto n = parms.getLatticeDimension0();
     auto m = parms.getM();
     auto q = parms.getCipherModulus();
-
+    auto n1 = parms.getLatticeDimension1();
+    auto n0 = parms.getLatticeDimension0();
+    INFO("Parms" << parms);
 
     SECTION("Secret_key size"){
-        REQUIRE(secret_key.sk().rows() == 1);
-//        REQUIRE(secret_key.sv().rows() == 1);
-        REQUIRE(secret_key.sk().cols() == n);
-//        REQUIRE(secret_key.sv().cols() == n-1);
+        REQUIRE(secret_key.sk().rows() == n0);
+//        REQUIRE(secret_key.sv().rows() == n0);
+        REQUIRE(secret_key.sk().cols() == n1);
+//        REQUIRE(secret_key.sv().cols() == n1);
     }
 
     SECTION("Public_key size"){
-        INFO("Parms" << parms);
-
-        REQUIRE(public_key.data().rows() == n);
+        REQUIRE(public_key.data().rows() == n1);
         REQUIRE(public_key.data().cols() == m);
     }
 
     SECTION("Public_key * Secret_key must equal small errors"){
-
-        INFO("Parms" << parms);
         dynMatrix product =  secret_key.sk() * public_key.data();
         INFO("product(before): " << product );
         util::modulo_matrix(product, matrixElemType (q));
         INFO("product: " << product );
-        cout << "error: " << product << endl;
-        REQUIRE(product.norm() < n * q/2); // average size less than q/2
+        REQUIRE(product.norm() < n0 * q/2); // average size less than q/2
     }
 }
