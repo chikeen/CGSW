@@ -2,8 +2,8 @@
 // Created by Chi Keen Tan on 19/12/2020.
 //
 
-#include "plaintext.h"
-#include "encryptionparams.h"
+#include "../../include/cgsw/plaintext.h"
+#include "../../include/cgsw/encryptionparams.h"
 
 
 namespace cgsw {

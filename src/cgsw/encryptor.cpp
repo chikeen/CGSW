@@ -2,7 +2,7 @@
 // Created by Chi Keen Tan on 16/12/2020.
 //
 
-#include "encryptor.h"
+#include "../../include/cgsw/encryptor.h"
 
 
 
@@ -14,7 +14,7 @@ namespace cgsw{
         set_public_key(public_key);
 
         // generate gadget matrix
-        gadget_matrix_ = util::gen_gadget_matrix(params_.getLatticeDimension0(),
+        gadget_matrix_ = util::gen_gadget_matrix(params_.getLatticeDimension1(),
                                                       params_.getM());
     }
 
@@ -28,10 +28,7 @@ namespace cgsw{
         C = util::modulo_matrix(C, params_.getCipherModulus());
 
         // putting ciphertext in place
-        Ciphertext ciphertext = Ciphertext();
-        ciphertext.set_data(C);
-        destination = ciphertext;
-
+        destination.set_data(C);
         return;
     }
 
@@ -89,8 +86,8 @@ namespace cgsw{
 
                     // construct the vector t
                     dynVector t = generate_t_vector(scalar, v, l, t_size);
-                    std::cout << "t   : " << t.transpose()  << std::endl;
-                    std::cout << "rows: " << ciphertexts[w][u][v].data().row(v) << std::endl;
+//                    std::cout << "t   : " << t.transpose()  << std::endl;
+//                    std::cout << "rows: " << ciphertexts[w][u][v].data().row(v) << std::endl;
 
                     // multiply row v with t and add it to col u
                     result(u, v) += ciphertexts[w][u][v].data().row(v) * t;

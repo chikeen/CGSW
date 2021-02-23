@@ -6,7 +6,7 @@
 
 #include <iostream>
 #include <iomanip>
-#include "../src/cgsw/cgsw.h"
+#include <cgsw/cgsw.h>
 
 
 void example_gsw_basics();

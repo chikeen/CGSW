@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.17)
 
-project(CGSW20)
+project(CGSW20
+        VERSION 0.1
+        DESCRIPTION "An Implementation of Compressible FHE")
 
 # Fail if the target architecture is not 64-bit.
 if (NOT (CMAKE_SIZEOF_VOID_P EQUAL 8))
@@ -92,96 +94,17 @@ option(PACKAGE_BUILD
 find_package(GMP "${GMP_MINIMAL_VERSION}" REQUIRED)
 find_package(NTL "${NTL_MINIMAL_VERSION}" REQUIRED)
 
-add_library(
-        # library name
-        CGSW20
 
-        # library type
-        STATIC
-
-        # library include
-        include/cgsw/cgsw.h
-
-        # library files
-
-        ## export
-        src/cgsw/cgsw.h
-
-        ## utils
-        src/cgsw/utils/utils.h
-        src/cgsw/utils/numth.h
-        src/cgsw/utils/numth.cpp
-        src/cgsw/utils/matrix.h
-        src/cgsw/utils/matrix.cpp
-
-        ## basic object
-        src/cgsw/ciphertext.h
-        src/cgsw/plaintext.h
-        src/cgsw/plaintext.cpp
-        src/cgsw/secretkey.h
-        src/cgsw/publickey.h
-        src/cgsw/encryptionparams.h
-        src/cgsw/encryptionparams.cpp
-
-        ## tools
-        src/cgsw/keygenerator.h
-        src/cgsw/keygenerator.cpp
-        src/cgsw/encryptor.h
-        src/cgsw/encryptor.cpp
-        src/cgsw/decryptor.h
-        src/cgsw/decryptor.cpp
-        src/cgsw/evaluator.h
-        src/cgsw/evaluator.cpp
-
-        ## examples
-        examples/1_gsw_basics.cpp
-        examples/examples.h
-        examples/examples.cpp
-
-        )
+find_package(Eigen3 3.3 REQUIRED NO_MODULE)
+include_directories(${EIGEN3_INCLUDE_DIR})
 
 
-target_include_directories(CGSW20 PUBLIC ${NTL_INCLUDE_PATHS})
+# The compiled library code is here
+add_subdirectory(src)
 
+# The executable code is here
+add_subdirectory(examples)
 
+# The tests are here
+add_subdirectory(tests)
 
-# CMake instructions to test using the static lib
-
-SET( APP_EXE example )
-SET( TESTS_EXE tests)
-
-ADD_EXECUTABLE( ${APP_EXE}
-        examples/examples.cpp )
-
-
-TARGET_LINK_LIBRARIES( ${APP_EXE}
-        CGSW20
-        ${NTL_LIBRARIES}
-#        Boost::random
-#        ${BOOST_LIBRARIES}
-        )
-
-# Link thirdparties libraries
-
-# ---tests-------
-
-
-ADD_EXECUTABLE( ${TESTS_EXE}
-        tests/catch.hpp
-        tests/common.cpp
-        tests/plaintext.cpp
-        tests/keygenerator.cpp
-        tests/encryptor.cpp
-        tests/decryptor.cpp
-#        tests/evaluator.cpp
-        tests/encryptionparams.cpp
-        tests/utils/utils.cpp
-        tests/BDT/encryptdecrypt.cpp
-        )
-
-
-TARGET_LINK_LIBRARIES( ${TESTS_EXE}
-        CGSW20
-        ${NTL_LIBRARIES}
-#        Boost::random
-        )

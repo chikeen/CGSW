@@ -3,7 +3,7 @@
 //
 
 #include "../catch.hpp"
-#include "../../src/cgsw/utils/utils.h"
+#include "../../include/cgsw/utils/utils.h"
 
 using namespace cgsw::util;
 using namespace std;

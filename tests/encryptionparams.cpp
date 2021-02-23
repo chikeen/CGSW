@@ -3,7 +3,7 @@
 //
 
 #include "catch.hpp"
-#include "../src/cgsw/encryptionparams.h"
+#include <cgsw/cgsw.h>
 
 using namespace cgsw;
 using namespace std;
@@ -78,7 +78,7 @@ TEST_CASE("GSW: Encryption Params Test: Given security level"){
 
 
 TEST_CASE("CGSW: EncryptionParameters tests"){
-    auto k = GENERATE(16, 32, 64, 128, 256);
+    auto k = GENERATE(4, 16, 64, 128, 256);
     auto p_bits = GENERATE(4, 8, 16, 32);
 //    auto k = GENERATE(16);
 //    auto p_bits = GENERATE(32);
@@ -89,13 +89,12 @@ TEST_CASE("CGSW: EncryptionParameters tests"){
     SECTION("compute_parms text"){
 
         SECTION("not set should give default values"){
-
+            parms.set_rate(0.5);
         }
-
 
         parms.set_plaintext_space_in_bit(p_bits);
         parms.set_security_level(k);
-        parms.set_rate(0.8);
+        parms.set_rate(0.5);
 
         INFO("k" << k);
         INFO("p_bits" << p_bits);
@@ -103,5 +102,4 @@ TEST_CASE("CGSW: EncryptionParameters tests"){
 
         REQUIRE(1 == 2);
     }
-
 }

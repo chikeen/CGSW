@@ -3,7 +3,7 @@
 //
 
 #include "catch.hpp"
-#include "../src/cgsw/common.h"
+#include <cgsw/cgsw.h>
 
 using namespace std;
 

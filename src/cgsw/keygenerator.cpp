@@ -2,8 +2,8 @@
 // Created by Chi Keen Tan on 16/12/2020.
 //
 
-#include "keygenerator.h"
-#include "utils/utils.h"
+#include "../../include/cgsw/keygenerator.h"
+#include "../../include/cgsw/utils/utils.h"
 
 
 namespace cgsw {
@@ -31,8 +31,8 @@ namespace cgsw {
 
         switch(params_.getScheme()){
             case scheme_type::gsw:
-                s = util::gen_random_matrix(1, n0 - 1, q);
-                t = util::gen_empty_matrix(1, n0);
+                s = util::gen_random_matrix(1, n0, q);
+                t = util::gen_empty_matrix(1, n1);
 
                 t << s, matrixElemType (1);
                 break;
@@ -71,11 +71,11 @@ namespace cgsw {
                 e = util::gen_normal_matrix(1, m, q);
 
                 // Generating random matrix B (n x m)
-                B = util::gen_random_matrix(n0 - 1, m, q);
+                B = util::gen_random_matrix(n0, m, q);
 
                 b_ = secret_key_.sv() * B + e;
                 util::modulo_matrix(b_, q);
-                A = util::gen_empty_matrix(n0, m);
+                A = util::gen_empty_matrix(n1, m);
                 util::negate_matrix(B, q);
                 break;
 

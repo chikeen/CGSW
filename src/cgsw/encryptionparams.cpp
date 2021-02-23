@@ -5,8 +5,8 @@
 
 #include <cstdint>
 #include <cmath>
-#include "encryptionparams.h"
-#include "utils/numth.h"
+#include "../../include/cgsw/encryptionparams.h"
+#include "../../include/cgsw/utils/numth.h"
 
 
 namespace cgsw {
@@ -14,6 +14,7 @@ namespace cgsw {
     void EncryptionParameters::compute_parms() {
 
         if (scheme_ == scheme_type::gsw){
+
             lattice_dimension_0_ = sec_level_;
             lattice_dimension_1_ = lattice_dimension_0_ + 1;
             cipher_modulus_ = util::gen_prime(sec_level_);

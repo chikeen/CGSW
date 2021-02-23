@@ -2,7 +2,7 @@
 // Created by Chi Keen Tan on 16/12/2020.
 //
 
-#include "decryptor.h"
+#include "../../include/cgsw/decryptor.h"
 
 
 dynMatrix powers_of_2(dynMatrix m, uint64_t l){

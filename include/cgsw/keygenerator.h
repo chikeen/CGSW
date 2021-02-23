@@ -26,32 +26,18 @@ namespace cgsw {
         public:
 
             KeyGenerator() = default;
-            /**
-            Creates a KeyGenerator initialized with the specified SEALContext.
 
-            @param[in] context The SEALContext
-            @throws std::invalid_argument if the encryption parameters are not valid
-            */
             KeyGenerator(const EncryptionParameters &params);
 
-            /**
-            Returns a const reference to the secret key.
-            */
             const SecretKey &secret_key() const;
 
-            /**
-            Generates a public key and stores the result in destination. Every time
-            this function is called, a new public key will be generated.
-
-            @param[out] destination The public key to overwrite with the generated
-            public key
-            */
-            inline void create_public_key(PublicKey &destination)
-            {
+            inline void create_public_key(PublicKey &destination){
                 destination = generate_pk();
             }
 
-
+            inline PublicKey create_public_key(){
+                return generate_pk();
+            }
 
     private:
 
@@ -60,8 +46,6 @@ namespace cgsw {
             PublicKey generate_pk();
 
             EncryptionParameters params_;
-
-            dynMatrix gadget_matrix_;
 
             SecretKey secret_key_;
 

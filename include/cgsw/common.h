@@ -5,8 +5,7 @@
 #pragma once
 
 #include <iostream>
-#include "thirdparty/Eigen/Dense"
-#include "thirdparty/Eigen/Core"
+#include <Eigen/Dense>
 #include <NTL/ZZ.h>
 #include <NTL/tools.h>
 

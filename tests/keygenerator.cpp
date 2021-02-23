@@ -4,7 +4,7 @@
 
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
-#include "../src/cgsw/keygenerator.h"
+#include <cgsw/cgsw.h>
 
 using namespace cgsw;
 using namespace std;
