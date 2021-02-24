@@ -8,12 +8,6 @@
 using namespace cgsw;
 using namespace std;
 
-/*
- * Cases (k, q):
- *  1. 8, 89
- *  2. 16, 25523
- *  3. 24, 7332551
- */
 
 TEST_CASE("EncryptDecrypt GSW tests"){
 
