@@ -17,7 +17,7 @@ In this project, a total of three schemes will be implemented:
 | PVW-Like Compressed FHE      | GH19   | First of the two variant of compressible FHE schemes devised in paper GH19.  |
 | Nearly-square Compressed FHE | GH19   | The second variant of Compressible FHE schemes. (Preferred scheme)           |
 
-Full installation instructions and a list of the required dependencies can be found in [INSTALL.md](install.md).
+Full installation instructions and a list of the required dependencies can be found in [INSTALL.md](INSTALL.md).
 
 For guidance in getting programming with CGSW, take a look at the example programs located in the `examples` directory.
 
