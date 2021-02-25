@@ -5,17 +5,16 @@
 #include "../../include/cgsw/decryptor.h"
 
 
-dynMatrix powers_of_2(dynMatrix m, uint64_t l){
-//    if (m.rows() != 1) return m; // only do column
-    dynMatrix ans = dynMatrix (1, m.cols()*l);
-    for (int i = 0; i < m.cols(); i++ ){
-        for (int j = 0; j < l; j++){
-            ans(0, i*l +j) = m(0, i) * pow(2, j);
-        }
-    }
-    return ans;
-}
-
+//dynMatrix powers_of_2(dynMatrix m, uint64_t l){
+////    if (m.rows() != 1) return m; // only do column
+//    dynMatrix ans = dynMatrix (1, m.cols()*l);
+//    for (int i = 0; i < m.cols(); i++ ){
+//        for (int j = 0; j < l; j++){
+//            ans(0, i*l +j) = m(0, i) * pow(2, j);
+//        }
+//    }
+//    return ans;
+//}
 
 namespace cgsw {
 
@@ -40,10 +39,11 @@ namespace cgsw {
         dynMatrix SC = secret_key_.sk() * encrypted.data();
         util::modulo_matrix(SC, q);
 
-//        std::cout << "q: " << q << std::endl;
-//        std::cout << "SC: " << SC << std::endl;
-//        std::cout << "SC norm():" << SC.norm() << std::endl;
-//        std::cout << "threshold: " << n * q/8 * 3 << std::endl;
+        std::cout << "q: " << q << std::endl;
+        std::cout << "SC: " << SC << std::endl;
+        std::cout << "SC norm():" << SC.norm() << std::endl;
+        std::cout << "threshold: " << n * q/8 * 3 << std::endl;
+//        decrypted.set_data()
 
         if(SC.norm() < n * q/8 * 3){
             decrypted.set_data(matrixElemType (0));
@@ -70,6 +70,8 @@ namespace cgsw {
         std::cout << "SC: " << SC << std::endl;
         std::cout << "SC norm():" << SC.norm() << std::endl;
         std::cout << "threshold: " << n * q/8 * 3 << std::endl;
+
+
 
         return;
     }

@@ -40,7 +40,18 @@ TEST_CASE("EncryptDecrypt GSW tests"){
             REQUIRE(decrypted.data() == 0);
         }
 
-        WHEN("Decrypting 1"){
+        WHEN("Encrypting 1"){
+            Plaintext plain(1);
+            Ciphertext encrypted;
+            encryptor.encrypt(plain, encrypted);
+
+            Plaintext decrypted;
+            decryptor.decrypt(encrypted, decrypted);
+            INFO("modulus,q = " << params.getCipherModulus() );
+            REQUIRE(decrypted.data() == 1);
+        }
+
+        WHEN("Encrypting 1"){
             Plaintext plain(1);
             Ciphertext encrypted;
             encryptor.encrypt(plain, encrypted);
