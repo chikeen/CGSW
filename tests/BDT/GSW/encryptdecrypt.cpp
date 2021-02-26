@@ -36,7 +36,6 @@ TEST_CASE("EncryptDecrypt GSW tests"){
 
             Plaintext decrypted;
             decryptor.decrypt(encrypted, decrypted);
-
             REQUIRE(decrypted.data() == 0);
         }
 
@@ -47,19 +46,17 @@ TEST_CASE("EncryptDecrypt GSW tests"){
 
             Plaintext decrypted;
             decryptor.decrypt(encrypted, decrypted);
-            INFO("modulus,q = " << params.getCipherModulus() );
             REQUIRE(decrypted.data() == 1);
         }
 
-        WHEN("Encrypting 1"){
-            Plaintext plain(1);
+        WHEN("Encrypting 2"){
+            Plaintext plain(2);
             Ciphertext encrypted;
             encryptor.encrypt(plain, encrypted);
 
             Plaintext decrypted;
             decryptor.decrypt(encrypted, decrypted);
-            INFO("modulus,q = " << params.getCipherModulus() );
-            REQUIRE(decrypted.data() == 1);
+            REQUIRE(decrypted.data() == 2);
         }
     }
 }

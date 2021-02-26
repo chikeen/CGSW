@@ -52,6 +52,9 @@ namespace cgsw {
                 sec_level_ = 64;
                 plain_modulus_bit_ = 8;
                 rate_ = 0.8;
+
+                // Initialisation for random operation that follows
+                SetSeed((NTL::conv<NTL::ZZ>((long)time(NULL))));
             }
 
             inline void set_circuit_depth(size_t depth){
@@ -77,13 +80,13 @@ namespace cgsw {
 
 
             // Warning: Only used for testing
-            inline void set_cipher_modulus(matrixElemType modulus){
+            inline void set_cipher_modulus(CGSW_long modulus){
                 cipher_modulus_ = modulus;
                 l_ = ceil(log2(cipher_modulus_));
                 m_ = lattice_dimension_0_ * l_;
             }
 
-            inline void set_plain_modulus(matrixElemType modulus){
+            inline void set_plain_modulus(CGSW_long modulus){
                 plain_modulus_ = modulus;
             }
             // getters
@@ -92,9 +95,9 @@ namespace cgsw {
 
             uint64_t getSecLevel() const;
 
-            matrixElemType getCipherModulus() const;
+            CGSW_long getCipherModulus() const;
 
-            matrixElemType getPlainModulus() const;
+            CGSW_long getPlainModulus() const;
 
             uint64_t getLatticeDimension0() const;
 
@@ -135,7 +138,7 @@ namespace cgsw {
 
             uint64_t sec_level_;
 
-            matrixElemType cipher_modulus_; // q
+            CGSW_long cipher_modulus_; // q
 
             uint64_t cipher_modulus_bit_;
 
@@ -151,7 +154,7 @@ namespace cgsw {
 
             double rate_;
 
-            matrixElemType plain_modulus_; // p
+            CGSW_long plain_modulus_; // p
 
             uint64_t plain_modulus_bit_;
 

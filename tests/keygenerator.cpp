@@ -2,7 +2,6 @@
 // Created by Chi Keen Tan on 13/01/2021.
 //
 
-#define CATCH_CONFIG_MAIN
 #include "catch.hpp"
 #include <cgsw/cgsw.h>
 

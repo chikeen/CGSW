@@ -29,7 +29,7 @@ namespace cgsw {
 
             SecretKey secret_key_;
 
-            dynMatrix gadget_matrix_;
+            CGSW_mat gadget_matrix_;
 
     };
 }

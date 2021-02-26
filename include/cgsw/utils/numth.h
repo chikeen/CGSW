@@ -7,12 +7,14 @@
 
 #include "../common.h"
 
+
 using namespace NTL;
+
 
 namespace cgsw {
     namespace util {
 
-        inline matrixElemType gen_prime(size_t bits){
+        inline CGSW_long gen_prime(size_t bits){
             // A (Sophie) Germain prime is a prime p such that p' = 2*p+1 is also a prime.
             // Such primes are useful for cryptographic applications...cryptographers
             // sometimes call p' a "strong" or "safe" prime.

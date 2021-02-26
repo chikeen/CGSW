@@ -17,34 +17,43 @@ namespace cgsw {
          * Matrix related:
          */
 
-        inline dynMatrix modulo_matrix(dynMatrix & mat, matrixElemType modulus){
-            mat = mat.unaryExpr([&](const matrixElemType x) { return x % modulus; });
-            return mat;
+        // Should rarely use this now
+        inline CGSW_mat modulo_matrix(CGSW_mat & mat, CGSW_mod modulus){
+            throw (NotImplemented());
         }
 
-        inline dynUintMatrix modulo_matrix(dynUintMatrix & mat, uint64_t modulus){
-            mat = mat.unaryExpr([&](const uint64_t x) { return x % modulus; });
-            return mat;
+        inline CGSW_mat_uint modulo_matrix(CGSW_mat_uint& mat, uint64_t modulus){
+            throw (NotImplemented());
         }
 
-        inline dynMatrix negate_matrix(dynMatrix & mat, matrixElemType modulus){
-            mat = mat.unaryExpr([&](const matrixElemType x) { return modulus - x; });
-            return mat;
+        void bit_decompose_matrix(const CGSW_mat& mat_in, CGSW_mat& mat_out, uint64_t l);
+
+        void gen_random_matrix(CGSW_mat& mat, size_t n, size_t m) {
+            NTL::random(mat, n, m);
         }
 
-        dynMatrix bit_decompose_matrix(dynMatrix mat, uint64_t l);
+        void gen_random_binary_matrix(CGSW_mat& mat, size_t n, size_t m) {
+            throw( NotImplemented());
+        }
 
-        dynMatrix gen_random_matrix(size_t rows, size_t cols, matrixElemType modulus);
+        void gen_empty_matrix(CGSW_mat& mat, size_t n, size_t m){
+            mat.SetDims(n, m);
+        }
 
-        dynMatrix gen_empty_matrix(size_t rows, size_t cols);
+        void gen_identity_matrix(CGSW_mat& mat, size_t n, size_t m);
 
-        dynMatrix gen_identity_matrix(size_t size);
+        void gen_normal_matrix(CGSW_mat& mat, size_t n, size_t m);
 
-        dynMatrix gen_normal_matrix(size_t rows, size_t cols, matrixElemType modulus);
+        void gen_gadget_matrix(CGSW_mat& mat, size_t n, size_t m);
 
-        dynMatrix gen_gadget_matrix(size_t rows, size_t cols);
+        void concat_matrix_h(CGSW_mat& mat_out, const CGSW_mat& mat_a, const CGSW_mat& mat_b);
 
-        dynUintMatrix gen_random_uint_matrix(size_t rows, size_t cols, uint64_t modulus);
+        void concat_matrix_h(CGSW_mat& mat_out, const CGSW_mat& mat_a, const CGSW_mod& mat_b);
+
+        void concat_matrix_v(CGSW_mat& mat_out, const CGSW_mat& mat_a, const CGSW_mat& mat_b);
+
+        // can't we use normal gen_random?
+        void gen_random_uint_matrix(CGSW_mat_uint& mat,  size_t n, size_t m, size_t range);
 
 
     } // util

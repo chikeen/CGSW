@@ -26,7 +26,7 @@ namespace cgsw {
 //        }
 
         // generate gadget matrix
-        gadget_matrix_ = util::gen_gadget_matrix(params_.getLatticeDimension0(),
+        util::gen_gadget_matrix(gadget_matrix_, params_.getLatticeDimension0(),
                                                       params_.getM());
     }
 
@@ -34,23 +34,30 @@ namespace cgsw {
 
         uint64_t l = params_.getL();
         uint64_t n = params_.getLatticeDimension0();
-        matrixElemType q = params_.getCipherModulus();
+        CGSW_long q = params_.getCipherModulus();
 
-        dynMatrix SC = secret_key_.sk() * encrypted.data();
-        util::modulo_matrix(SC, q);
+        CGSW_mat SC = secret_key_.sk() * encrypted.data();
 
         std::cout << "q: " << q << std::endl;
         std::cout << "SC: " << SC << std::endl;
-        std::cout << "SC norm():" << SC.norm() << std::endl;
+//        std::cout << "SC norm():" << SC.norm() << std::endl;
         std::cout << "threshold: " << n * q/8 * 3 << std::endl;
-//        decrypted.set_data()
 
-        if(SC.norm() < n * q/8 * 3){
-            decrypted.set_data(matrixElemType (0));
-        }
-        else{
-            decrypted.set_data(matrixElemType (1));
-        }
+        // Round off each element to the nearest multiples of f = q/p
+//        for (int i = 0; i < SC.size(); i++){
+//            double divided = SC(0, i) / params_.getF();
+//
+//        }
+//        divide -> average
+
+//        decrypted.set_data(SC.norm() / n )
+
+//        if(SC.norm() < n * q/8 * 3){
+//            decrypted.set_data(matrixElemType (0));
+//        }
+//        else{
+//            decrypted.set_data(matrixElemType (1));
+//        }
 
         return;
     }
@@ -59,16 +66,14 @@ namespace cgsw {
     void Decryptor::compressed_decrypt(const Ciphertext &encrypted, CGSWPlaintext &decrypted) {
         uint64_t l = params_.getL();
         uint64_t n = params_.getLatticeDimension0();
-        matrixElemType q = params_.getCipherModulus();
+        CGSW_long q = params_.getCipherModulus();
 
-        dynMatrix SC = secret_key_.sk() * encrypted.data();
-        util::modulo_matrix(SC, q);
-
+        CGSW_mat SC = secret_key_.sk() * encrypted.data();
 
         // transform back to plaintext
         std::cout << "q: " << q << std::endl;
         std::cout << "SC: " << SC << std::endl;
-        std::cout << "SC norm():" << SC.norm() << std::endl;
+//        std::cout << "SC norm():" << SC.norm() << std::endl;
         std::cout << "threshold: " << n * q/8 * 3 << std::endl;
 
 

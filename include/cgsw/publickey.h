@@ -64,7 +64,7 @@ namespace cgsw {
             }
 
         private:
-            dynMatrix pk_;
+            CGSW_mat pk_;
 
     };
 }

@@ -17,7 +17,7 @@ namespace cgsw {
             Plaintext(uint64_t data_in):data_(data_in){}
             Plaintext(){};
 
-            inline void set_data(matrixElemType data){
+            inline void set_data(CGSW_mod data){
                 data_ = data;
             }
 
@@ -34,7 +34,7 @@ namespace cgsw {
 
         private:
 
-            matrixElemType data_;
+            CGSW_mod data_;
 
 
     };
@@ -43,11 +43,11 @@ namespace cgsw {
     class CGSWPlaintext {
         public:
     //            Plaintext(const EncryptionParameters &params){}; //TODO:- how to convert this into a matrix //
-            CGSWPlaintext(EncryptionParameters params, dynUintMatrix data_in):data_(data_in), params_(params){};
+            CGSWPlaintext(EncryptionParameters params, CGSW_mat_uint data_in):data_(data_in), params_(params){};
 
             CGSWPlaintext(){};
 
-            inline void set_data(dynUintMatrix data){
+            inline void set_data(CGSW_mat_uint data){
                 data_ = data;
             }
 
@@ -75,9 +75,9 @@ namespace cgsw {
 
         private:
 
-            dynUintMatrix data_;
+            CGSW_mat_uint data_;
 
-            std::vector<dynUintMatrix> bit_decomposed_data_;
+            std::vector<CGSW_mat_uint> bit_decomposed_data_;
 
             EncryptionParameters params_;
     };

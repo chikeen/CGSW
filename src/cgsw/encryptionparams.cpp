@@ -48,11 +48,11 @@ namespace cgsw {
         return sec_level_;
     }
 
-    matrixElemType EncryptionParameters::getCipherModulus() const {
+    CGSW_long EncryptionParameters::getCipherModulus() const {
         return cipher_modulus_;
     }
 
-    matrixElemType EncryptionParameters::getPlainModulus() const {
+    CGSW_long EncryptionParameters::getPlainModulus() const {
         return plain_modulus_;
     }
 
