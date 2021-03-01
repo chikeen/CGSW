@@ -15,41 +15,41 @@ using namespace std;
  *  3. 24, 7332551
  */
 
-TEST_CASE("GSW: Encryption Parameters Tests"){
-
-    using record = std::tuple<uint64_t , uint64_t>;
-    auto extent = GENERATE(table<uint64_t , uint64_t>({
-                      record{8, 89},
-                      record{16, 25523},
-                      record{24, 7332551}}));
-    uint64_t d = 3,
-             k = std::get<0>(extent),
-             n = k;
-    matrixElemType q = (matrixElemType) std::get<1>(extent);
-    uint64_t l = ceil(log2(q)),
-             m = l * n;
-    EncryptionParameters parms(scheme_type::gsw);
-
-    parms.set_circuit_depth(d);
-    parms.set_security_level(k);
-    parms.set_cipher_modulus(q);
-
-    SECTION("Test q"){
-        REQUIRE(parms.getCipherModulus() == q);
-    }
-
-    SECTION("Test n"){
-        REQUIRE(parms.getLatticeDimension0() == n);
-    }
-
-    SECTION("Test l"){
-        REQUIRE(parms.getL() == l);
-    }
-
-    SECTION("Test m"){
-        REQUIRE(parms.getM() == m);
-    }
-}
+//TEST_CASE("GSW: Encryption Parameters Tests"){
+//
+//    using record = std::tuple<uint64_t , uint64_t>;
+//    auto extent = GENERATE(table<uint64_t , uint64_t>({
+//                      record{8, 89},
+//                      record{16, 25523},
+//                      record{24, 7332551}}));
+//    uint64_t d = 3,
+//             k = std::get<0>(extent),
+//             n = k;
+//    matrixElemType q = (matrixElemType) std::get<1>(extent);
+//    uint64_t l = ceil(log2(q)),
+//             m = l * n;
+//    EncryptionParameters parms(scheme_type::gsw);
+//
+//    parms.set_circuit_depth(d);
+//    parms.set_security_level(k);
+//    parms.set_cipher_modulus(q);
+//
+//    SECTION("Test q"){
+//        REQUIRE(parms.getCipherModulus() == q);
+//    }
+//
+//    SECTION("Test n"){
+//        REQUIRE(parms.getLatticeDimension0() == n);
+//    }
+//
+//    SECTION("Test l"){
+//        REQUIRE(parms.getL() == l);
+//    }
+//
+//    SECTION("Test m"){
+//        REQUIRE(parms.getM() == m);
+//    }
+//}
 
 
 TEST_CASE("GSW: Encryption Params Test: Given security level"){

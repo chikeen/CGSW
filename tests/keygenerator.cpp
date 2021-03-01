@@ -16,54 +16,44 @@ using namespace std;
  */
 
 TEST_CASE("GSW: Key Generator"){
+    
+    auto k = GENERATE(4, 16, 128);
 
-    using record = std::tuple<uint64_t , uint64_t>;
-    auto extent = GENERATE(table<uint64_t , uint64_t>({
-                              record{8, 89},
-                              record{16, 25523},
-                              record{24, 7332551}
-    }));
-    uint64_t d = 3,
-            k = std::get<0>(extent),
-            n = k;
-    matrixElemType q(std::get<1>(extent));
-    uint64_t l = ceil(log2(q)),
-            m = l * n;
+    EncryptionParameters params(scheme_type::gsw);
+    params.set_circuit_depth(3);
+    params.set_security_level(k);
+    INFO("params: " << params);
 
-    EncryptionParameters parms(scheme_type::gsw);
-    parms.set_circuit_depth(d);
-    parms.set_security_level(k);
-    parms.set_cipher_modulus(q);
-
-    KeyGenerator keygen(parms);
+    KeyGenerator keygen(params);
     SecretKey secret_key = keygen.secret_key();
     PublicKey public_key;
     keygen.create_public_key(public_key);
 
+    auto n = params.getLatticeDimension0();
+    auto m = params.getM();
+    auto q = params.getCipherModulus();
+
     SECTION("Secret_key size"){
-        REQUIRE(secret_key.sk().rows() == 1);
-//        REQUIRE(secret_key.sv().rows() == 1);
-        REQUIRE(secret_key.sk().cols() == n);
-//        REQUIRE(secret_key.sv().cols() == n-1);
+        REQUIRE(secret_key.sk().NumRows() == 1);
+//        REQUIRE(secret_key.sv().NumRows() == 1);
+        REQUIRE(secret_key.sk().NumCols() == n);
+//        REQUIRE(secret_key.sv().NumCols() == n-1);
     }
 
     SECTION("Public_key size"){
         INFO("Modulus, q" << q);
-        INFO("Modulus2, q " << parms.getCipherModulus());
+        INFO("Modulus2, q " << params.getCipherModulus());
 
-        REQUIRE(public_key.data().rows() == n);
-        REQUIRE(public_key.data().cols() == m);
+        REQUIRE(public_key.data().NumRows() == n);
+        REQUIRE(public_key.data().NumCols() == m);
     }
 
     SECTION("Public_key * Secret_key must equal small errors"){
 
         INFO("q: " << q );
-        dynMatrix product =  secret_key.sk() * public_key.data();
-        INFO("product(before): " << product );
-        util::modulo_matrix(product, matrixElemType (q));
+        CGSW_mat product =  secret_key.sk() * public_key.data();
         INFO("product: " << product );
-        cout << "error: " << product << endl;
-        REQUIRE(product.norm() < n * q/2); // average size less than q/2
+//        REQUIRE(util::get_norm(product). < n * q/2); // average size less than q/2
     }
 }
 
@@ -71,40 +61,39 @@ TEST_CASE("CGSW: Key Generator"){
     auto k = GENERATE(16);
     auto p_bits = 16;
 
-    EncryptionParameters parms(scheme_type::cgsw);
-    parms.set_circuit_depth(3);
-    parms.set_security_level(k);
-    parms.set_plaintext_space_in_bit(p_bits);
-    parms.set_rate(0.8);
+    EncryptionParameters params(scheme_type::cgsw);
+    params.set_circuit_depth(3);
+    params.set_security_level(k);
+    params.set_plaintext_space_in_bit(p_bits);
+    params.set_rate(0.8);
 
-    KeyGenerator keygen(parms);
+    KeyGenerator keygen(params);
     SecretKey secret_key = keygen.secret_key();
     PublicKey public_key;
     keygen.create_public_key(public_key);
 
-    auto m = parms.getM();
-    auto q = parms.getCipherModulus();
-    auto n1 = parms.getLatticeDimension1();
-    auto n0 = parms.getLatticeDimension0();
-    INFO("Parms" << parms);
+    auto m = params.getM();
+    auto q = params.getCipherModulus();
+    auto n1 = params.getLatticeDimension1();
+    auto n0 = params.getLatticeDimension0();
+    INFO("params" << params);
 
     SECTION("Secret_key size"){
-        REQUIRE(secret_key.sk().rows() == n0);
-//        REQUIRE(secret_key.sv().rows() == n0);
-        REQUIRE(secret_key.sk().cols() == n1);
-//        REQUIRE(secret_key.sv().cols() == n1);
+        REQUIRE(secret_key.sk().NumRows() == n0);
+//        REQUIRE(secret_key.sv().NumRows() == n0);
+        REQUIRE(secret_key.sk().NumCols() == n1);
+//        REQUIRE(secret_key.sv().NumCols() == n1);
     }
 
     SECTION("Public_key size"){
-        REQUIRE(public_key.data().rows() == n1);
-        REQUIRE(public_key.data().cols() == m);
+        REQUIRE(public_key.data().NumRows() == n1);
+        REQUIRE(public_key.data().NumCols() == m);
     }
 
     SECTION("Public_key * Secret_key must equal small errors"){
-        dynMatrix product =  secret_key.sk() * public_key.data();
+        CGSW_mat product =  secret_key.sk() * public_key.data();
         INFO("product(before): " << product );
-        util::modulo_matrix(product, matrixElemType (q));
         INFO("product: " << product );
-        REQUIRE(product.norm() < n0 * q/2); // average size less than q/2
+//        REQUIRE(product.norm() < n0 * q/2); // average size less than q/2
     }
 }

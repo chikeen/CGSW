@@ -11,8 +11,6 @@
 #include "secretkey.h"
 #include "publickey.h"
 
-using namespace Eigen;
-
 namespace cgsw {
 
     /**

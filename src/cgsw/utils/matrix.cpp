@@ -53,7 +53,7 @@ namespace cgsw {
             }
         };
 
-        void bit_decompose_matrix(const CGSW_mat& mat_in, CGSW_mat& mat_out, uint64_t l){
+        void bit_decompose_matrix(CGSW_mat& mat_out, const CGSW_mat& mat_in, uint64_t l){
             /*
              * Take a nxc matrix and make it mxc
              */
@@ -94,6 +94,24 @@ namespace cgsw {
 
         void concat_matrix_v(CGSW_mat& mat_out, const CGSW_mat& mat_a, const CGSW_mat& mat_b){
             throw(NotImplemented());
+        }
+
+        CGSW_mod get_norm(const CGSW_mat& mat){
+            CGSW_mod acc(0);
+            for(long m  = 0; m < mat.NumRows(); m ++){
+                for(long n = 0; n < mat.NumCols(); n ++){
+                    acc += mat(m, n) * mat(m, n);
+                }
+            }
+            return acc;
+        }
+
+        CGSW_mod get_norm(const CGSW_vec& vec){
+            CGSW_mod acc(0);
+            for(long i  = 0; i < vec.length(); i ++){
+                acc += vec[i] * vec[i];
+            }
+            return acc;
         }
 
     } // util

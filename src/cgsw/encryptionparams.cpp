@@ -48,6 +48,7 @@ namespace cgsw {
         return sec_level_;
     }
 
+
     CGSW_long EncryptionParameters::getCipherModulus() const {
         return cipher_modulus_;
     }

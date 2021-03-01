@@ -24,16 +24,16 @@
 
 add_executable(tests
         catch.hpp
-#        common.cpp
-#        plaintext.cpp
-#        keygenerator.cpp
-#        encryptor.cpp
-#        decryptor.cpp
-#        encryptionparams.cpp
+        common.cpp
+        plaintext.cpp
+        keygenerator.cpp
+        encryptor.cpp
+        decryptor.cpp
+        encryptionparams.cpp
         utils/utils.cpp
-#        BDT/GSW/encryptdecrypt.cpp
-#        BDT/GSW/operation.cpp
-#        BDT/CGSW1/encryptdecrypt.cpp
+        BDT/GSW/encryptdecrypt.cpp
+        BDT/GSW/operation.cpp
+        BDT/CGSW1/encryptdecrypt.cpp
         )
 
 

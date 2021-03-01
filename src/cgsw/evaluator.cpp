@@ -31,7 +31,7 @@ namespace cgsw {
         uint64_t l = params_.getL();
 
         CGSW_mat decomposed;
-        util::bit_decompose_matrix(encrypted2.data(),decomposed, l);
+        util::bit_decompose_matrix(decomposed, encrypted2.data(), l);
 
         CGSW_mat result = encrypted1.data() * decomposed;
         encrypted1.set_data(result);
