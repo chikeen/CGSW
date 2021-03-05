@@ -22,8 +22,18 @@ TEST_CASE("BENCHMARKING GSW: "){
 
     INFO("Params:" << params);
 
+    BENCHMARK("Secret key generation"){
+        KeyGenerator keygen(params);
+        return keygen.secret_key();
+    };
+
     KeyGenerator keygen(params);
     SecretKey secret_key = keygen.secret_key();
+
+    BENCHMARK("Public key generation"){
+        return keygen.create_public_key();
+    };
+
     PublicKey public_key = keygen.create_public_key();
 
     Encryptor encryptor(params, public_key);
@@ -31,19 +41,18 @@ TEST_CASE("BENCHMARKING GSW: "){
     Decryptor decryptor(params, secret_key);
 
     // ----- preparing data ----------
-    Plaintext plain_0(0), plain_1(1);
-    Ciphertext encrypted_0, encrypted_1;
+    Plaintext plain_0(0);
+    Ciphertext encrypted_0;
+
+    BENCHMARK("Encryption"){
+        return encryptor.encrypt(plain_0, encrypted_0);
+    };
+
     encryptor.encrypt(plain_0, encrypted_0);
-    encryptor.encrypt(plain_1, encrypted_1);
-    BENCHMARK("EncryptionParams generation"){
 
-    }
+    Plaintext decrypted_0;
+    BENCHMARK("Decryption"){
+       return decryptor.decrypt(encrypted_0, decrypted_0);;
+    };
 
-    BENCHMARK("Secret key generation"){
-
-    }
-
-    BENCHMARK("Public key generation"){
-
-    }
 }

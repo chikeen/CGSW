@@ -13,6 +13,8 @@ TEST_CASE("EncryptDecrypt GSW tests"){
 
     auto k = GENERATE(8, 16);
     uint64_t d = 3;
+    INFO("Time: " << NTL::GetTime());
+    INFO("WallTime: " << NTL::GetWallTime());
 
     EncryptionParameters params(scheme_type::gsw);
     params.set_circuit_depth(d);
@@ -23,6 +25,9 @@ TEST_CASE("EncryptDecrypt GSW tests"){
     KeyGenerator keygen(params);
     SecretKey secret_key = keygen.secret_key();
     PublicKey public_key = keygen.create_public_key();
+
+    INFO("Time: " << NTL::GetTime());
+    INFO("WallTime: " << NTL::GetWallTime());
 
     INFO("secret_key" << secret_key.sk());
     INFO("public_key" << public_key.data());
@@ -37,9 +42,13 @@ TEST_CASE("EncryptDecrypt GSW tests"){
             Ciphertext encrypted;
             encryptor.encrypt(plain, encrypted);
 
+            INFO("Time: " << NTL::GetTime());
+            INFO("WallTime: " << NTL::GetWallTime());
+
             Plaintext decrypted;
             decryptor.decrypt(encrypted, decrypted);
             REQUIRE(decrypted.data() == 0);
+            REQUIRE(1 == 2);
         }
 
         WHEN("Encrypting 1"){
