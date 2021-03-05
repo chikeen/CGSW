@@ -26,22 +26,21 @@ namespace cgsw {
         uint64_t n0 = params_.getLatticeDimension0();
         uint64_t n1 = params_.getLatticeDimension1();
         uint64_t k = params_.getSecLevel();
-        matrixElemType q = params_.getCipherModulus();
-        dynMatrix s, t;
+        CGSW_long q = params_.getCipherModulus();
+        CGSW_mat s, t, i;
+
 
         switch(params_.getScheme()){
             case scheme_type::gsw:
-                s = util::gen_random_matrix(1, n0, q);
-                t = util::gen_empty_matrix(1, n1);
-
-                t << s, matrixElemType (1);
+                util::gen_random_matrix(s, 1, n0);
+                util::gen_identity_matrix(i, 1, 1);
+                util::concat_matrix_h(t, s, i);
                 break;
 
             case scheme_type::cgsw:
-                s = util::gen_random_matrix(n0, k, q);
-                t = util::gen_empty_matrix(n0, n1);
-
-                t << s, util::gen_identity_matrix(n0);
+                util::gen_random_matrix(s, n0, k);
+                util::gen_identity_matrix(i, n0, n0);
+                util::concat_matrix_h(t, s, i);
                 break;
         }
 
@@ -61,40 +60,35 @@ namespace cgsw {
         uint64_t n0 = params_.getLatticeDimension0();
         uint64_t n1 = params_.getLatticeDimension1();
         uint64_t m = params_.getM();
-        matrixElemType q = params_.getCipherModulus();
+        CGSW_long q = params_.getCipherModulus();
 
-        dynMatrix e, B, b_, A;
+        CGSW_mat e, B, b_, A;
 
         switch(params_.getScheme()){
             case scheme_type::gsw:
                 // Generating error matrix (vector) 1 x M
-                e = util::gen_normal_matrix(1, m, q);
+                util::gen_normal_matrix(e, 1, m);
 
                 // Generating random matrix B (n x m)
-                B = util::gen_random_matrix(n0, m, q);
+                util::gen_random_matrix(B, n0, m);
 
                 b_ = secret_key_.sv() * B + e;
-                util::modulo_matrix(b_, q);
-                A = util::gen_empty_matrix(n1, m);
-                util::negate_matrix(B, q);
+                B = -B; // OPT:: Can negate at gen_random_matrix;
                 break;
 
             case scheme_type::cgsw:
                 // Generating error matrix n0 x M
-                e = util::gen_normal_matrix(n0, m, q);
+                util::gen_normal_matrix(e, n0, m);
 
                 // Generating random matrix B (k x m)
-                B = util::gen_random_matrix(k, m, q);
+                util::gen_random_matrix(B, k, m);
 
                 b_ = secret_key_.sv() * B + e;
-                util::modulo_matrix(b_, q);
-                A = util::gen_empty_matrix(n1, m);
-                util::negate_matrix(B, q);
+                B = -B;
                 break;
         }
 
-        A << B, //-B
-             b_;
+        util::concat_matrix_v(A, B, b_);
 
         PublicKey pk = PublicKey();
         pk.pk_ = A;

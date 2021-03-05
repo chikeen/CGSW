@@ -18,8 +18,6 @@ namespace cgsw {
     typedef std::vector<std::vector<Ciphertext>> ddCipherMatrix;
     typedef std::vector<std::vector<std::vector<Ciphertext>>> dddCipherMatrix;
 
-
-
     class Encryptor {
 
         public:
@@ -31,13 +29,13 @@ namespace cgsw {
              * Takes in one single matrix m (with binary entries only),
              * , and output 2D vector of ciphertexts
              */
-            void encrypt_many(const dynUintMatrix &plains, ddCipherMatrix &destination);
+            void encrypt_many(const CGSW_mat_uint &plains, ddCipherMatrix &destination);
 
             /*
              * Takes in 1d vector of bit-decomposed matrices (all with binary entries),
              * , and output a 3D vector of ciphertexts
              */
-            void encrypt_many(const std::vector<dynUintMatrix> &plains, dddCipherMatrix &destination);
+            void encrypt_many(const std::vector<CGSW_mat_uint> &plains, dddCipherMatrix &destination);
 
             /*
              * Compress a vector of vector of ciphertexts into a single result ciphertext
@@ -54,11 +52,11 @@ namespace cgsw {
 
     private:
 
-            inline dynVector generate_t_vector(uint64_t scalar, uint64_t v, uint64_t l, uint64_t length);
+            inline CGSW_vec generate_t_vector(uint64_t scalar, uint64_t v, uint64_t l, uint64_t length);
 
             EncryptionParameters params_;
 
-            dynMatrix gadget_matrix_;
+            CGSW_mat gadget_matrix_;
 
             PublicKey public_key_;
     };

@@ -93,8 +93,8 @@ namespace cgsw {
 
     private:
 
-        dynMatrix sk_ {};
+        CGSW_mat sk_ {};
 
-        dynMatrix sv_ {};
+        CGSW_mat sv_ {};
     };
 }

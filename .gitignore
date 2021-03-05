@@ -1,6 +1,2 @@
 cmake-build-debug
-
-.idea/.gitignore
-.idea/CGSW20.iml
-.idea/misc.xml
-.idea/modules.xml
+.idea

@@ -13,6 +13,8 @@ TEST_CASE("EncryptDecrypt GSW tests"){
 
     auto k = GENERATE(8, 16);
     uint64_t d = 3;
+    INFO("Time: " << NTL::GetTime());
+    INFO("WallTime: " << NTL::GetWallTime());
 
     EncryptionParameters params(scheme_type::gsw);
     params.set_circuit_depth(d);
@@ -24,6 +26,12 @@ TEST_CASE("EncryptDecrypt GSW tests"){
     SecretKey secret_key = keygen.secret_key();
     PublicKey public_key = keygen.create_public_key();
 
+    INFO("Time: " << NTL::GetTime());
+    INFO("WallTime: " << NTL::GetWallTime());
+
+    INFO("secret_key" << secret_key.sk());
+    INFO("public_key" << public_key.data());
+
     Encryptor encryptor(params, public_key);
     Decryptor decryptor(params, secret_key);
 
@@ -34,21 +42,33 @@ TEST_CASE("EncryptDecrypt GSW tests"){
             Ciphertext encrypted;
             encryptor.encrypt(plain, encrypted);
 
+            INFO("Time: " << NTL::GetTime());
+            INFO("WallTime: " << NTL::GetWallTime());
+
             Plaintext decrypted;
             decryptor.decrypt(encrypted, decrypted);
-
             REQUIRE(decrypted.data() == 0);
+            REQUIRE(1 == 2);
         }
 
-        WHEN("Decrypting 1"){
+        WHEN("Encrypting 1"){
             Plaintext plain(1);
             Ciphertext encrypted;
             encryptor.encrypt(plain, encrypted);
 
             Plaintext decrypted;
             decryptor.decrypt(encrypted, decrypted);
-            INFO("modulus,q = " << params.getCipherModulus() );
             REQUIRE(decrypted.data() == 1);
+        }
+
+        WHEN("Encrypting 2"){
+            Plaintext plain(2);
+            Ciphertext encrypted;
+            encryptor.encrypt(plain, encrypted);
+
+            Plaintext decrypted;
+            decryptor.decrypt(encrypted, decrypted);
+            REQUIRE(decrypted.data() == 2);
         }
     }
 }

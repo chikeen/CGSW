@@ -10,96 +10,175 @@ std::mt19937 generator(rd());
 namespace cgsw {
     namespace util{
 
-        dynMatrix gen_random_matrix(size_t rows, size_t cols, matrixElemType modulus) {
-            dynMatrix random_matrix = dynMatrix::Zero(rows, cols);
-
-            for(int i = 0; i < cols; i ++){
-                for(int j = 0; j < rows; j ++){
-                    random_matrix(j, i) = NTL::RandomBnd(modulus);
-                }
-            }
-
-            return random_matrix;
-        };
-
-        dynMatrix gen_empty_matrix(size_t rows, size_t cols) {
-            return dynMatrix::Zero(rows, cols);
-        };
-
-        dynMatrix gen_identity_matrix(size_t size){
-            return dynMatrix::Identity(size, size);
+        void gen_random_matrix(CGSW_mat& mat, size_t n, size_t m) {
+            NTL::random(mat, n, m);
         }
 
-        dynMatrix gen_normal_matrix(size_t rows, size_t cols, matrixElemType modulus) {
+        void gen_random_matrix(CGSW_mat& mat, size_t n, size_t m, size_t limit) {
+            mat.SetDims(n, m);
+            for (int i = 0; i < n; i ++){
+                for (int j = 0; j < m; j ++){
+                    mat[i][j] = NTL::RandomBnd(limit);
+                }
+            }
+        }
 
+        void gen_empty_matrix(CGSW_mat& mat, size_t n, size_t m){
+            mat.SetDims(n, m);
+        }
+
+        void gen_identity_matrix(CGSW_mat& mat, size_t n, size_t m){
+            mat.SetDims(n, m);
+            assert(n == m);
+
+            for (int i = 0; i < n; i ++){
+                mat[i][i] = 1;
+            }
+        }
+
+        void gen_normal_matrix(CGSW_mat& mat, size_t n, size_t m){
+            mat.SetDims(n, m);
+            const CGSW_long modulus = CGSW_mod::modulus();
             const int mean(0);
             const double stddev(1);// TODO:- how to calculate the standard deviation?
 
-            dynMatrix normal_matrix(rows, cols);
+            mat.SetDims(n, m);
 
             // Since the normal distribution matrix centered around 0, can use int instead of NTL:ZZ
             std::normal_distribution<double> distribution(mean, stddev);
             double random_num;
 
-            for(int i = 0; i < cols; i ++){
-                for(int j = 0; j < rows; j ++){
+            for(int i = 0; i < n; i ++){
+                for(int j = 0; j < m; j ++){
                     random_num = distribution(generator);
                     if (random_num < 0) {random_num = -random_num;}
-                    normal_matrix(j, i) =  (matrixElemType) random_num % modulus; // no need to modulus since its small?
+                    mat[i][j] =  (CGSW_mod) random_num; // no need to modulus since its small?
                 }
             }
+        }
 
-            return normal_matrix;
-        };
+        void gen_gadget_matrix(CGSW_mat& mat, size_t n, size_t m){
+            if(m < n) throw std::runtime_error("gadget matrix cols must > rows");
 
-        dynMatrix gen_gadget_matrix(size_t rows, size_t cols) {
-            if(cols < rows) throw std::runtime_error("gadget matrix cols must > rows");
+            mat.SetDims(n, m);
+            int no_log = m/n;
 
-            int no_log = cols/rows;
-
-            dynMatrix gadget_matrix = dynMatrix::Zero(rows, cols);
-            for(int i = 0 ; i < rows; i++){
+            for(int i = 0 ; i < n; i++){
                 for(int l = 0; l < no_log; l++){
-                    gadget_matrix(i, no_log*i + l) = pow(2, l);
+                    mat[i][no_log*i + l] = pow(2, l);
                 }
             }
+        }
 
-            return gadget_matrix;
-        };
-
-        dynMatrix bit_decompose_matrix(dynMatrix mat, uint64_t l){
+        void bit_decompose_matrix(CGSW_mat& mat_out, const CGSW_mat& mat_in, uint64_t l){
             /*
              * Take a nxc matrix and make it mxc
              */
-            uint64_t n = mat.rows();
-            uint64_t c = mat.cols();
+            uint64_t n = mat_in.NumRows();
+            uint64_t c = mat_in.NumCols();
             uint64_t m = n * l;
 
-            dynMatrix mat_return = dynMatrix(m, c);
+            mat_out.SetDims(m, c);
 
             for(int j = 0; j < c; j ++){
                 for(int i = 0; i < n; i++){
                     for(int k = 0; k < l; k++){
-                        mat_return((i * l + k), j) = NTL::bit(mat(i,j), k)? 1 : 0;
+                        mat_out[(i * l + k)][j] = NTL::bit(rep(mat_in[i][j]), k)? 1 : 0;
                     }
                 }
             }
+        }
 
-            return mat_return;
-        };
+        void gen_random_uint_matrix(CGSW_mat_uint& mat,  size_t n, size_t m, size_t range){
 
-        dynUintMatrix gen_random_uint_matrix(size_t rows, size_t cols, uint64_t modulus) {
-            std::uniform_int_distribution<uint64_t> distribution(0, modulus-1);
-            dynUintMatrix random_matrix = dynUintMatrix ::Zero(rows, cols);
+            mat.SetDims(n, m);
+            std::uniform_int_distribution<uint64_t> distribution(0, range-1);
 
-            for(int i = 0; i < cols; i ++){
-                for(int j = 0; j < rows; j ++){
-                    random_matrix(j, i) = (uint64_t) distribution(generator);
+            for(int i = 0; i < n; i ++){
+                for(int j = 0; j < m; j ++){
+                    mat[i][j] = (uint64_t) distribution(generator);
+                }
+            }
+        }
+
+        void concat_matrix_h(CGSW_mat& mat_out, const CGSW_mat& mat_a, const CGSW_mat& mat_b){
+
+            auto a_rows = mat_a.NumRows(),
+                a_cols = mat_a.NumCols(),
+                b_rows = mat_b.NumRows(),
+                b_cols = mat_b.NumCols();
+
+            assert(a_rows == b_rows);
+            mat_out.SetDims(a_rows, a_cols + b_cols);
+
+            for(int i = 0; i < a_rows; i ++){
+                for (int j = 0; j < a_cols; j++){
+                    mat_out[i][j] = mat_a[i][j];
                 }
             }
 
-            return random_matrix;
-        };
+            for(int i = 0; i < b_rows; i ++){
+                for (int j = 0; j < b_cols; j++){
+                    mat_out[i][j + a_cols] = mat_b[i][j];
+                }
+            }
+        }
+
+        void concat_matrix_h(CGSW_mat& mat_out, const CGSW_mat& mat_a, const CGSW_vec& vec_b){
+            throw(NotImplemented());
+        }
+
+        void concat_matrix_v(CGSW_mat& mat_out, const CGSW_mat& mat_a, const CGSW_mat& mat_b){
+
+            auto a_rows = mat_a.NumRows(),
+                    a_cols = mat_a.NumCols(),
+                    b_rows = mat_b.NumRows(),
+                    b_cols = mat_b.NumCols();
+
+            assert(a_cols == b_cols);
+            mat_out.SetDims(a_rows + b_rows, a_cols);
+
+            for(int i = 0; i < a_rows; i ++){
+                for (int j = 0; j < a_cols; j++){
+                    mat_out[i][j] = mat_a[i][j];
+                }
+            }
+
+            for(int i = 0; i < b_rows; i ++){
+                for (int j = 0; j < b_cols; j++){
+                    mat_out[i + a_rows][j] = mat_b[i][j];
+                }
+            }
+        }
+
+        CGSW_mod get_norm(const CGSW_mat& mat){
+            CGSW_mod acc(0);
+            for(long m  = 0; m < mat.NumRows(); m ++){
+                for(long n = 0; n < mat.NumCols(); n ++){
+                    acc += mat[m][n] * mat[m][n];
+                }
+            }
+            return acc;
+        }
+
+        CGSW_mod get_norm(const CGSW_vec& vec){
+            CGSW_mod acc(0);
+            for(long i  = 0; i < vec.length(); i ++){
+                acc += vec[i] * vec[i];
+            }
+            return acc;
+        }
+
+        CGSW_long get_sum(const CGSW_mat& mat){
+            CGSW_long acc(0);
+            for(long m  = 0; m < mat.NumRows(); m ++){
+                for(long n = 0; n < mat.NumCols(); n ++){
+                    acc += rep(mat[m][n]);
+                }
+            }
+            return acc;
+        }
+
 
     } // util
 } // cgsw

@@ -14,28 +14,29 @@ namespace cgsw{
         set_public_key(public_key);
 
         // generate gadget matrix
-        gadget_matrix_ = util::gen_gadget_matrix(params_.getLatticeDimension1(),
+        util::gen_gadget_matrix(gadget_matrix_, params_.getLatticeDimension1(),
                                                       params_.getM());
     }
 
     void Encryptor::encrypt(const Plaintext &plain, Ciphertext &destination) {
         // generate random matrix of size (m x m) { 0, 1 }
-        dynMatrix r = util::gen_random_matrix(params_.getM(),
-                                                   params_.getM(),
-                                                   matrixElemType (2));
+        CGSW_mat r, C;
 
-        dynMatrix C = public_key_.data() * r + plain.data() * gadget_matrix_;
-        C = util::modulo_matrix(C, params_.getCipherModulus());
+        util::gen_random_matrix(r,
+                               params_.getM(),
+                               params_.getM(),
+                               2); // generate random binary matrix
+
+        C = public_key_.data() * r + plain.data() * gadget_matrix_;
 
         // putting ciphertext in place
         destination.set_data(C);
-        return;
     }
 
-    void Encryptor::encrypt_many(const dynUintMatrix &plains, ddCipherMatrix &destination) {
-        for (int i = 0; i < plains.rows(); i ++){
+    void Encryptor::encrypt_many(const CGSW_mat_uint &plains, ddCipherMatrix &destination) {
+        for (int i = 0; i < plains.NumRows(); i ++){
             std::vector<Ciphertext> ciphertexts;
-            for (int j = 0; j < plains.cols(); j ++){
+            for (int j = 0; j < plains.NumCols(); j ++){
                 Ciphertext c;
                 Plaintext p(plains(i, j));
                 encrypt(p, c);
@@ -48,7 +49,7 @@ namespace cgsw{
         return;
     }
 
-    void Encryptor::encrypt_many(const std::vector<dynUintMatrix> &plains, dddCipherMatrix &destination){
+    void Encryptor::encrypt_many(const std::vector<CGSW_mat_uint> &plains, dddCipherMatrix &destination){
         for (auto i: plains){
             ddCipherMatrix ciphertexts;
             encrypt_many(i, ciphertexts);
@@ -71,10 +72,10 @@ namespace cgsw{
         uint64_t no_w = ciphertexts.size(),
                  no_u = ciphertexts[0].size(),
                  no_v = ciphertexts[0][0].size(),
-                 t_size = ciphertexts[0][0][0].data().cols();
+                 t_size = ciphertexts[0][0][0].data().NumCols();
 
         // create a final result
-        dynMatrix result = results.data();
+        CGSW_mat result = results.data();
 
         // loop through u, v, w
         for(int w = 0; w < no_w ; w ++){
@@ -85,12 +86,12 @@ namespace cgsw{
                 for(int v = 0; v < no_v; v ++){ // rows
 
                     // construct the vector t
-                    dynVector t = generate_t_vector(scalar, v, l, t_size);
+                    CGSW_vec t = generate_t_vector(scalar, v, l, t_size);
 //                    std::cout << "t   : " << t.transpose()  << std::endl;
 //                    std::cout << "rows: " << ciphertexts[w][u][v].data().row(v) << std::endl;
 
                     // multiply row v with t and add it to col u
-                    result(u, v) += ciphertexts[w][u][v].data().row(v) * t;
+                    result[u][v] += ciphertexts[w][u][v].data()[v] * t;
                 }
             }
         }
@@ -100,25 +101,27 @@ namespace cgsw{
     }
 
     Ciphertext Encryptor::compress(const dddCipherMatrix &ciphertexts){
-        uint64_t rows = ciphertexts[0][0][0].data().rows(),
-                 cols = ciphertexts[0][0][0].data().cols();
+        uint64_t rows = ciphertexts[0][0][0].data().NumRows(),
+                 cols = ciphertexts[0][0][0].data().NumCols();
 
-        dynMatrix result = dynMatrix::Zero(rows, cols);
+        CGSW_mat result;
+        util::gen_empty_matrix(result, rows, cols);
         Ciphertext cresult;
         cresult.set_data(result);
         compress(ciphertexts, cresult);
         return cresult;
     }
 
-    inline dynVector Encryptor::generate_t_vector(uint64_t scalar, uint64_t v, uint64_t l, uint64_t length){
-        dynVector result(length);
+    inline CGSW_vec Encryptor::generate_t_vector(uint64_t scalar, uint64_t v, uint64_t l, uint64_t length){
+        CGSW_vec result;
+        result.SetLength(length);
 
         for(int i = 0; i < length; i++){
             if((i >= v)  && (i < v + l)) {
-                result(i) = (bit(scalar, i - v)); // current_l = i - v
+                result[i] = (bit(scalar, i - v)); // current_l = i - v
             }
             else{
-                result(i) = 0;
+                result[i] = 0;
             }
         }
 

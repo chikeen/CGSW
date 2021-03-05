@@ -17,7 +17,6 @@ add_library(
         ${HEADER_LIST}
 
         ## utils
-        cgsw/utils/numth.cpp
         cgsw/utils/matrix.cpp
 
         cgsw/plaintext.cpp
@@ -36,8 +35,7 @@ target_include_directories(CGSW20 PUBLIC ${NTL_INCLUDE_PATHS})
 
 # This depends on (header only) boost
 target_link_libraries(CGSW20 PRIVATE
-        ${NTL_LIBRARIES}
-        Eigen3::Eigen)
+        ${NTL_LIBRARIES})
 
 # All users of this library will need at least C++11
 target_compile_features(CGSW20 PUBLIC cxx_std_11)

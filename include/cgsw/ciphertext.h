@@ -27,7 +27,7 @@ namespace cgsw {
                 return size_;
             }
 
-            void set_data(dynMatrix data_in) {
+            void set_data(CGSW_mat data_in) {
                 data_ = data_in;
             }
 
@@ -45,7 +45,7 @@ namespace cgsw {
 
 
     private:
-            dynMatrix data_;
+            CGSW_mat data_;
 
             std::size_t size_ = 0;
     };
