@@ -22,9 +22,10 @@ namespace cgsw{
         // generate random matrix of size (m x m) { 0, 1 }
         CGSW_mat r, C;
 
-        util::gen_random_binary_matrix(r,
-                                       params_.getM(),
-                                       params_.getM());
+        util::gen_random_matrix(r,
+                               params_.getM(),
+                               params_.getM(),
+                               2); // generate random binary matrix
 
         C = public_key_.data() * r + plain.data() * gadget_matrix_;
 
@@ -90,7 +91,7 @@ namespace cgsw{
 //                    std::cout << "rows: " << ciphertexts[w][u][v].data().row(v) << std::endl;
 
                     // multiply row v with t and add it to col u
-                    result(u, v) += ciphertexts[w][u][v].data()[v] * t;
+                    result[u][v] += ciphertexts[w][u][v].data()[v] * t;
                 }
             }
         }
@@ -117,10 +118,10 @@ namespace cgsw{
 
         for(int i = 0; i < length; i++){
             if((i >= v)  && (i < v + l)) {
-                result(i) = (bit(scalar, i - v)); // current_l = i - v
+                result[i] = (bit(scalar, i - v)); // current_l = i - v
             }
             else{
-                result(i) = 0;
+                result[i] = 0;
             }
         }
 

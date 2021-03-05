@@ -16,7 +16,7 @@ using namespace std;
  */
 
 TEST_CASE("GSW: Key Generator"){
-    
+
     auto k = GENERATE(4, 16, 128);
 
     EncryptionParameters params(scheme_type::gsw);
@@ -29,22 +29,23 @@ TEST_CASE("GSW: Key Generator"){
     PublicKey public_key;
     keygen.create_public_key(public_key);
 
-    auto n = params.getLatticeDimension0();
+    auto n0 = params.getLatticeDimension0();
+    auto n1 = params.getLatticeDimension1();
     auto m = params.getM();
     auto q = params.getCipherModulus();
 
     SECTION("Secret_key size"){
         REQUIRE(secret_key.sk().NumRows() == 1);
 //        REQUIRE(secret_key.sv().NumRows() == 1);
-        REQUIRE(secret_key.sk().NumCols() == n);
-//        REQUIRE(secret_key.sv().NumCols() == n-1);
+        REQUIRE(secret_key.sk().NumCols() == n1);
+//        REQUIRE(secret_key.sv().NumCols() == n0);
     }
 
     SECTION("Public_key size"){
         INFO("Modulus, q" << q);
         INFO("Modulus2, q " << params.getCipherModulus());
 
-        REQUIRE(public_key.data().NumRows() == n);
+        REQUIRE(public_key.data().NumRows() == n1);
         REQUIRE(public_key.data().NumCols() == m);
     }
 
@@ -53,7 +54,7 @@ TEST_CASE("GSW: Key Generator"){
         INFO("q: " << q );
         CGSW_mat product =  secret_key.sk() * public_key.data();
         INFO("product: " << product );
-//        REQUIRE(util::get_norm(product). < n * q/2); // average size less than q/2
+        REQUIRE(util::get_sum(product) < n1 * q/2); // average size less than q/2
     }
 }
 

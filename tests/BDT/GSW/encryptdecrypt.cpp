@@ -24,6 +24,9 @@ TEST_CASE("EncryptDecrypt GSW tests"){
     SecretKey secret_key = keygen.secret_key();
     PublicKey public_key = keygen.create_public_key();
 
+    INFO("secret_key" << secret_key.sk());
+    INFO("public_key" << public_key.data());
+
     Encryptor encryptor(params, public_key);
     Decryptor decryptor(params, secret_key);
 

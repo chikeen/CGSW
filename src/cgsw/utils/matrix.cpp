@@ -10,12 +10,29 @@ std::mt19937 generator(rd());
 namespace cgsw {
     namespace util{
 
+        void gen_random_matrix(CGSW_mat& mat, size_t n, size_t m) {
+            NTL::random(mat, n, m);
+        }
+
+        void gen_random_matrix(CGSW_mat& mat, size_t n, size_t m, size_t limit) {
+            mat.SetDims(n, m);
+            for (int i = 0; i < n; i ++){
+                for (int j = 0; j < m; j ++){
+                    mat[i][j] = NTL::RandomBnd(limit);
+                }
+            }
+        }
+
+        void gen_empty_matrix(CGSW_mat& mat, size_t n, size_t m){
+            mat.SetDims(n, m);
+        }
+
         void gen_identity_matrix(CGSW_mat& mat, size_t n, size_t m){
             mat.SetDims(n, m);
             assert(n == m);
 
             for (int i = 0; i < n; i ++){
-                mat(i, i) = 1;
+                mat[i][i] = 1;
             }
         }
 
@@ -35,23 +52,23 @@ namespace cgsw {
                 for(int j = 0; j < m; j ++){
                     random_num = distribution(generator);
                     if (random_num < 0) {random_num = -random_num;}
-                    mat(i, j) =  (CGSW_mod) random_num; // no need to modulus since its small?
+                    mat[i][j] =  (CGSW_mod) random_num; // no need to modulus since its small?
                 }
             }
-        };
+        }
 
         void gen_gadget_matrix(CGSW_mat& mat, size_t n, size_t m){
-            if(n < m) throw std::runtime_error("gadget matrix cols must > rows");
+            if(m < n) throw std::runtime_error("gadget matrix cols must > rows");
 
             mat.SetDims(n, m);
-            int no_log = n/m;
+            int no_log = m/n;
 
             for(int i = 0 ; i < n; i++){
                 for(int l = 0; l < no_log; l++){
-                    mat(i, no_log*i + l) = pow(2, l);
+                    mat[i][no_log*i + l] = pow(2, l);
                 }
             }
-        };
+        }
 
         void bit_decompose_matrix(CGSW_mat& mat_out, const CGSW_mat& mat_in, uint64_t l){
             /*
@@ -66,11 +83,11 @@ namespace cgsw {
             for(int j = 0; j < c; j ++){
                 for(int i = 0; i < n; i++){
                     for(int k = 0; k < l; k++){
-                        mat_out((i * l + k), j) = NTL::bit(rep(mat_in(i,j)), k)? 1 : 0;
+                        mat_out[(i * l + k)][j] = NTL::bit(rep(mat_in[i][j]), k)? 1 : 0;
                     }
                 }
             }
-        };
+        }
 
         void gen_random_uint_matrix(CGSW_mat_uint& mat,  size_t n, size_t m, size_t range){
 
@@ -79,28 +96,66 @@ namespace cgsw {
 
             for(int i = 0; i < n; i ++){
                 for(int j = 0; j < m; j ++){
-                    mat(i, j) = (uint64_t) distribution(generator);
+                    mat[i][j] = (uint64_t) distribution(generator);
                 }
             }
-        };
-
-        void concat_matrix_h(CGSW_mat& mat_out, const CGSW_mat& mat_a, const CGSW_mat& mat_b){
-            throw(NotImplemented());
         }
 
-        void concat_matrix_h(CGSW_mat& mat_out, const CGSW_mat& mat_a, const CGSW_mod& mat_b){
+        void concat_matrix_h(CGSW_mat& mat_out, const CGSW_mat& mat_a, const CGSW_mat& mat_b){
+
+            auto a_rows = mat_a.NumRows(),
+                a_cols = mat_a.NumCols(),
+                b_rows = mat_b.NumRows(),
+                b_cols = mat_b.NumCols();
+
+            assert(a_rows == b_rows);
+            mat_out.SetDims(a_rows, a_cols + b_cols);
+
+            for(int i = 0; i < a_rows; i ++){
+                for (int j = 0; j < a_cols; j++){
+                    mat_out[i][j] = mat_a[i][j];
+                }
+            }
+
+            for(int i = 0; i < b_rows; i ++){
+                for (int j = 0; j < b_cols; j++){
+                    mat_out[i][j + a_cols] = mat_b[i][j];
+                }
+            }
+        }
+
+        void concat_matrix_h(CGSW_mat& mat_out, const CGSW_mat& mat_a, const CGSW_vec& vec_b){
             throw(NotImplemented());
         }
 
         void concat_matrix_v(CGSW_mat& mat_out, const CGSW_mat& mat_a, const CGSW_mat& mat_b){
-            throw(NotImplemented());
+
+            auto a_rows = mat_a.NumRows(),
+                    a_cols = mat_a.NumCols(),
+                    b_rows = mat_b.NumRows(),
+                    b_cols = mat_b.NumCols();
+
+            assert(a_cols == b_cols);
+            mat_out.SetDims(a_rows + b_rows, a_cols);
+
+            for(int i = 0; i < a_rows; i ++){
+                for (int j = 0; j < a_cols; j++){
+                    mat_out[i][j] = mat_a[i][j];
+                }
+            }
+
+            for(int i = 0; i < b_rows; i ++){
+                for (int j = 0; j < b_cols; j++){
+                    mat_out[i + a_rows][j] = mat_b[i][j];
+                }
+            }
         }
 
         CGSW_mod get_norm(const CGSW_mat& mat){
             CGSW_mod acc(0);
             for(long m  = 0; m < mat.NumRows(); m ++){
                 for(long n = 0; n < mat.NumCols(); n ++){
-                    acc += mat(m, n) * mat(m, n);
+                    acc += mat[m][n] * mat[m][n];
                 }
             }
             return acc;
@@ -113,6 +168,17 @@ namespace cgsw {
             }
             return acc;
         }
+
+        CGSW_long get_sum(const CGSW_mat& mat){
+            CGSW_long acc(0);
+            for(long m  = 0; m < mat.NumRows(); m ++){
+                for(long n = 0; n < mat.NumCols(); n ++){
+                    acc += rep(mat[m][n]);
+                }
+            }
+            return acc;
+        }
+
 
     } // util
 } // cgsw

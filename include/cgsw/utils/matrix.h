@@ -28,19 +28,13 @@ namespace cgsw {
 
         void bit_decompose_matrix(CGSW_mat& mat_out, const CGSW_mat& mat_in, uint64_t l);
 
-        void gen_random_matrix(CGSW_mat& mat, size_t n, size_t m) {
-            NTL::random(mat, n, m);
-        }
+        void gen_random_matrix(CGSW_mat& mat, size_t n, size_t m);
 
-        void gen_random_binary_matrix(CGSW_mat& mat, size_t n, size_t m) {
-            throw( NotImplemented());
-        }
+        void gen_random_matrix(CGSW_mat& mat, size_t n, size_t m, size_t limit);
 
         void gen_random_uint_matrix(CGSW_mat_uint& mat,  size_t n, size_t m, size_t range);
 
-        void gen_empty_matrix(CGSW_mat& mat, size_t n, size_t m){
-            mat.SetDims(n, m);
-        }
+        void gen_empty_matrix(CGSW_mat& mat, size_t n, size_t m);
 
         void gen_identity_matrix(CGSW_mat& mat, size_t n, size_t m);
 
@@ -50,13 +44,15 @@ namespace cgsw {
 
         void concat_matrix_h(CGSW_mat& mat_out, const CGSW_mat& mat_a, const CGSW_mat& mat_b);
 
-        void concat_matrix_h(CGSW_mat& mat_out, const CGSW_mat& mat_a, const CGSW_mod& mat_b);
+        void concat_matrix_h(CGSW_mat& mat_out, const CGSW_mat& mat_a, const CGSW_vec& vec_b);
 
         void concat_matrix_v(CGSW_mat& mat_out, const CGSW_mat& mat_a, const CGSW_mat& mat_b);
 
         CGSW_mod get_norm(const CGSW_mat& mat);
 
         CGSW_mod get_norm(const CGSW_vec& vec);
+
+        CGSW_long get_sum(const CGSW_mat& mat);
 
 //        // can't we use normal gen_random?
 //        void gen_random_uint_matrix(CGSW_mat_uint& mat,  size_t n, size_t m, size_t range);

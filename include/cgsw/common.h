@@ -45,4 +45,6 @@ namespace NTL {
         double tmp2 = log10(2);
         return log(x) / log(CGSW_long (2));
     }
+
+
 }

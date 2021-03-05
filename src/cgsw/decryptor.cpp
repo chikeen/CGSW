@@ -32,16 +32,14 @@ namespace cgsw {
 
     void Decryptor::decrypt(const Ciphertext &encrypted, Plaintext &decrypted){
 
-        uint64_t l = params_.getL();
-        uint64_t n = params_.getLatticeDimension0();
-        CGSW_long q = params_.getCipherModulus();
-
+        auto m = params_.getM();
         CGSW_mat SC = secret_key_.sk() * encrypted.data();
 
-        std::cout << "q: " << q << std::endl;
-        std::cout << "SC: " << SC << std::endl;
-//        std::cout << "SC norm():" << SC.norm() << std::endl;
-        std::cout << "threshold: " << n * q/8 * 3 << std::endl;
+//        std::cout << "SC: " << SC << std::endl;
+//        std::cout << SC.NumCols() << " " << SC.NumRows() << std::endl;
+//        std::cout << "SC sum():" << util::get_sum(SC) << std::endl;
+//        std::cout << "threshold_1: " << m * q/8 * 3 << std::endl;
+//        std::cout << "threshold_2: " << m * params_.getF()  << std::endl;
 
         // Round off each element to the nearest multiples of f = q/p
 //        for (int i = 0; i < SC.size(); i++){
@@ -52,12 +50,12 @@ namespace cgsw {
 
 //        decrypted.set_data(SC.norm() / n )
 
-//        if(SC.norm() < n * q/8 * 3){
-//            decrypted.set_data(matrixElemType (0));
-//        }
-//        else{
-//            decrypted.set_data(matrixElemType (1));
-//        }
+        if(util::get_sum(SC) < m * params_.getF()){
+            decrypted.set_data((CGSW_mod) 0);
+        }
+        else{
+            decrypted.set_data((CGSW_mod) 1);
+        }
 
         return;
     }

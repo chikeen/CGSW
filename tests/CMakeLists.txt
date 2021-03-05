@@ -28,12 +28,11 @@ add_executable(tests
         plaintext.cpp
         keygenerator.cpp
         encryptor.cpp
-        decryptor.cpp
         encryptionparams.cpp
         utils/utils.cpp
         BDT/GSW/encryptdecrypt.cpp
         BDT/GSW/operation.cpp
-        BDT/CGSW1/encryptdecrypt.cpp
+#        BDT/CGSW1/encryptdecrypt.cpp
         )
 
 

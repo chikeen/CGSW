@@ -27,17 +27,18 @@ namespace cgsw {
         uint64_t n1 = params_.getLatticeDimension1();
         uint64_t k = params_.getSecLevel();
         CGSW_long q = params_.getCipherModulus();
-        CGSW_mat s, t;
+        CGSW_mat s, t, i;
+
 
         switch(params_.getScheme()){
             case scheme_type::gsw:
                 util::gen_random_matrix(s, 1, n0);
-                util::concat_matrix_h(t, s, (CGSW_mod) 1);
+                util::gen_identity_matrix(i, 1, 1);
+                util::concat_matrix_h(t, s, i);
                 break;
 
             case scheme_type::cgsw:
                 util::gen_random_matrix(s, n0, k);
-                CGSW_mat i;
                 util::gen_identity_matrix(i, n0, n0);
                 util::concat_matrix_h(t, s, i);
                 break;

@@ -17,9 +17,15 @@ namespace cgsw {
 
             lattice_dimension_0_ = sec_level_;
             lattice_dimension_1_ = lattice_dimension_0_ + 1;
+            plain_modulus_ = 3; //default for binary operation
             cipher_modulus_ = util::gen_prime(sec_level_);
+            CGSW_mod::init(cipher_modulus_);
             l_ = ceil(log2(cipher_modulus_));
             m_ = lattice_dimension_0_ * l_;
+
+            long tmp;
+            conv(tmp, cipher_modulus_ / plain_modulus_);
+            f_ = (uint64_t ) tmp;
         }
         else if (scheme_ == scheme_type::cgsw){
             double epsilon = 1 - rate_;
@@ -31,6 +37,7 @@ namespace cgsw {
             plain_modulus_ = util::gen_prime(plain_modulus_bit_);
             cipher_modulus_ = util::gen_prime(cipher_modulus_bit_);
 
+            CGSW_mod::init(cipher_modulus_);
             l_ = ceil(log2(cipher_modulus_));
             m_ = lattice_dimension_0_ * l_;
 
@@ -91,6 +98,8 @@ namespace cgsw {
                 os << "|   ciphertext modulus (q): " << parms.getCipherModulus() << std::endl;
                 os << "|   lattice dimension (n): " << parms.getLatticeDimension0() << std::endl;
                 os << "|   second lattice dimension (m): " << parms.getM() << std::endl;
+                os << "|   l: " << parms.getL() << std::endl;
+                os << "|   f: " << parms.getF() << std::endl;
                 os << "\\" << std::endl;
                 break;
             case scheme_type::cgsw:
@@ -107,6 +116,8 @@ namespace cgsw {
                 os << "|   ciphertext modulus (q): " << parms.getCipherModulus() << std::endl;
                 os << "|   lattice dimension (n0, n1): " << parms.getLatticeDimension0() << ", " << parms.getLatticeDimension1() << std::endl;
                 os << "|   second lattice dimension (m): " << parms.getM() << std::endl;
+                os << "|   l: " << parms.getL() << std::endl;
+                os << "|   f: " << parms.getF() << std::endl;
                 os << "\\" << std::endl;
                 break;
             case scheme_type::cgsw2:
