@@ -11,10 +11,34 @@
 
 namespace cgsw {
 
+    EncryptionParameters::EncryptionParameters(scheme_type scheme){
+            //default values
+            scheme_ = scheme;
+            depth_ = 0;
+            sec_level_ = 64;
+            rate_ = 0.8;
+
+            // Initialisation for random operation that follows
+            SetSeed((NTL::conv<NTL::ZZ>((long)time(NULL))));
+            }
+
+    void EncryptionParameters::set_cgsw_modulus() {
+
+        // p
+        auto epsilon = 1 - rate_;
+        uint64_t p_min = pow(sec_level_, 1/epsilon);
+        uint64_t p = NTL::NextPrime(p_min);
+
+        uint64_t q_min = pow(p, 1 + epsilon/2);
+        uint64_t q = NTL::NextPrime(q_min);
+
+        plain_modulus_ = p;
+        cipher_modulus_ = q;
+    }
+
     void EncryptionParameters::compute_parms() {
 
         if (scheme_ == scheme_type::gsw){
-
             lattice_dimension_0_ = sec_level_;
             lattice_dimension_1_ = lattice_dimension_0_ + 1;
             plain_modulus_ = 3; //default for binary operation
@@ -32,10 +56,9 @@ namespace cgsw {
 
             lattice_dimension_0_ = ceil(sec_level_ * 2 / epsilon);
             lattice_dimension_1_ = lattice_dimension_0_ + sec_level_;
-            cipher_modulus_bit_ = plain_modulus_bit_ +  1/epsilon;
 
-            plain_modulus_ = util::gen_prime(plain_modulus_bit_);
-            cipher_modulus_ = util::gen_prime(cipher_modulus_bit_);
+            // Generate p and q modulus
+            set_cgsw_modulus();
 
             CGSW_mod::init(cipher_modulus_);
             l_ = ceil(log2(cipher_modulus_));

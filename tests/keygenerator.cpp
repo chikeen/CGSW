@@ -65,8 +65,9 @@ TEST_CASE("CGSW: Key Generator"){
     EncryptionParameters params(scheme_type::cgsw);
     params.set_circuit_depth(3);
     params.set_security_level(k);
-    params.set_plaintext_space_in_bit(p_bits);
+//    params.set_plaintext_space_in_bit(p_bits);
     params.set_rate(0.8);
+    params.compute();
 
     KeyGenerator keygen(params);
     SecretKey secret_key = keygen.secret_key();

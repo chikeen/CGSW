@@ -56,12 +56,51 @@ TEST_CASE("CGSW: EncryptionParameters tests"){
             parms.set_rate(0.5);
         }
 
-        parms.set_plaintext_space_in_bit(p_bits);
+//        parms.set_plaintext_space_in_bit(p_bits);
         parms.set_security_level(k);
         parms.set_rate(0.5);
 
         INFO("k" << k);
         INFO("p_bits" << p_bits);
         INFO("Parms: " << parms);
+    }
+}
+
+TEST_CASE("CGSW: Test set_cgsw_modulus"){
+
+    auto k = GENERATE(64);
+    auto rate = GENERATE(0.8);
+//    auto k = GENERATE(4, 16, 64, 128, 256);
+//    auto rate = GENERATE(0.9, 0.8, 0.5, 0.4, 0.2);
+    EncryptionParameters params(scheme_type::cgsw);
+    params.set_circuit_depth(3);
+    params.set_security_level(k);
+    params.set_rate(rate);
+    params.compute();
+
+    INFO("Params: " << params);
+    auto theta_lower_bound = 0.5;
+    auto theta_upper_bound = 2;
+    auto theta = 1 - rate;
+
+
+    SECTION("Test p for theta bound"){
+        REQUIRE(params.getPlainModulus() > pow(k, theta_lower_bound / theta ));
+        REQUIRE(params.getPlainModulus() < pow(k, theta_upper_bound / theta ));
+    }
+
+    SECTION("Test q for theta bound"){
+        REQUIRE(params.getCipherModulus() > pow(k, theta_lower_bound / theta ));
+        REQUIRE(params.getCipherModulus() < pow(k, theta_upper_bound / theta ));
+    }
+
+    SECTION("Test p and q relationship"){
+        SECTION("Not equal"){
+            REQUIRE_FALSE( params.getCipherModulus() == params.getPlainModulus());
+        }
+
+        SECTION("q > p"){
+            REQUIRE( params.getCipherModulus() > params.getPlainModulus());
+        }
     }
 }

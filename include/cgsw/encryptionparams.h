@@ -45,17 +45,7 @@ namespace cgsw {
             @param[in] scheme The encryption scheme to be used
             @see scheme_type for the supported schemes
             */
-            EncryptionParameters(scheme_type scheme = scheme_type::none) : scheme_(scheme)
-            {
-                //default values
-                depth_ = 0;
-                sec_level_ = 64;
-                plain_modulus_bit_ = 8;
-                rate_ = 0.8;
-
-                // Initialisation for random operation that follows
-                SetSeed((NTL::conv<NTL::ZZ>((long)time(NULL))));
-            }
+            EncryptionParameters(scheme_type scheme = scheme_type::none);
 
             inline void set_circuit_depth(size_t depth){
                 depth_ = depth;
@@ -64,19 +54,22 @@ namespace cgsw {
             inline void set_security_level(uint64_t sec_level){
                 // According to the FHE convention docs
                 sec_level_ = sec_level;
-                compute_parms();
             }
 
             inline void set_rate(double rate){
                 // According to the FHE convention docs
+                // Rate cannot be 1 !!!
                 rate_ = rate;
+            }
+
+            void compute(){
                 compute_parms();
             }
 
-            inline void set_plaintext_space_in_bit(uint64_t bit){
-                plain_modulus_bit_ = bit;
-                compute_parms();
-            }
+//            inline void set_plaintext_space_in_bit(uint64_t bit){
+//                plain_modulus_bit_ = bit;
+//                compute_parms();
+//            }
 
 
             // Warning: Only used for testing
@@ -128,6 +121,8 @@ namespace cgsw {
 
 
         private:
+
+            void set_cgsw_modulus();
 
             void compute_parms();
 
