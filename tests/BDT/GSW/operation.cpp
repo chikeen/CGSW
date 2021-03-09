@@ -30,8 +30,8 @@ TEST_CASE("GSW Addition tests"){
     // ----- preparing data ----------
     Plaintext plain_0(0), plain_1(1);
     Ciphertext encrypted_0, encrypted_1;
-    encryptor.encrypt(plain_0, encrypted_0);
-    encryptor.encrypt(plain_1, encrypted_1);
+    encryptor.encrypt_gsw(plain_0, encrypted_0);
+    encryptor.encrypt_gsw(plain_1, encrypted_1);
 
     WHEN("Adding 0 to 0") {
         Ciphertext encrypted_result;

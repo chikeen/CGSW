@@ -32,7 +32,7 @@ namespace cgsw {
 
         void gen_random_matrix(CGSW_mat& mat, size_t n, size_t m, size_t limit);
 
-        void gen_random_uint_matrix(CGSW_mat_uint& mat,  size_t n, size_t m, size_t range);
+        void gen_random_uint_matrix(CGSW_mat_uint& mat, size_t n, size_t m, size_t range);
 
         void gen_empty_matrix(CGSW_mat& mat, size_t n, size_t m);
 

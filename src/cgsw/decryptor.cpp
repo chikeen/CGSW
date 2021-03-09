@@ -51,10 +51,10 @@ namespace cgsw {
 //        decrypted.set_data(SC.norm() / n )
 
         if(util::get_sum(SC) < m * params_.getF()){
-            decrypted.set_data((CGSW_mod) 0);
+            decrypted.set_data( 0);
         }
         else{
-            decrypted.set_data((CGSW_mod) 1);
+            decrypted.set_data(1);
         }
 
         return;
@@ -62,20 +62,31 @@ namespace cgsw {
 
 
     void Decryptor::compressed_decrypt(const Ciphertext &encrypted, CGSWPlaintext &decrypted) {
-        uint64_t l = params_.getL();
-        uint64_t n = params_.getLatticeDimension0();
-        CGSW_long q = params_.getCipherModulus();
+        auto l = params_.getL();
+        auto n0 = params_.getLatticeDimension0();
+        auto q = params_.getCipherModulus();
+        auto f = params_.getF();
 
         CGSW_mat SC = secret_key_.sk() * encrypted.data();
 
         // transform back to plaintext
+        CGSW_mat_uint p_data;
+        p_data.SetDims(n0, n0);
         std::cout << "q: " << q << std::endl;
         std::cout << "SC: " << SC << std::endl;
-//        std::cout << "SC norm():" << SC.norm() << std::endl;
-        std::cout << "threshold: " << n * q/8 * 3 << std::endl;
+        std::cout << "SC size: " << SC.NumRows() << " " << SC.NumCols() << std::endl;
 
+        long tmp = 0;
+        for (int i = 0; i < n0; i ++ ){
+            for (int j = 0; j < n0; j ++ ){
+                // TODO:- note that we are using CGSW_long to uint64 conversion here,
+                // implying that all matrix element should be able to fit in 64 bit int ( no need ZZ)
+                NTL::conv(tmp, rep(SC[i][j])); // <- this conversion
+                p_data[i][j] = util::round_division(tmp, f);
+            }
+        }
 
-
+        decrypted.set_data(p_data);
         return;
     }
 

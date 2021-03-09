@@ -45,7 +45,7 @@ namespace cgsw {
             cipher_modulus_ = util::gen_prime(sec_level_);
             CGSW_mod::init(cipher_modulus_);
             l_ = ceil(log2(cipher_modulus_));
-            m_ = lattice_dimension_0_ * l_;
+            m_ = lattice_dimension_1_ * l_;
 
             long tmp;
             conv(tmp, cipher_modulus_ / plain_modulus_);
@@ -54,7 +54,7 @@ namespace cgsw {
         else if (scheme_ == scheme_type::cgsw){
             double epsilon = 1 - rate_;
 
-            lattice_dimension_0_ = ceil(sec_level_ * 2 / epsilon);
+            lattice_dimension_0_ = ceil(sec_level_ * 2 / epsilon) + 2; // + 2 so that it is larger than
             lattice_dimension_1_ = lattice_dimension_0_ + sec_level_;
 
             // Generate p and q modulus
@@ -62,7 +62,7 @@ namespace cgsw {
 
             CGSW_mod::init(cipher_modulus_);
             l_ = ceil(log2(cipher_modulus_));
-            m_ = lattice_dimension_0_ * l_;
+            m_ = lattice_dimension_1_ * l_;
 
             long tmp;
             conv(tmp, cipher_modulus_ / plain_modulus_);

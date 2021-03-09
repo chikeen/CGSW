@@ -15,6 +15,12 @@ TEST_CASE("Utils Number Theory Tests"){
         CGSW_long p = util::gen_prime(bits);
         REQUIRE(NTL::NumBits(p) == bits);
     }
+
+    SECTION("Test round_division"){
+        REQUIRE(util::round_division(7, 3) == 2);
+        REQUIRE(util::round_division(58, 4) == 15);
+        REQUIRE(util::round_division(58, 5) == 12);
+    }
 }
 
 TEST_CASE("Utils Matrix Tests"){

@@ -48,8 +48,8 @@ TEST_CASE("Microtestbench GSW"){
         Ciphertext encrypted_0, encrypted_1, encrypted_ans;
 
     ta = NTL::GetTime();
-        encryptor.encrypt(plain_0, encrypted_0);
-        encryptor.encrypt(plain_1, encrypted_1);
+        encryptor.encrypt_gsw(plain_0, encrypted_0);
+        encryptor.encrypt_gsw(plain_1, encrypted_1);
     tb = NTL::GetTime();
     enc_t = (tb - ta)/2;
 

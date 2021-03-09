@@ -14,27 +14,26 @@ namespace cgsw {
 
         public:
 //            Plaintext(const EncryptionParameters &params){}; //TODO:- how to convert this into a matrix //
-            Plaintext(uint64_t data_in):data_(data_in){}
+            Plaintext(uint64_t data_in): data_(data_in){};
+
             Plaintext(){};
 
-            inline void set_data(CGSW_mod data){
+            inline void set_data(uint64_t data){
                 data_ = data;
             }
 
-            inline auto &data() noexcept
-            {
+            inline auto &data() noexcept{
                 return data_;
             }
 
-            inline auto &data() const noexcept
-            {
+            inline auto &data() const noexcept{
                 return data_;
             }
 
 
         private:
 
-            CGSW_mod data_;
+            uint64_t data_;
 
 
     };

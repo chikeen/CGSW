@@ -68,7 +68,7 @@ TEST_CASE("CGSW: EncryptionParameters tests"){
 
 TEST_CASE("CGSW: Test set_cgsw_modulus"){
 
-    auto k = GENERATE(64);
+    auto k = GENERATE(4);
     auto rate = GENERATE(0.8);
 //    auto k = GENERATE(4, 16, 64, 128, 256);
 //    auto rate = GENERATE(0.9, 0.8, 0.5, 0.4, 0.2);
@@ -101,6 +101,7 @@ TEST_CASE("CGSW: Test set_cgsw_modulus"){
 
         SECTION("q > p"){
             REQUIRE( params.getCipherModulus() > params.getPlainModulus());
+            REQUIRE( 1 == 2);
         }
     }
 }

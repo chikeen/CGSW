@@ -40,7 +40,8 @@ namespace cgsw {
             mat.SetDims(n, m);
             const CGSW_long modulus = CGSW_mod::modulus();
             const int mean(0);
-            const double stddev(1);// TODO:- how to calculate the standard deviation?
+            const double stddev(0);// TODO:- how to calculate the standard deviation?
+            //TODO:- temperorary setting stddev to 0 meaning no noise
 
             mat.SetDims(n, m);
 
@@ -55,6 +56,8 @@ namespace cgsw {
                     mat[i][j] =  (CGSW_mod) random_num; // no need to modulus since its small?
                 }
             }
+
+//            std::cout << "noise matrix: \n" << mat << std::endl;
         }
 
         void gen_gadget_matrix(CGSW_mat& mat, size_t n, size_t m){

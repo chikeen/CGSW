@@ -23,24 +23,19 @@ namespace cgsw {
         public:
             Encryptor(const EncryptionParameters &params, const PublicKey &public_key);
 
-            void encrypt(const Plaintext &plain, Ciphertext &destination);
+            void encrypt_gsw(const Plaintext &plain, Ciphertext &destination);
 
             /*
-             * Takes in one single matrix m (with binary entries only),
-             * , and output 2D vector of ciphertexts
-             */
-            void encrypt_many(const CGSW_mat_uint &plains, ddCipherMatrix &destination);
-
-            /*
+             * Used for cgsw schemes
              * Takes in 1d vector of bit-decomposed matrices (all with binary entries),
              * , and output a 3D vector of ciphertexts
              */
-            void encrypt_many(const std::vector<CGSW_mat_uint> &plains, dddCipherMatrix &destination);
+            void encrypt_cgsw(const CGSWPlaintext &plains, dddCipherMatrix &destination);
 
             /*
              * Compress a vector of vector of ciphertexts into a single result ciphertext
              */
-            void compress(const dddCipherMatrix &ciphertexts, Ciphertext &results);
+//            void compress(const dddCipherMatrix &ciphertexts, Ciphertext &results);
 
             Ciphertext compress(const dddCipherMatrix &ciphertexts);
 
@@ -49,8 +44,20 @@ namespace cgsw {
                 public_key_ = public_key;
             }
 
-
     private:
+
+            void smart_compress(const dddCipherMatrix &ciphertexts, Ciphertext &results);
+
+            void normal_compress(const dddCipherMatrix &ciphertexts, Ciphertext &results);
+            /*
+             * Takes in one single matrix m (with binary entries only),
+             * , and output 2D vector of ciphertexts
+             */
+            void encrypt_mat(const CGSW_mat_uint &plain, ddCipherMatrix &destination);
+
+            void encrypt_single_bit(const uint64_t &input, Ciphertext &destination);
+
+            inline CGSW_mat generate_t_matrix(uint64_t scalar, int u, int v, size_t n1, size_t n0);
 
             inline CGSW_vec generate_t_vector(uint64_t scalar, uint64_t v, uint64_t l, uint64_t length);
 

@@ -24,7 +24,10 @@ namespace cgsw {
             return NTL::GenGermainPrime_ZZ(bits);
         }
 
+        inline uint64_t round_division(uint64_t x, uint64_t y){
+            assert(y != 0);
+            return (x + y/2)/y;
+        }
+
     } // namespace util
 } // namespace cgsw
-
-
