@@ -30,48 +30,41 @@ TEST_CASE("EncryptCompressDecrypt CGSW tests"){
 
     uint64_t n0 = params.getLatticeDimension0();
 
-    WHEN("Encrypting m") {
+    // 1. Generate a random m matrix
+    int p;
+    conv(p, params.getPlainModulus());
+    CGSW_mat_uint m;
+    util::gen_random_uint_matrix(m, n0, n0, p);
 
-        // 1. Generate a random m matrix
-        int p;
-        conv(p, params.getPlainModulus());
-        CGSW_mat_uint m;
-        util::gen_random_uint_matrix(m, n0, n0, p);
+    INFO("message matrix, m = " << m);
 
-        INFO("message matrix, m = " << m);
+    // 2. initialize a CGSWPlaintext
+    CGSWPlaintext plain(params, m);
+    plain.generate_bit_decomposed_plaintexts();
 
-        // 2. initialize a CGSWPlaintext
-        CGSWPlaintext plain(params, m);
-        plain.generate_bit_decomposed_plaintexts();
+    INFO("Example of decomposed plaintext : \n" << plain.bit_decomposed_data()[0]);
 
-        INFO("Example of decomposed plaintext : \n" << plain.bit_decomposed_data()[0]);
+    // Encrypting those plaintexts into ciphertexts
+    dddCipherMatrix ciphertexts;
+    encryptor.encrypt_cgsw(plain, ciphertexts);
+    INFO("first ciphertext = \n" << ciphertexts[0][0][0].data());
+    INFO("size of ciphertexts: " << ciphertexts.size() << ", " << ciphertexts[0].size()
+                                 << ", " << ciphertexts[0][0].size());
 
-        // Encrypting those plaintexts into ciphertexts
-        dddCipherMatrix ciphertexts;
-        encryptor.encrypt_cgsw(plain, ciphertexts);
-        INFO("first ciphertext = \n" << ciphertexts[0][0][0].data());
-        INFO("size of ciphertexts: " << ciphertexts.size() << ", " << ciphertexts[0].size()
-                                     << ", " << ciphertexts[0][0].size());
+    // "ciphertexts should have size l x (n x n)"
+    REQUIRE(ciphertexts.size() == params.getL());
+    REQUIRE(ciphertexts[0].size() == params.getLatticeDimension0());
+    REQUIRE(ciphertexts[0][0].size() == params.getLatticeDimension0());
 
-        THEN("ciphertexts should have size l x (n x n)") {
-            REQUIRE(ciphertexts.size() == params.getL());
-            REQUIRE(ciphertexts[0].size() == params.getLatticeDimension0());
-            REQUIRE(ciphertexts[0][0].size() == params.getLatticeDimension0());
-        }
+    // 3. Compressing the ciphertexts
+    Ciphertext c = encryptor.compress(ciphertexts);
+    INFO("Compressed: \n" << c.data());
 
-        // 3. Compressing the ciphertexts
-        Ciphertext c = encryptor.compress(ciphertexts);
-        INFO("Compressed: \n" << c.data());
 
-        THEN("compressed ciphertext should be correct") {
-        }
+    // 4. Compressed decryptions
+    CGSWPlaintext decrypted;
+    decryptor.compressed_decrypt(c, decrypted);
+    INFO("Decrypted message: \n" << decrypted.data());
+    REQUIRE(1 == 2);
 
-        // 4. Compressed decryptions
-        CGSWPlaintext decrypted;
-        decryptor.compressed_decrypt(c, decrypted);
-        INFO("Decrypted message: \n" << decrypted.data());
-        THEN("decrypted message should match original"){
-            REQUIRE(1 == 2);
-        }
-    }
 }

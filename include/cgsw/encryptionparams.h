@@ -66,12 +66,6 @@ namespace cgsw {
                 compute_parms();
             }
 
-//            inline void set_plaintext_space_in_bit(uint64_t bit){
-//                plain_modulus_bit_ = bit;
-//                compute_parms();
-//            }
-
-
             // Warning: Only used for testing
             inline void set_cipher_modulus(CGSW_long modulus){
                 cipher_modulus_ = modulus;

@@ -47,9 +47,11 @@ namespace cgsw {
             l_ = ceil(log2(cipher_modulus_));
             m_ = lattice_dimension_1_ * l_;
 
-            long tmp;
-            conv(tmp, cipher_modulus_ / plain_modulus_);
-            f_ = (uint64_t ) tmp;
+            // TODO:- downcastting modulus, again modulus must below 64 bit
+            long p, q;
+            conv(p, plain_modulus_);
+            conv(q, cipher_modulus_);
+            f_ = util::round_division(q, p);
         }
         else if (scheme_ == scheme_type::cgsw){
             double epsilon = 1 - rate_;
@@ -64,9 +66,10 @@ namespace cgsw {
             l_ = ceil(log2(cipher_modulus_));
             m_ = lattice_dimension_1_ * l_;
 
-            long tmp;
-            conv(tmp, cipher_modulus_ / plain_modulus_);
-            f_ = (uint64_t ) tmp; //TODO:- f is now floored. Implement rounding of ZZ/ZZ for greater accuracy
+            long p, q;
+            conv(p, plain_modulus_);
+            conv(q, cipher_modulus_);
+            f_ = util::round_division(q, p);
         }
     }
 
