@@ -9,7 +9,7 @@ using namespace cgsw;
 using namespace std;
 
 TEST_CASE("EncryptCompressDecrypt CGSW tests"){
-    auto k = GENERATE(3);
+    auto k = GENERATE(12);
     auto rate = GENERATE(0.5);
 
     EncryptionParameters params(scheme_type::cgsw);

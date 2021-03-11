@@ -29,6 +29,7 @@ TEST_CASE("Utils Matrix Tests"){
     EncryptionParameters params(scheme_type::gsw);
     params.set_circuit_depth(3);
     params.set_security_level(k);
+    params.compute();
 
     auto q = params.getCipherModulus();
     auto n = params.getLatticeDimension0();
@@ -93,6 +94,7 @@ TEST_CASE("Utils Matrix Tests"){
 
         SECTION("random? "){
             REQUIRE_FALSE(a == b);
+            REQUIRE( 1== 2);
         }
         // TODO:- How to test normal ?
     }
