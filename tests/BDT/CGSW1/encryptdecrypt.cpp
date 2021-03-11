@@ -9,7 +9,7 @@ using namespace cgsw;
 using namespace std;
 
 TEST_CASE("EncryptCompressDecrypt CGSW tests"){
-    auto k = GENERATE(2);
+    auto k = GENERATE(3);
     auto rate = GENERATE(0.5);
 
     EncryptionParameters params(scheme_type::cgsw);
@@ -52,7 +52,7 @@ TEST_CASE("EncryptCompressDecrypt CGSW tests"){
                                  << ", " << ciphertexts[0][0].size());
 
     // "ciphertexts should have size l x (n x n)"
-    REQUIRE(ciphertexts.size() == params.getL());
+    REQUIRE(ciphertexts.size() == params.getPL());
     REQUIRE(ciphertexts[0].size() == params.getLatticeDimension0());
     REQUIRE(ciphertexts[0][0].size() == params.getLatticeDimension0());
 

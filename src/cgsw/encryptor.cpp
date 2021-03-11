@@ -55,9 +55,11 @@ namespace cgsw{
 
         // variables
         uint64_t f = params_.getF(),
-                l = params_.getL(),
+                l_p = params_.getPL(),
+                l_q = params_.getQL(),
                 n0 = params_.getLatticeDimension0(),
-                n1 = params_.getLatticeDimension1();
+                n1 = params_.getLatticeDimension1(),
+                m = params_.getM();
 
         // original ciphertext dimensions are n1 x m,
 
@@ -66,7 +68,7 @@ namespace cgsw{
         result.SetDims(n1, n0);
 
         // loop through u, v, w
-        for(int w = 0; w < l ; w ++){
+        for(int w = 0; w < l_p ; w ++){
             // calculate the scalar f * 2^w
             uint64_t scalar = f * pow(2, w);
 
@@ -78,8 +80,15 @@ namespace cgsw{
 
                     // multiply row v with t and add it to col u
                     CGSW_mat rhs;
-                    util::bit_decompose_matrix(rhs, t, l);
-
+                    util::bit_decompose_matrix(rhs, t, l_q);
+//                    assert(ciphertexts[w][u][v].data().NumRows() == n1);
+//                    assert(ciphertexts[w][u][v].data().NumCols() == m);
+//                    assert(result.NumRows() == n1);
+//                    assert(result.NumCols() == n0);
+//                    int tmp1 = rhs.NumRows();
+//                    int tmp2 = rhs.NumCols();
+//                    assert(rhs.NumRows() == m);
+//                    assert(rhs.NumCols() == n0);
                     result += ciphertexts[w][u][v].data() * rhs;
                 }
             }
@@ -94,7 +103,8 @@ namespace cgsw{
 
         // variables
         uint64_t f = params_.getF(),
-                l = params_.getL(),
+                l_p = params_.getPL(),
+                l_q = params_.getQL(),
                 n0 = params_.getLatticeDimension0(),
                 n1 = params_.getLatticeDimension1(),
                 m = params_.getM();
@@ -105,7 +115,7 @@ namespace cgsw{
         // original ciphertext dimensions are n1 x m, compressed ciphertext n1 x n0
 
         // loop through u, v, w
-        for(int w = 0; w < l ; w ++){
+        for(int w = 0; w < l_p ; w ++){
             // calculate the scalar f * 2^w
             uint64_t scalar = f * pow(2, w);
 
@@ -113,7 +123,7 @@ namespace cgsw{
                 for(int v = 0; v < n0; v ++){ // cols
 
                     // construct the vector t
-                    CGSW_vec t = generate_t_vector(scalar, u, l, m);
+                    CGSW_vec t = generate_t_vector(scalar, u, l_q, m);
 
                     // multiply row v with t and add it to col u
                     for (int u2 = 0 ; u2 < n1; u2 ++ ){
@@ -160,8 +170,10 @@ namespace cgsw{
         result.SetLength(length);
 
         for(int i = 0; i < l; i++){
-            result[(params_.getSecLevel() + u) * l + i] = bit(scalar, i); // secLevel = k rows on top
+            result[(params_.getSecLevel() + u) * l + i] = bit(scalar, i);// secLevel = k rows on top
         }
+
+//        std::cout << "t_vec: " << result << std::endl;
 
         return result;
     }

@@ -33,7 +33,7 @@ TEST_CASE("Utils Matrix Tests"){
     auto q = params.getCipherModulus();
     auto n = params.getLatticeDimension0();
     auto m = params.getM();
-    auto l = params.getL();
+    auto l_q = params.getQL();
     CGSW_mod::init(q);
 
     INFO("params: \n" << params);
@@ -123,7 +123,7 @@ TEST_CASE("Utils Matrix Tests"){
 
             // C = G . G-1(C)
             CGSW_mat g_inverse_random;
-            util::bit_decompose_matrix(g_inverse_random, random, l);
+            util::bit_decompose_matrix(g_inverse_random, random, l_q);
             INFO( "g_inverse_random:" << g_inverse_random);
 
             CGSW_mat random_p = g * g_inverse_random;

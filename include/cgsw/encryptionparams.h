@@ -69,8 +69,8 @@ namespace cgsw {
             // Warning: Only used for testing
             inline void set_cipher_modulus(CGSW_long modulus){
                 cipher_modulus_ = modulus;
-                l_ = ceil(log2(cipher_modulus_));
-                m_ = lattice_dimension_0_ * l_;
+                l_p_ = ceil(log2(cipher_modulus_));
+                m_ = lattice_dimension_0_ * l_p_;
             }
 
             inline void set_plain_modulus(CGSW_long modulus){
@@ -92,7 +92,9 @@ namespace cgsw {
 
             uint64_t getM() const;
 
-            uint64_t getL() const;
+            uint64_t getPL() const;
+
+            uint64_t getQL() const;
 
             uint64_t getF() const;
 
@@ -137,7 +139,9 @@ namespace cgsw {
 
             uint64_t m_; // m = n log q
 
-            uint64_t l_;
+            uint64_t l_p_; // no of bits in plaintext modulus
+
+            uint64_t l_q_; // no of bits in ciphertext modulus
 
             // Only CGSW --------
 
@@ -148,6 +152,8 @@ namespace cgsw {
             uint64_t plain_modulus_bit_;
 
             uint64_t f_; // f = round (q/p)
+
+            //TODO:- fix l_p and l_q distinction
 
     };
 }

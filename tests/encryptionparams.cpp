@@ -35,7 +35,7 @@ TEST_CASE("GSW: Encryption Params Test: Given security level"){
         parms.set_circuit_depth(3);
         parms.set_security_level(k);
         INFO("Modulus, q = " << parms.getCipherModulus());
-        REQUIRE(parms.getL() == ceil(log2(parms.getCipherModulus())));
+        REQUIRE(parms.getQL() == ceil(log2(parms.getCipherModulus())));
         REQUIRE(ceil(log2(parms.getCipherModulus())) == k);
     }
 }

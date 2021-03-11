@@ -11,11 +11,10 @@ namespace cgsw {
     void CGSWPlaintext::generate_bit_decomposed_plaintexts() {
         // from data_ -> bit_decomposed_data_
 
-        uint l = ceil(log2(params_.getPlainModulus())); // l = no of decomposed plaintexts matrices
         uint64_t rows = data_.NumRows(),
                  cols = data_.NumCols();
 
-        for(int k = 0; k < l; k++){
+        for(int k = 0; k < params_.getPL(); k++){
             CGSW_mat_uint tmp;
             tmp.SetDims(rows, cols);
             for (int i = 0; i < rows; i++){

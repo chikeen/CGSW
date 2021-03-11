@@ -64,7 +64,7 @@ namespace cgsw {
             if(m < n) throw std::runtime_error("gadget matrix cols must > rows");
 
             mat.SetDims(n, m);
-            int no_log = m/n;
+            int no_log = m/n; // TODO:- is this really the best way?
 
             for(int i = 0 ; i < n; i++){
                 for(int l = 0; l < no_log; l++){

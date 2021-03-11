@@ -44,8 +44,8 @@ namespace cgsw {
             plain_modulus_ = 3; //default for binary operation
             cipher_modulus_ = util::gen_prime(sec_level_);
             CGSW_mod::init(cipher_modulus_);
-            l_ = ceil(log2(cipher_modulus_));
-            m_ = lattice_dimension_1_ * l_;
+            l_q_ = ceil(log2(cipher_modulus_));
+            m_ = lattice_dimension_1_ * l_q_;
 
             // TODO:- downcastting modulus, again modulus must below 64 bit
             long p, q;
@@ -63,8 +63,9 @@ namespace cgsw {
             set_cgsw_modulus();
 
             CGSW_mod::init(cipher_modulus_);
-            l_ = ceil(log2(cipher_modulus_));
-            m_ = lattice_dimension_1_ * l_;
+            l_p_ = ceil(log2(plain_modulus_));
+            l_q_ = ceil(log2(cipher_modulus_));
+            m_ = lattice_dimension_1_ * l_q_;
 
             long p, q;
             conv(p, plain_modulus_);
@@ -102,9 +103,14 @@ namespace cgsw {
         return m_;
     }
 
-    uint64_t EncryptionParameters::getL() const {
-        return l_;
+    uint64_t EncryptionParameters::getPL() const {
+        return l_p_;
     }
+
+    uint64_t EncryptionParameters::getQL() const {
+        return l_q_;
+    }
+
 
     uint64_t EncryptionParameters::getF() const {
         return f_;
@@ -124,7 +130,8 @@ namespace cgsw {
                 os << "|   ciphertext modulus (q): " << parms.getCipherModulus() << std::endl;
                 os << "|   lattice dimension (n): " << parms.getLatticeDimension0() << std::endl;
                 os << "|   second lattice dimension (m): " << parms.getM() << std::endl;
-                os << "|   l: " << parms.getL() << std::endl;
+                os << "|   l_p: " << parms.getPL() << std::endl;
+                os << "|   l_q: " << parms.getPL() << std::endl;
                 os << "|   f: " << parms.getF() << std::endl;
                 os << "\\" << std::endl;
                 break;
@@ -136,13 +143,12 @@ namespace cgsw {
                 os << "|   security level (k): " << parms.getSecLevel() << std::endl;
                 os << "|   depth (d): " << parms.getDepth() << std::endl;
                 os << "|   rate (1-epsilon): " << parms.getRate() << std::endl;
-                os << "|   plaintext space in bits : " << parms.getPlainModulusBit() << std::endl;
-                os << "|   ciphertext space in bits: " << parms.getCipherModulusBit() << std::endl;
                 os << "|   plaintext modulus (p): " << parms.getPlainModulus()<< std::endl;
                 os << "|   ciphertext modulus (q): " << parms.getCipherModulus() << std::endl;
                 os << "|   lattice dimension (n0, n1): " << parms.getLatticeDimension0() << ", " << parms.getLatticeDimension1() << std::endl;
                 os << "|   second lattice dimension (m): " << parms.getM() << std::endl;
-                os << "|   l: " << parms.getL() << std::endl;
+                os << "|   l_p: " << parms.getPL() << std::endl;
+                os << "|   l_q: " << parms.getPL() << std::endl;
                 os << "|   f: " << parms.getF() << std::endl;
                 os << "\\" << std::endl;
                 break;

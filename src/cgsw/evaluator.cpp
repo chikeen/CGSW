@@ -28,7 +28,7 @@ namespace cgsw {
     }
 
     void Evaluator::multiply_inplace(Ciphertext &encrypted1, const Ciphertext &encrypted2){
-        uint64_t l = params_.getL();
+        uint64_t l = params_.getPL();
 
         CGSW_mat decomposed;
         util::bit_decompose_matrix(decomposed, encrypted2.data(), l);
