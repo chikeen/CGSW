@@ -37,7 +37,7 @@ namespace cgsw {
                 util::concat_matrix_h(t, s, i);
                 break;
 
-            case scheme_type::cgsw:
+            case scheme_type::cgsw1:
                 util::gen_random_matrix(s, n0, k);
                 util::gen_identity_matrix(i, n0, n0);
                 util::concat_matrix_h(t, s, i);
@@ -76,7 +76,7 @@ namespace cgsw {
                 B = -B; // OPT:: Can negate at gen_random_matrix;
                 break;
 
-            case scheme_type::cgsw:
+            case scheme_type::cgsw1:
                 // Generating error matrix n0 x M
                 util::gen_normal_matrix(e, n0, m);
 

@@ -14,8 +14,8 @@ namespace cgsw{
         set_public_key(public_key);
 
         // generate gadget matrix
-        util::gen_gadget_matrix(gadget_matrix_, params_.getLatticeDimension1(),
-                                                      params_.getM());
+        util::gen_g_gadget_matrix(gadget_matrix_, params_.getLatticeDimension1(),
+                                  params_.getM());
     }
 
     void Encryptor::encrypt_gsw(const Plaintext &plain, Ciphertext &destination) {
@@ -38,7 +38,7 @@ namespace cgsw{
         result.SetDims(params_.getLatticeDimension1(), params_.getLatticeDimension0());
         Ciphertext cresult;
         cresult.set_data(result);
-        smart_compress(ciphertexts, cresult);
+        smart_compress_cgsw1(ciphertexts, cresult);
         return cresult;
     }
 
@@ -51,7 +51,7 @@ namespace cgsw{
         return t;
     }
 
-    void Encryptor::normal_compress(const dddCipherMatrix &ciphertexts, Ciphertext &results) {
+    void Encryptor::normal_compress_cgsw1(const dddCipherMatrix &ciphertexts, Ciphertext &results) {
 
         // variables
         uint64_t f = params_.getF(),
@@ -97,9 +97,7 @@ namespace cgsw{
         results.set_data(result);
     }
 
-    void Encryptor::smart_compress(const dddCipherMatrix &ciphertexts, Ciphertext &results) {
-
-        std::cout << "Called once" << std::endl;
+    void Encryptor::smart_compress_cgsw1(const dddCipherMatrix &ciphertexts, Ciphertext &results) {
 
         // variables
         uint64_t f = params_.getF(),
@@ -129,6 +127,54 @@ namespace cgsw{
                     for (int u2 = 0 ; u2 < n1; u2 ++ ){
                         result[u2][v] += ciphertexts[w][u][v].data()[u2] * t;
                     }
+                }
+            }
+        }
+
+        results.set_data(result);
+    }
+
+    void Encryptor::normal_compress_cgsw2(const dddCipherMatrix &ciphertexts, Ciphertext &results) {
+
+        // variables
+        uint64_t f = params_.getF(),
+                l_p = params_.getPL(),
+                l_q = params_.getQL(),
+                n0 = params_.getLatticeDimension0(),
+                n1 = params_.getLatticeDimension1(),
+                m = params_.getM();
+
+        // original ciphertext dimensions are n1 x m,
+
+        CGSW_mat H = params_.getH();
+
+        // create a final result
+        CGSW_mat result;
+        result.SetDims(n1, n0);
+
+        // loop through u, v, w
+        for(int w = 0; w < l_p ; w ++){
+            // calculate the scalar 2^w
+            uint64_t scalar = pow(2, w);
+
+            for(int u = 0; u < n0; u ++){
+                for(int v = 0; v < n0; v ++){
+
+                    // construct the matrix t (with 2^{w}
+                    CGSW_mat t = generate_t_matrix(scalar, u, v, n1, n0);
+
+                    // G-1 (t x H)
+                    CGSW_mat rhs;
+                    util::bit_decompose_matrix(rhs, t * H, l_q);
+//                    assert(ciphertexts[w][u][v].data().NumRows() == n1);
+//                    assert(ciphertexts[w][u][v].data().NumCols() == m);
+//                    assert(result.NumRows() == n1);
+//                    assert(result.NumCols() == n0);
+//                    int tmp1 = rhs.NumRows();
+//                    int tmp2 = rhs.NumCols();
+//                    assert(rhs.NumRows() == m);
+//                    assert(rhs.NumCols() == n0);
+                    result += ciphertexts[w][u][v].data() * rhs;
                 }
             }
         }

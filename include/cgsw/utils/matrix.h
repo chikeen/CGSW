@@ -26,7 +26,7 @@ namespace cgsw {
 //            throw (NotImplemented());
 //        }
 
-        void bit_decompose_matrix(CGSW_mat& mat_out, const CGSW_mat& mat_in, uint64_t l);
+
 
         void gen_random_matrix(CGSW_mat& mat, size_t n, size_t m);
 
@@ -39,8 +39,6 @@ namespace cgsw {
         void gen_identity_matrix(CGSW_mat& mat, size_t n, size_t m);
 
         void gen_normal_matrix(CGSW_mat& mat, size_t n, size_t m);
-
-        void gen_gadget_matrix(CGSW_mat& mat, size_t n, size_t m);
 
         void concat_matrix_h(CGSW_mat& mat_out, const CGSW_mat& mat_a, const CGSW_mat& mat_b);
 

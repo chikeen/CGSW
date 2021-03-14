@@ -11,7 +11,7 @@ using namespace std;
 TEST_CASE("Plaintext Tests"){
     auto p = GENERATE(3, 5, 8);
 
-    EncryptionParameters params(scheme_type::cgsw);
+    EncryptionParameters params(scheme_type::cgsw1);
     params.set_circuit_depth(3);
     params.set_security_level(8);
     params.set_plain_modulus((CGSW_long) p );

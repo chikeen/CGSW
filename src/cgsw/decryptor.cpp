@@ -19,15 +19,10 @@
 namespace cgsw {
 
     Decryptor::Decryptor(const EncryptionParameters &params, const SecretKey &secret_key): params_(params), secret_key_(secret_key) {
-        // Verify parameters
-//        if (!context_.parameters_set()) // TODO:- check if i need parameters_set?
-//        {
-//            throw std::invalid_argument("encryption parameters are not set correctly");
-//        }
 
         // generate gadget matrix
-        util::gen_gadget_matrix(gadget_matrix_, params_.getLatticeDimension0(),
-                                                      params_.getM());
+        util::gen_g_gadget_matrix(gadget_matrix_, params_.getLatticeDimension0(),
+                                  params_.getM());
     }
 
     void Decryptor::decrypt(const Ciphertext &encrypted, Plaintext &decrypted){
@@ -35,33 +30,31 @@ namespace cgsw {
         auto m = params_.getM();
         CGSW_mat SC = secret_key_.sk() * encrypted.data();
 
-//        std::cout << "SC: " << SC << std::endl;
-//        std::cout << SC.NumCols() << " " << SC.NumRows() << std::endl;
-//        std::cout << "SC sum():" << util::get_sum(SC) << std::endl;
-//        std::cout << "threshold_1: " << m * q/8 * 3 << std::endl;
-//        std::cout << "threshold_2: " << m * params_.getF()  << std::endl;
-
-        // Round off each element to the nearest multiples of f = q/p
-//        for (int i = 0; i < SC.size(); i++){
-//            double divided = SC(0, i) / params_.getF();
-//
-//        }
-//        divide -> average
-
-//        decrypted.set_data(SC.norm() / n )
-
         if(util::get_sum(SC) < m * params_.getF()){
             decrypted.set_data( 0);
         }
         else{
             decrypted.set_data(1);
         }
-
-        return;
     }
 
 
     void Decryptor::compressed_decrypt(const Ciphertext &encrypted, CGSWPlaintext &decrypted) {
+       if(params_.getScheme() == scheme_type::cgsw1){
+           compressed_decrypt_cgsw1(encrypted, decrypted);
+       } else if (params_.getScheme() == scheme_type::cgsw2){
+           compressed_decrypt_cgsw2(encrypted, decrypted);
+       }
+    }
+
+    int Decryptor::invariant_noise_budget(const Ciphertext &encrypted) {
+        return 0;
+    }
+
+
+    /// Private:
+
+    void Decryptor::compressed_decrypt_cgsw1(const Ciphertext &encrypted, CGSWPlaintext &decrypted) {
         auto n0 = params_.getLatticeDimension0();
         auto q = params_.getCipherModulus();
         auto f = params_.getF();
@@ -87,13 +80,45 @@ namespace cgsw {
         }
 
         decrypted.set_data(p_data);
-        return;
     }
 
-    int Decryptor::invariant_noise_budget(const Ciphertext &encrypted) {
-        return 0;
+    void Decryptor::compressed_decrypt_cgsw2(const Ciphertext &encrypted, CGSWPlaintext &decrypted) {
+        auto n0 = params_.getLatticeDimension0();
+        auto f = params_.getF();
+
+        // 0. X := SC = MH + E
+        CGSW_mat SC = secret_key_.sk() * encrypted.data();
+
+        // 1. XF = SCF = MHF + EF = EF  - rmb HF = 0
+        // TODO:- where to get H?
+        CGSW_mat F;
+        util::gen_f_trapdoor_matrix(F);
+        CGSW_mat EF = SC * F;
+
+        // 2. TODO:- EF x F-1 = E ( or somehow calculate E using the fact that F has full rank over the reals)
+        CGSW_mat E;
+
+        // 3. SC - E =  MH
+        CGSW_mat MH = SC - E;
+
+        // 4. TODO:- somehow recover M from MH using the fact that H has rank n0 modulo q.
+        CGSW_mat M;
+
+        // 5. transform back to plaintext data
+        CGSW_mat_uint p_data;
+        p_data.SetDims(n0, n0);
+
+        long tmp = 0;
+        for (int i = 0; i < n0; i ++ ){
+            for (int j = 0; j < n0; j ++ ){
+                // TODO:- note that we are using CGSW_long to uint64 conversion here,
+                // implying that all matrix element should be able to fit in 64 bit int ( no need ZZ)
+                // or we can try implement a better round_division that supports ZZ
+                NTL::conv(tmp, rep(SC[i][j])); // <- this conversion
+                p_data[i][j] = util::round_division(tmp, f);
+            }
+        }
+
+        decrypted.set_data(p_data);
     }
-
-
-
 }

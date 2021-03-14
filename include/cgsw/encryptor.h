@@ -25,17 +25,7 @@ namespace cgsw {
 
             void encrypt_gsw(const Plaintext &plain, Ciphertext &destination);
 
-            /*
-             * Used for cgsw schemes
-             * Takes in 1d vector of bit-decomposed matrices (all with binary entries),
-             * , and output a 3D vector of ciphertexts
-             */
             void encrypt_cgsw(const CGSWPlaintext &plains, dddCipherMatrix &destination);
-
-            /*
-             * Compress a vector of vector of ciphertexts into a single result ciphertext
-             */
-//            void compress(const dddCipherMatrix &ciphertexts, Ciphertext &results);
 
             Ciphertext compress(const dddCipherMatrix &ciphertexts);
 
@@ -46,13 +36,12 @@ namespace cgsw {
 
     private:
 
-            void smart_compress(const dddCipherMatrix &ciphertexts, Ciphertext &results);
+            void smart_compress_cgsw1(const dddCipherMatrix &ciphertexts, Ciphertext &results);
 
-            void normal_compress(const dddCipherMatrix &ciphertexts, Ciphertext &results);
-            /*
-             * Takes in one single matrix m (with binary entries only),
-             * , and output 2D vector of ciphertexts
-             */
+            void normal_compress_cgsw1(const dddCipherMatrix &ciphertexts, Ciphertext &results);
+
+            void normal_compress_cgsw2(const dddCipherMatrix &ciphertexts, Ciphertext &results);
+
             void encrypt_mat(const CGSW_mat_uint &plain, ddCipherMatrix &destination);
 
             void encrypt_single_bit(const uint64_t &input, Ciphertext &destination);

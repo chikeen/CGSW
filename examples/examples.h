@@ -53,7 +53,7 @@ inline void print_parameters(const cgsw::EncryptionParameters &params) {
         case cgsw::scheme_type::gsw:
             scheme_name = "GSW";
             break;
-        case cgsw::scheme_type::cgsw:
+        case cgsw::scheme_type::cgsw1:
             scheme_name = "RGSW";
             break;
         default:

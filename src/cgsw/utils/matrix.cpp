@@ -40,7 +40,7 @@ namespace cgsw {
             mat.SetDims(n, m);
             const CGSW_long modulus = CGSW_mod::modulus();
             const int mean(0);
-            const double stddev(0.3);// TODO:- how to calculate the standard deviation?
+            const double stddev(0);// TODO:- how to calculate the standard deviation?
             //TODO:- temperorary setting stddev to 0 meaning no noise
 
             mat.SetDims(n, m);
@@ -58,38 +58,6 @@ namespace cgsw {
             }
 
 //            std::cout << "noise matrix: \n" << mat << std::endl;
-        }
-
-        void gen_gadget_matrix(CGSW_mat& mat, size_t n, size_t m){
-            if(m < n) throw std::runtime_error("gadget matrix cols must > rows");
-
-            mat.SetDims(n, m);
-            int no_log = m/n; // TODO:- is this really the best way?
-
-            for(int i = 0 ; i < n; i++){
-                for(int l = 0; l < no_log; l++){
-                    mat[i][no_log*i + l] = pow(2, l);
-                }
-            }
-        }
-
-        void bit_decompose_matrix(CGSW_mat& mat_out, const CGSW_mat& mat_in, uint64_t l){
-            /*
-             * Take a nxc matrix and make it mxc
-             */
-            uint64_t n = mat_in.NumRows();
-            uint64_t c = mat_in.NumCols();
-            uint64_t m = n * l;
-
-            mat_out.SetDims(m, c);
-
-            for(int j = 0; j < c; j ++){
-                for(int i = 0; i < n; i++){
-                    for(int k = 0; k < l; k++){
-                        mat_out[(i * l + k)][j] = NTL::bit(rep(mat_in[i][j]), k)? 1 : 0;
-                    }
-                }
-            }
         }
 
         void gen_random_uint_matrix(CGSW_mat_uint& mat,  size_t n, size_t m, size_t range){
