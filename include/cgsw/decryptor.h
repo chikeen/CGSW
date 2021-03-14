@@ -25,9 +25,14 @@ namespace cgsw {
             int invariant_noise_budget(const Ciphertext &encrypted); // TODO:- somehow implement this
 
         private:
+
+            void compressed_decrypt_cgsw1(const Ciphertext &encrypted, CGSWPlaintext &decrypted);
+
+            void compressed_decrypt_cgsw2(const Ciphertext &encrypted, CGSWPlaintext &decrypted);
+
             EncryptionParameters params_;
 
-            SecretKey secret_key_;
+            SecretKey   secret_key_;
 
             CGSW_mat gadget_matrix_;
 

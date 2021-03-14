@@ -119,10 +119,10 @@ your build system of choice.
 Another, easier way is possible if you are using CGSW in a cmake project.
 1. Include the following line in your `CMakeLists.txt`:
 ```cmake
-find_package(cgsw)
+find_package(cgsw1)
 ```
 
-2. Run your `cmake` step with `-Dcgsw_DIR=<cgsw install prefix>/share/cmake/cgsw`.
+2. Run your `cmake` step with `-Dcgsw_DIR=<cgsw1 install prefix>/share/cmake/cgsw1`.
 > above need to be revisited (flags part is not yet available) !
 
 ## Example

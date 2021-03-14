@@ -9,10 +9,10 @@ using namespace cgsw;
 using namespace std;
 
 TEST_CASE("EncryptCompressDecrypt CGSW tests"){
-    auto k = GENERATE(12);
+    auto k = GENERATE(2);
     auto rate = GENERATE(0.5);
 
-    EncryptionParameters params(scheme_type::cgsw);
+    EncryptionParameters params(scheme_type::cgsw1);
     params.set_circuit_depth(3);
     params.set_security_level(k);
     params.set_rate(rate);
@@ -42,7 +42,7 @@ TEST_CASE("EncryptCompressDecrypt CGSW tests"){
     CGSWPlaintext plain(params, m);
     plain.generate_bit_decomposed_plaintexts();
 
-    INFO("Example of decomposed plaintext : \n" << plain.bit_decomposed_data()[0]);
+    INFO("Example of decomposed plaintext : \n" << plain.bit_decomposed_data()[params.getPL() -1]);
 
     // Encrypting those plaintexts into ciphertexts
     dddCipherMatrix ciphertexts;

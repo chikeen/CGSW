@@ -10,4 +10,5 @@
 
 #include "numth.h"
 #include "matrix.h"
+#include "gadget_matrix.h"
 

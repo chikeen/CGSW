@@ -12,7 +12,7 @@ using namespace std;
 TEST_CASE("Encryptor Tests"){
     auto k = GENERATE(8, 16);
 
-    EncryptionParameters parms(scheme_type::cgsw);
+    EncryptionParameters parms(scheme_type::cgsw1);
     parms.set_circuit_depth(3);
     parms.set_security_level(k);
 

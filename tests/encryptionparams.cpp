@@ -47,7 +47,7 @@ TEST_CASE("CGSW: EncryptionParameters tests"){
 //    auto k = GENERATE(16);
 //    auto p_bits = GENERATE(32);
 
-    EncryptionParameters parms(scheme_type::cgsw);
+    EncryptionParameters parms(scheme_type::cgsw1);
     parms.set_circuit_depth(3);
 
     SECTION("compute_parms text"){
@@ -68,11 +68,11 @@ TEST_CASE("CGSW: EncryptionParameters tests"){
 
 TEST_CASE("CGSW: Test set_cgsw_modulus"){
 
-    auto k = GENERATE(4);
-    auto rate = GENERATE(0.8);
+    auto k = GENERATE(16);
+    auto rate = GENERATE(0.5);
 //    auto k = GENERATE(4, 16, 64, 128, 256);
 //    auto rate = GENERATE(0.9, 0.8, 0.5, 0.4, 0.2);
-    EncryptionParameters params(scheme_type::cgsw);
+    EncryptionParameters params(scheme_type::cgsw1);
     params.set_circuit_depth(3);
     params.set_security_level(k);
     params.set_rate(rate);
@@ -104,4 +104,13 @@ TEST_CASE("CGSW: Test set_cgsw_modulus"){
             REQUIRE( 1 == 2);
         }
     }
+}
+
+
+TEST_CASE("CGSW2: CGSW params calculator"){
+    auto sec_level = GENERATE(2, 4, 16, 64, 128);
+    auto rate = GENERATE(0.2, 0.5, 0.8);
+
+    EncryptionParameters params(scheme_type::cgsw2);
+    params.find_cgsw2_modulus(sec_level, rate);
 }

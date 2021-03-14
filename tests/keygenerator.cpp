@@ -62,7 +62,7 @@ TEST_CASE("CGSW: Key Generator"){
     auto k = GENERATE(16);
     auto p_bits = 16;
 
-    EncryptionParameters params(scheme_type::cgsw);
+    EncryptionParameters params(scheme_type::cgsw1);
     params.set_circuit_depth(3);
     params.set_security_level(k);
 //    params.set_plaintext_space_in_bit(p_bits);
@@ -94,8 +94,8 @@ TEST_CASE("CGSW: Key Generator"){
 
     SECTION("Public_key * Secret_key must equal small errors"){
         CGSW_mat product =  secret_key.sk() * public_key.data();
-        INFO("product(before): " << product );
         INFO("product: " << product );
+        REQUIRE( 1 == 2);
 //        REQUIRE(product.norm() < n0 * q/2); // average size less than q/2
     }
 }

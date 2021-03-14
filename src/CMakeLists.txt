@@ -18,6 +18,7 @@ add_library(
 
         ## utils
         cgsw/utils/matrix.cpp
+        cgsw/utils/gadget_matrix.cpp
 
         cgsw/plaintext.cpp
         cgsw/encryptionparams.cpp

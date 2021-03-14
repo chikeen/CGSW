@@ -99,9 +99,9 @@ TEST_CASE("Utils Matrix Tests"){
         // TODO:- How to test normal ?
     }
 
-    SECTION("test gen_gadget_matrix"){
+    SECTION("test gen_g_gadget_matrix"){
         CGSW_mat a;
-        util::gen_gadget_matrix(a, n, m);
+        util::gen_g_gadget_matrix(a, n, m);
         INFO( "a:" << a);
 
         SECTION("size ? "){
@@ -120,7 +120,7 @@ TEST_CASE("Utils Matrix Tests"){
             INFO( "random:" << random);
 
             // G
-            util::gen_gadget_matrix(g, n, m);
+            util::gen_g_gadget_matrix(g, n, m);
             INFO( "g:" << g);
 
             // C = G . G-1(C)
