@@ -34,17 +34,50 @@ class NotImplemented : public std::logic_error {
         NotImplemented() : std::logic_error("Function not yet implemented") { };
 };
 
+class NotSupported : public std::logic_error {
+    public:
+        NotSupported() : std::logic_error("Current schemes doesn't not support this function") {};
+};
 
+// NTL extensions
 namespace NTL {
-    inline CGSW_long sqrt(const CGSW_long & x){
+    inline CGSW_long sqrt(const CGSW_long &x){
         return SqrRoot(x);
     }
 
-    inline double log2(const CGSW_long & x){
+    inline double log2(const CGSW_long &x){
         double tmp = log(x);
         double tmp2 = log10(2);
         return log(x) / log(CGSW_long (2));
     }
 
+    inline CGSW_mat_uint operator+(const CGSW_mat_uint &a, const CGSW_mat_uint &b){
+        assert(a.NumCols() == b.NumCols());
+        assert(a.NumRows() == b.NumRows());
 
+        CGSW_mat_uint ans;
+        ans.SetDims(a.NumRows(), a.NumCols());
+        for (auto i = 0; i < a.NumRows(); i ++){
+            for (auto j = 0; j < a.NumCols(); j ++){
+                ans[i][j] = a[i][j] + b[i][j];
+            }
+        }
+
+        return ans;
+    }
+
+    inline CGSW_mat_uint operator-(const CGSW_mat_uint &a, const CGSW_mat_uint &b){
+        assert(a.NumCols() == b.NumCols());
+        assert(a.NumRows() == b.NumRows());
+
+        CGSW_mat_uint ans;
+        ans.SetDims(a.NumRows(), a.NumCols());
+        for (auto i = 0; i < a.NumRows(); i ++){
+            for (auto j = 0; j < a.NumCols(); j ++){
+                ans[i][j] = a[i][j] - b[i][j];
+            }
+        }
+
+        return ans;
+    }
 }

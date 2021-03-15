@@ -18,16 +18,19 @@ namespace cgsw {
     typedef std::vector<std::vector<Ciphertext>> ddCipherMatrix;
     typedef std::vector<std::vector<std::vector<Ciphertext>>> dddCipherMatrix;
 
-    class Encryptor {
+    class Encrypter {
 
         public:
-            Encryptor(const EncryptionParameters &params, const PublicKey &public_key);
+            Encrypter(const EncryptionParameters &params, const PublicKey &public_key);
 
-            void encrypt_gsw(const Plaintext &plain, Ciphertext &destination);
+            // TODO:- can consolidate the two following into one single encrypt with diff signature ?
+            void encrypt_gsw(const GSWPlaintext &plain, Ciphertext &destination);
 
             void encrypt_cgsw(const CGSWPlaintext &plains, dddCipherMatrix &destination);
 
-            Ciphertext compress(const dddCipherMatrix &ciphertexts);
+            CGSWCiphertext compress(const dddCipherMatrix &ciphertexts);
+
+            void encrypt_compress(const CGSWPlaintext &plains, CGSWCiphertext &destination);
 
             inline void set_public_key(const PublicKey &public_key)
             {
@@ -36,11 +39,11 @@ namespace cgsw {
 
     private:
 
-            void smart_compress_cgsw1(const dddCipherMatrix &ciphertexts, Ciphertext &results);
+            void smart_compress_cgsw1(const dddCipherMatrix &ciphertexts, CGSWCiphertext &results);
 
-            void normal_compress_cgsw1(const dddCipherMatrix &ciphertexts, Ciphertext &results);
+            void normal_compress_cgsw1(const dddCipherMatrix &ciphertexts, CGSWCiphertext &results);
 
-            void normal_compress_cgsw2(const dddCipherMatrix &ciphertexts, Ciphertext &results);
+            void normal_compress_cgsw2(const dddCipherMatrix &ciphertexts, CGSWCiphertext &results);
 
             void encrypt_mat(const CGSW_mat_uint &plain, ddCipherMatrix &destination);
 

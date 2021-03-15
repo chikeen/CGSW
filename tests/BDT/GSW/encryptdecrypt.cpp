@@ -28,27 +28,27 @@ TEST_CASE("EncryptDecrypt GSW tests"){
     INFO("secret_key" << secret_key.sk());
     INFO("public_key" << public_key.data());
 
-    Encryptor encryptor(params, public_key);
-    Decryptor decryptor(params, secret_key);
+    Encrypter encryptor(params, public_key);
+    Decrypter decryptor(params, secret_key);
 
     SECTION("simple GSW 1 bit"){
 
         WHEN("Encrypting 0"){
-            Plaintext plain(0);
+            GSWPlaintext plain(0);
             Ciphertext encrypted;
             encryptor.encrypt_gsw(plain, encrypted);
 
-            Plaintext decrypted;
+            GSWPlaintext decrypted;
             decryptor.decrypt(encrypted, decrypted);
             REQUIRE(decrypted.data() == 0);
         }
 
         WHEN("Encrypting 1"){
-            Plaintext plain(1);
+            GSWPlaintext plain(1);
             Ciphertext encrypted;
             encryptor.encrypt_gsw(plain, encrypted);
 
-            Plaintext decrypted;
+            GSWPlaintext decrypted;
             decryptor.decrypt(encrypted, decrypted);
             REQUIRE(decrypted.data() == 1);
         }

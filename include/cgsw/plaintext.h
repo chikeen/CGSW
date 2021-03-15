@@ -10,13 +10,13 @@
 
 namespace cgsw {
 
-    class Plaintext {
+    class GSWPlaintext {
 
         public:
 //            Plaintext(const EncryptionParameters &params){}; //TODO:- how to convert this into a matrix //
-            Plaintext(uint64_t data_in): data_(data_in){};
+            GSWPlaintext(uint64_t data_in): data_(data_in){};
 
-            Plaintext(){};
+            GSWPlaintext(){};
 
             inline void set_data(uint64_t data){
                 data_ = data;
@@ -34,15 +34,17 @@ namespace cgsw {
         private:
 
             uint64_t data_;
-
-
     };
 
 
     class CGSWPlaintext {
         public:
     //            Plaintext(const EncryptionParameters &params){}; //TODO:- how to convert this into a matrix //
-            CGSWPlaintext(EncryptionParameters params, CGSW_mat_uint data_in):data_(data_in), params_(params){};
+            CGSWPlaintext(EncryptionParameters params, CGSW_mat_uint data_in):data_(data_in), params_(params){
+                long tmp;
+                NTL::conv(tmp, params.getPlainModulus());
+                modulus_uint_ = tmp;
+            };
 
             CGSWPlaintext(){};
 
@@ -50,13 +52,11 @@ namespace cgsw {
                 data_ = data;
             }
 
-            inline auto &data() noexcept
-            {
+            inline auto &data() noexcept{
                 return data_;
             }
 
-            inline auto &data() const noexcept
-            {
+            inline auto &data() const noexcept{
                 return data_;
             }
 
@@ -64,21 +64,93 @@ namespace cgsw {
                 return bit_decomposed_data_;
             }
 
-            inline auto &bit_decomposed_data() const noexcept
-            {
+            inline auto &bit_decomposed_data() const noexcept{
                 return bit_decomposed_data_;
             }
 
             void generate_bit_decomposed_plaintexts();
 
+            inline bool operator==(const CGSWPlaintext &compare) const noexcept{
+                return data_ == compare.data_;
+            }
+
+            inline bool operator!=(const CGSWPlaintext &compare) const noexcept{
+                return data_ != compare.data_;
+            }
+
+            //TODO-: solve the p/q problem
+            inline CGSWPlaintext operator+(const CGSWPlaintext &rhs){
+                assert(data_.NumCols() == rhs.data().NumCols());
+                assert(data_.NumRows() == rhs.data().NumRows());
+
+                CGSW_mat_uint data;
+                data.SetDims(data_.NumRows(), data_.NumCols());
+                for (auto i = 0; i < data_.NumRows(); i ++){
+                    for (auto j = 0; j < data_.NumCols(); j ++){
+                        data[i][j] = (data_[i][j] + rhs.data()[i][j]) % modulus_uint_;
+                    }
+                }
+
+                return CGSWPlaintext(params_, data);
+            }
+
+            //TODO:- solve the p/q problem
+            inline CGSWPlaintext operator-(const CGSWPlaintext &rhs){
+                assert(data_.NumCols() == rhs.data().NumCols());
+                assert(data_.NumRows() == rhs.data().NumRows());
+
+                CGSW_mat_uint data;
+                data.SetDims(data_.NumRows(), data_.NumCols());
+                for (auto i = 0; i < data_.NumRows(); i ++){
+                    for (auto j = 0; j < data_.NumCols(); j ++){
+                        if(data_[i][j] > rhs.data()[i][j]){
+                            data[i][j] = (data_[i][j] - rhs.data()[i][j]) % modulus_uint_;
+                        }
+                        else{
+                            data[i][j] = (modulus_uint_ + data_[i][j] - rhs.data()[i][j]) % modulus_uint_;
+                        }
+
+                    }
+                }
+
+                return CGSWPlaintext(params_, data);
+            }
+
+            inline CGSWPlaintext operator*(const CGSWPlaintext &rhs){
+                assert(data_.NumCols() == rhs.data().NumRows());
+
+                CGSW_mat_uint data;
+                data.SetDims(data_.NumRows(), rhs.data().NumCols());
+                for (auto i = 0; i < data_.NumRows(); i ++){
+                    for (auto j = 0; j < data_.NumCols(); j ++){
+                        data[i][j] = (data_[i][j] * rhs.data()[i][j]) % modulus_uint_;
+                    }
+                }
+
+                return CGSWPlaintext(params_, data);
+            }
+
+            inline CGSWPlaintext operator*(const uint64_t &rhs){
+                CGSW_mat_uint data;
+                data.SetDims(data_.NumRows(), data_.NumCols());
+                for (auto i = 0; i < data_.NumRows(); i ++){
+                    for (auto j = 0; j < data_.NumCols(); j ++){
+                        data[i][j] = (data_[i][j] * rhs) % modulus_uint_;
+                    }
+                }
+
+                return CGSWPlaintext(params_, data);
+            }
 
         private:
+
+            EncryptionParameters params_;
+
+            uint64_t modulus_uint_;
 
             CGSW_mat_uint data_;
 
             std::vector<CGSW_mat_uint> bit_decomposed_data_;
-
-            EncryptionParameters params_;
     };
 
 

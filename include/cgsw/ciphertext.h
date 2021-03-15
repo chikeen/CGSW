@@ -41,12 +41,23 @@ namespace cgsw {
                 return data_;
             }
 
-
-
-
     private:
             CGSW_mat data_;
 
             std::size_t size_ = 0;
     };
+
+    class GSWCiphertext : public Ciphertext {
+
+        public:
+            GSWCiphertext(){};
+    };
+
+    class CGSWCiphertext : public Ciphertext {
+
+    public:
+        CGSWCiphertext(){};
+    };
+
+
 }

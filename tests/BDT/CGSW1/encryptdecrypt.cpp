@@ -22,11 +22,10 @@ TEST_CASE("EncryptCompressDecrypt CGSW tests"){
 
     KeyGenerator keygen(params);
     SecretKey secret_key = keygen.secret_key();
-    PublicKey public_key;
-    keygen.create_public_key(public_key);
+    PublicKey public_key = keygen.create_public_key();
 
-    Encryptor encryptor(params, public_key);
-    Decryptor decryptor(params, secret_key);
+    Encrypter encryptor(params, public_key);
+    Decrypter decryptor(params, secret_key);
 
     uint64_t n0 = params.getLatticeDimension0();
 
