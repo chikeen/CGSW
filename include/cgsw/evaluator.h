@@ -7,6 +7,7 @@
 #include "utils/utils.h"
 #include "encryptionparams.h"
 #include "ciphertext.h"
+#include "plaintext.h"
 
 namespace cgsw {
 
@@ -17,14 +18,28 @@ namespace cgsw {
         Evaluator(const EncryptionParameters &params);
         
         void negate_inplace(Ciphertext &encrypted);
-        
+
+        void add_inplace(Ciphertext &encrypted1, const Ciphertext &encrypted2);
+
+        void sub_inplace(Ciphertext &encrypted1, const Ciphertext &encrypted2);
+
+        void multiply_inplace(Ciphertext &encrypted1, const Ciphertext &encrypted2);
+
+        // CGSW1
+        void add_inplace(CGSWCiphertext &encrypted1, const CGSWCiphertext &encrypted2);
+
+        void sub_inplace(CGSWCiphertext &encrypted1, const CGSWCiphertext &encrypted2);
+
+        void multiply_inplace_gsw(CGSWCiphertext &encrypted1, const GSWCiphertext &encrypted2);
+
+        void multiply_inplace_plaintext(CGSWCiphertext &encrypted, const CGSWPlaintext);
+
+
         inline void negate(const Ciphertext &encrypted, Ciphertext &destination)
         {
             destination = encrypted;
             negate_inplace(destination);
         }
-        
-        void add_inplace(Ciphertext &encrypted1, const Ciphertext &encrypted2);
         
         inline void add(const Ciphertext &encrypted1, const Ciphertext &encrypted2, Ciphertext &destination)
         {
@@ -39,10 +54,6 @@ namespace cgsw {
             }
         }
         
-        void add_many(const std::vector<Ciphertext> &encrypteds, Ciphertext &destination);
-        
-        void sub_inplace(Ciphertext &encrypted1, const Ciphertext &encrypted2);
-        
         inline void sub(const Ciphertext &encrypted1, const Ciphertext &encrypted2, Ciphertext &destination)
         {
             if (&encrypted2 == &destination)
@@ -56,8 +67,6 @@ namespace cgsw {
                 sub_inplace(destination, encrypted2);
             }
         }
-
-        void multiply_inplace(Ciphertext &encrypted1, const Ciphertext &encrypted2);
 
         inline void multiply(const Ciphertext &encrypted1, const Ciphertext &encrypted2, Ciphertext &destination){
             if (&encrypted2 == &destination)

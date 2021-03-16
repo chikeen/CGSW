@@ -39,9 +39,9 @@ void example_gsw_basics() {
 //    cout << "public_key: " << endl << public_key.data() << endl;
 
     // Initialisation
-    Encryptor encryptor(parms, public_key);
+    Encrypter encryptor(parms, public_key);
     Evaluator evaluator(parms);
-    Decryptor decryptor(parms, secret_key);
+    Decrypter decryptor(parms, secret_key);
 
     /*
     To get started, we create a plaintext containing the constant 6.
@@ -74,8 +74,8 @@ void example_gsw_basics() {
     demonstrate correctness of the encryption.
     */
 
-    Plaintext x_decrypted;
-    Plaintext y_decrypted;
+    GSWPlaintext x_decrypted;
+    GSWPlaintext y_decrypted;
 //    cout << "    + decryption of x_encrypted: ";
     decryptor.decrypt(x_encrypted, x_decrypted);
     decryptor.decrypt(y_encrypted, y_decrypted);

@@ -40,11 +40,11 @@ TEST_CASE("Microtestbench GSW"){
         INFO("secret_key" << secret_key.sk());
         INFO("public_key" << public_key.data());
 
-        Encryptor encryptor(params, public_key);
-        Decryptor decryptor(params, secret_key);
+        Encrypter encryptor(params, public_key);
+        Decrypter decryptor(params, secret_key);
         Evaluator evaluator(params);
 
-        Plaintext plain_0(0), plain_1(1);
+        GSWPlaintext plain_0(0), plain_1(1);
         Ciphertext encrypted_0, encrypted_1, encrypted_ans;
 
     ta = NTL::GetTime();
@@ -58,7 +58,7 @@ TEST_CASE("Microtestbench GSW"){
     tb = NTL::GetTime();
     eval_t = tb - ta;
 
-        Plaintext decrypted;
+        GSWPlaintext decrypted;
 
     ta = NTL::GetTime();
         decryptor.decrypt(encrypted_ans, decrypted);

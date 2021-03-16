@@ -23,12 +23,12 @@ TEST_CASE("GSW Addition tests"){
     SecretKey secret_key = keygen.secret_key();
     PublicKey public_key = keygen.create_public_key();
 
-    Encryptor encryptor(params, public_key);
+    Encrypter encryptor(params, public_key);
     Evaluator evaluator(params);
-    Decryptor decryptor(params, secret_key);
+    Decrypter decryptor(params, secret_key);
 
     // ----- preparing data ----------
-    Plaintext plain_0(0), plain_1(1);
+    GSWPlaintext plain_0(0), plain_1(1);
     Ciphertext encrypted_0, encrypted_1;
     encryptor.encrypt_gsw(plain_0, encrypted_0);
     encryptor.encrypt_gsw(plain_1, encrypted_1);
@@ -38,7 +38,7 @@ TEST_CASE("GSW Addition tests"){
         evaluator.add(encrypted_0, encrypted_0, encrypted_result);
 
         THEN(" = 0"){
-            Plaintext result;
+            GSWPlaintext result;
             decryptor.decrypt(encrypted_result, result);
             REQUIRE(result.data() == 0);
         }
@@ -49,7 +49,7 @@ TEST_CASE("GSW Addition tests"){
         evaluator.add(encrypted_0, encrypted_1, encrypted_result);
 
         THEN(" = 1"){
-            Plaintext result;
+            GSWPlaintext result;
             decryptor.decrypt(encrypted_result, result);
             REQUIRE(result.data() == 1);
         }
@@ -60,7 +60,7 @@ TEST_CASE("GSW Addition tests"){
         evaluator.add(encrypted_1, encrypted_0, encrypted_result);
 
         THEN(" = 1"){
-            Plaintext result;
+            GSWPlaintext result;
             decryptor.decrypt(encrypted_result, result);
             REQUIRE(result.data() == 1);
         }
@@ -71,7 +71,7 @@ TEST_CASE("GSW Addition tests"){
         evaluator.add(encrypted_1, encrypted_1, encrypted_result);
 
         THEN(" = 2"){
-            Plaintext result;
+            GSWPlaintext result;
             decryptor.decrypt(encrypted_result, result);
             REQUIRE(result.data() == 2);
         }

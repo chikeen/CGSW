@@ -11,8 +11,8 @@
 #include "publickey.h"
 
 #include "keygenerator.h"
-#include "encryptor.h"
-#include "decryptor.h"
+#include "encrypter.h"
+#include "decrypter.h"
 #include "ciphertext.h"
 #include "evaluator.h"
 #include "utils/utils.h"

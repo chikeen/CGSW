@@ -23,7 +23,7 @@ TEST_CASE("Encryptor Tests"){
     PublicKey public_key;
     keygen.create_public_key(public_key);
 
-    Encryptor encryptor(parms, public_key);
+    Encrypter encryptor(parms, public_key);
 
     SECTION("Test encrypt_many (1 to many"){
         SECTION("size of resulting vectors"){

@@ -2,13 +2,13 @@
 // Created by Chi Keen Tan on 16/12/2020.
 //
 
-#include "../../include/cgsw/encryptor.h"
+#include "../../include/cgsw/encrypter.h"
 
 
 
 namespace cgsw{
 
-    Encryptor::Encryptor(const EncryptionParameters &params, const PublicKey &public_key) : params_(params)
+    Encrypter::Encrypter(const EncryptionParameters &params, const PublicKey &public_key) : params_(params)
     {
 
         set_public_key(public_key);
@@ -18,11 +18,11 @@ namespace cgsw{
                                   params_.getM());
     }
 
-    void Encryptor::encrypt_gsw(const Plaintext &plain, Ciphertext &destination) {
+    void Encrypter::encrypt_gsw(const GSWPlaintext &plain, Ciphertext &destination) {
         encrypt_single_bit(plain.data(), destination);
     }
 
-    void Encryptor::encrypt_cgsw(const CGSWPlaintext &plains, dddCipherMatrix &destination){
+    void Encrypter::encrypt_cgsw(const CGSWPlaintext &plains, dddCipherMatrix &destination){
         for (auto i: plains.bit_decomposed_data()){
             ddCipherMatrix ciphertexts;
             encrypt_mat(i, ciphertexts);
@@ -33,25 +33,35 @@ namespace cgsw{
         return;
     }
 
-    Ciphertext Encryptor::compress(const dddCipherMatrix &ciphertexts){
+    CGSWCiphertext Encrypter::compress(const dddCipherMatrix &ciphertexts){
         CGSW_mat result;
         result.SetDims(params_.getLatticeDimension1(), params_.getLatticeDimension0());
-        Ciphertext cresult;
+        CGSWCiphertext cresult;
         cresult.set_data(result);
         smart_compress_cgsw1(ciphertexts, cresult);
         return cresult;
     }
 
+    void Encrypter::encrypt_compress(const CGSWPlaintext &plains, CGSWCiphertext &destination) {
+        if(params_.getScheme() == scheme_type::gsw){
+            throw NotSupported();
+        }
+
+        dddCipherMatrix ciphertexts;
+        encrypt_cgsw(plains, ciphertexts);
+        destination = compress(ciphertexts);
+    }
+
 
     //-------------- private -----------------------
-    CGSW_mat Encryptor::generate_t_matrix(uint64_t scalar, int u, int v, size_t n1, size_t n0) {
+    CGSW_mat Encrypter::generate_t_matrix(uint64_t scalar, int u, int v, size_t n1, size_t n0) {
         CGSW_mat t;
         t.SetDims(n1, n0);
         t[u + (n1 - n0)][v] = scalar;
         return t;
     }
 
-    void Encryptor::normal_compress_cgsw1(const dddCipherMatrix &ciphertexts, Ciphertext &results) {
+    void Encrypter::normal_compress_cgsw1(const dddCipherMatrix &ciphertexts, CGSWCiphertext &results) {
 
         // variables
         uint64_t f = params_.getF(),
@@ -97,7 +107,7 @@ namespace cgsw{
         results.set_data(result);
     }
 
-    void Encryptor::smart_compress_cgsw1(const dddCipherMatrix &ciphertexts, Ciphertext &results) {
+    void Encrypter::smart_compress_cgsw1(const dddCipherMatrix &ciphertexts, CGSWCiphertext &results) {
 
         // variables
         uint64_t f = params_.getF(),
@@ -134,7 +144,7 @@ namespace cgsw{
         results.set_data(result);
     }
 
-    void Encryptor::normal_compress_cgsw2(const dddCipherMatrix &ciphertexts, Ciphertext &results) {
+    void Encrypter::normal_compress_cgsw2(const dddCipherMatrix &ciphertexts, CGSWCiphertext &results) {
 
         // variables
         uint64_t f = params_.getF(),
@@ -182,7 +192,7 @@ namespace cgsw{
         results.set_data(result);
     }
 
-    void Encryptor::encrypt_mat(const CGSW_mat_uint &plain, ddCipherMatrix &destination) {
+    void Encrypter::encrypt_mat(const CGSW_mat_uint &plain, ddCipherMatrix &destination) {
         for (int i = 0; i < plain.NumRows(); i ++){
             std::vector<Ciphertext> ciphertexts_row;
             for (int j = 0; j < plain.NumCols(); j ++){
@@ -196,7 +206,7 @@ namespace cgsw{
         return;
     }
 
-    void Encryptor::encrypt_single_bit(const uint64_t &input, Ciphertext &destination) {
+    void Encrypter::encrypt_single_bit(const uint64_t &input, Ciphertext &destination) {
         // generate random matrix of size (m x m) { 0, 1 }
         CGSW_mat r, C;
 
@@ -211,7 +221,7 @@ namespace cgsw{
         destination.set_data(C);
     }
 
-    inline CGSW_vec Encryptor::generate_t_vector(uint64_t scalar, uint64_t u, uint64_t l, uint64_t length){
+    inline CGSW_vec Encrypter::generate_t_vector(uint64_t scalar, uint64_t u, uint64_t l, uint64_t length){
         CGSW_vec result;
         result.SetLength(length);
 

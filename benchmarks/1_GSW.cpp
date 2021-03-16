@@ -36,12 +36,12 @@ TEST_CASE("BENCHMARKING GSW: "){
 
     PublicKey public_key = keygen.create_public_key();
 
-    Encryptor encryptor(params, public_key);
+    Encrypter encryptor(params, public_key);
     Evaluator evaluator(params);
-    Decryptor decryptor(params, secret_key);
+    Decrypter decryptor(params, secret_key);
 
     // ----- preparing data ----------
-    Plaintext plain_0(0);
+    GSWPlaintext plain_0(0);
     Ciphertext encrypted_0;
 
     BENCHMARK("Encryption"){
@@ -50,7 +50,7 @@ TEST_CASE("BENCHMARKING GSW: "){
 
     encryptor.encrypt(plain_0, encrypted_0);
 
-    Plaintext decrypted_0;
+    GSWPlaintext decrypted_0;
     BENCHMARK("Decryption"){
        return decryptor.decrypt(encrypted_0, decrypted_0);;
     };

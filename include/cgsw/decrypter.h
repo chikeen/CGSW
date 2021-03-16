@@ -13,12 +13,12 @@
 
 namespace cgsw {
 
-    class Decryptor{
+    class Decrypter{
 
         public:
-            Decryptor(const EncryptionParameters &context, const SecretKey &secret_key);
+            Decrypter(const EncryptionParameters &context, const SecretKey &secret_key);
 
-            void decrypt(const Ciphertext &encrypted, Plaintext &decrypted);
+            void decrypt(const Ciphertext &encrypted, GSWPlaintext &decrypted);
 
             void compressed_decrypt(const Ciphertext &encrypted, CGSWPlaintext &decrypted);
 

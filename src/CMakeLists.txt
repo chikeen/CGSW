@@ -25,8 +25,8 @@ add_library(
 
         ## tools
         cgsw/keygenerator.cpp
-        cgsw/encryptor.cpp
-        cgsw/decryptor.cpp
+        cgsw/encrypter.cpp
+        cgsw/decrypter.cpp
         cgsw/evaluator.cpp
 )
 

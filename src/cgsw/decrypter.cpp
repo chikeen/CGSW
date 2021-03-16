@@ -2,7 +2,7 @@
 // Created by Chi Keen Tan on 16/12/2020.
 //
 
-#include "../../include/cgsw/decryptor.h"
+#include "../../include/cgsw/decrypter.h"
 
 
 //dynMatrix powers_of_2(dynMatrix m, uint64_t l){
@@ -18,14 +18,14 @@
 
 namespace cgsw {
 
-    Decryptor::Decryptor(const EncryptionParameters &params, const SecretKey &secret_key): params_(params), secret_key_(secret_key) {
+    Decrypter::Decrypter(const EncryptionParameters &params, const SecretKey &secret_key): params_(params), secret_key_(secret_key) {
 
         // generate gadget matrix
         util::gen_g_gadget_matrix(gadget_matrix_, params_.getLatticeDimension0(),
                                   params_.getM());
     }
 
-    void Decryptor::decrypt(const Ciphertext &encrypted, Plaintext &decrypted){
+    void Decrypter::decrypt(const Ciphertext &encrypted, GSWPlaintext &decrypted){
 
         auto m = params_.getM();
         CGSW_mat SC = secret_key_.sk() * encrypted.data();
@@ -39,7 +39,7 @@ namespace cgsw {
     }
 
 
-    void Decryptor::compressed_decrypt(const Ciphertext &encrypted, CGSWPlaintext &decrypted) {
+    void Decrypter::compressed_decrypt(const Ciphertext &encrypted, CGSWPlaintext &decrypted) {
        if(params_.getScheme() == scheme_type::cgsw1){
            compressed_decrypt_cgsw1(encrypted, decrypted);
        } else if (params_.getScheme() == scheme_type::cgsw2){
@@ -47,14 +47,14 @@ namespace cgsw {
        }
     }
 
-    int Decryptor::invariant_noise_budget(const Ciphertext &encrypted) {
+    int Decrypter::invariant_noise_budget(const Ciphertext &encrypted) {
         return 0;
     }
 
 
     /// Private:
 
-    void Decryptor::compressed_decrypt_cgsw1(const Ciphertext &encrypted, CGSWPlaintext &decrypted) {
+    void Decrypter::compressed_decrypt_cgsw1(const Ciphertext &encrypted, CGSWPlaintext &decrypted) {
         auto n0 = params_.getLatticeDimension0();
         auto q = params_.getCipherModulus();
         auto f = params_.getF();
@@ -82,7 +82,7 @@ namespace cgsw {
         decrypted.set_data(p_data);
     }
 
-    void Decryptor::compressed_decrypt_cgsw2(const Ciphertext &encrypted, CGSWPlaintext &decrypted) {
+    void Decrypter::compressed_decrypt_cgsw2(const Ciphertext &encrypted, CGSWPlaintext &decrypted) {
         auto n0 = params_.getLatticeDimension0();
         auto f = params_.getF();
 
