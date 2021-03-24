@@ -135,7 +135,7 @@ namespace cgsw {
 
 
     private:
-        void set_cgsw_modulus();
+        void set_cgsw1_modulus();
 
         void compute_gsw_params();
 

@@ -169,13 +169,14 @@ namespace cgsw {
 
     /// Private:
 
-    void EncryptionParameters::set_cgsw_modulus() {
+    void EncryptionParameters::set_cgsw1_modulus() {
 
         auto epsilon = 1 - rate_;
-        uint64_t p_min = pow(sec_level_, 5/epsilon);
+
+        uint64_t p_min = pow(sec_level_, config::g_cgsw1_modulus_constant/epsilon);
         uint64_t p = NTL::NextPrime(p_min);
 
-        uint64_t q_min = pow(p, 5 + epsilon/2);
+        uint64_t q_min = pow(p, 1 + epsilon/2);
         uint64_t q = NTL::NextPrime(q_min);
 
         plain_modulus_ = p;
@@ -209,7 +210,7 @@ namespace cgsw {
         lattice_dimension_1_ = lattice_dimension_0_ + sec_level_;
 
         // Generate p and q modulus
-        set_cgsw_modulus();
+        set_cgsw1_modulus();
 
         CGSW_mod::init(cipher_modulus_);
         l_p_ = ceil(log2(plain_modulus_));
