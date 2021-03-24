@@ -31,3 +31,8 @@ This project is written for Imperial College London Electrical and Electronic as
 Being an individual research project, this project has been reusing(learning) styles and structures from 2 of the most 
 popular FHE library [HElib](https://github.com/homenc/HElib) and [SEAL](https://github.com/microsoft/SEAL), and hereby 
 give credits to these 2 incredibly well-maintained open-source project.
+
+
+## Project C++ style guide
+- https://lefticus.gitbooks.io/cpp-best-practices/content/
+- https://en.cppreference.com/w/cpp/algorithm

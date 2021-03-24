@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include <iostream>
+#include <cgsw/cgsw.hpp>
 #include <iomanip>
-#include <cgsw/cgsw.h>
+#include <iostream>
 
 
 void example_gsw_basics();

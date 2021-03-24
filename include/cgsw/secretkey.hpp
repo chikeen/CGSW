@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include "common.h"
-#include "plaintext.h"
+#include "common.hpp"
+#include "plaintext.hpp"
 
 namespace cgsw {
 

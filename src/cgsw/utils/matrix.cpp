@@ -2,7 +2,7 @@
 // Created by Chi Keen Tan on 02/02/2021.
 //
 
-#include "../../../include/cgsw/utils/matrix.h"
+#include "../../../include/cgsw/utils/matrix.hpp"
 
 std::random_device rd;
 std::mt19937 generator(rd());

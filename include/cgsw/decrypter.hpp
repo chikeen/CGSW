@@ -4,11 +4,11 @@
 
 #pragma once
 
-#include "plaintext.h"
-#include "ciphertext.h"
-#include "secretkey.h"
+#include "ciphertext.hpp"
+#include "plaintext.hpp"
+#include "secretkey.hpp"
 
-#include "utils/utils.h"
+#include "cgsw/utils/utils.hpp"
 #include <utility>
 
 namespace cgsw {

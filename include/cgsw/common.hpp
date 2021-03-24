@@ -9,6 +9,7 @@
 #include <NTL/ZZ_p.h>
 #include <NTL/vec_ZZ_p.h>
 #include <vector>
+#include <unordered_map>
 #include <NTL/matrix.h>
 #include <NTL/mat_ZZ_p.h>
 #include <NTL/tools.h>
@@ -80,4 +81,6 @@ namespace NTL {
 
         return ans;
     }
+
+// This is temporary scaffolding for cgsw2 encryption params
 }

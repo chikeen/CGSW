@@ -30,10 +30,12 @@ add_executable(tests
         encryptor.cpp
         encryptionparams.cpp
         utils/utils.cpp
+        utils/gadget_matrix.cpp
         BDT/GSW/encryptdecrypt.cpp
         BDT/GSW/operation.cpp
         BDT/CGSW1/encryptdecrypt.cpp
         BDT/CGSW1/operation.cpp
+        BDT/CGSW2/encryptdecrypt.cpp
 
         microtestbench/gsw.cpp
         microtestbench/cgsw.cpp

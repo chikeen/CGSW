@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "../common.h"
+#include "../common.hpp"
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
@@ -23,11 +23,14 @@ namespace cgsw {
 
         /// Variant 2:
 
-        void gen_h_gadget_matrix(CGSW_mat& mat);
+        // takes in q, and generate
+        void gen_f_prime(CGSW_mat& mat, size_t p, size_t t);
+
+        void gen_f_trapdoor_matrix(CGSW_mat& mat, uint64_t p, uint64_t t);
+
+        void gen_h_gadget_matrix(CGSW_mat& mat, uint32_t t);
 
         void h_inverse();
-
-        void gen_f_trapdoor_matrix(CGSW_mat& mat);
 
         void f_inverse();
     }

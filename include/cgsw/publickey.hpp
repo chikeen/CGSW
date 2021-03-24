@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "common.h"
+#include "common.hpp"
 
 
 namespace cgsw {

@@ -4,13 +4,13 @@
 
 #pragma once
 
+#include "ciphertext.hpp"
+#include "encryptionparams.hpp"
+#include "plaintext.hpp"
+#include "publickey.hpp"
 #include <iostream>
-#include "encryptionparams.h"
-#include "plaintext.h"
-#include "ciphertext.h"
-#include "publickey.h"
 
-#include "utils/utils.h"
+#include "cgsw/utils/utils.hpp"
 
 
 namespace cgsw {

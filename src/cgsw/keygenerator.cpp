@@ -2,8 +2,8 @@
 // Created by Chi Keen Tan on 16/12/2020.
 //
 
-#include "../../include/cgsw/keygenerator.h"
-#include "../../include/cgsw/utils/utils.h"
+#include "../../include/cgsw/keygenerator.hpp"
+#include "cgsw/utils/utils.hpp"
 
 
 namespace cgsw {
@@ -38,6 +38,7 @@ namespace cgsw {
                 break;
 
             case scheme_type::cgsw1:
+            case scheme_type::cgsw2:
                 util::gen_random_matrix(s, n0, k);
                 util::gen_identity_matrix(i, n0, n0);
                 util::concat_matrix_h(t, s, i);
@@ -77,6 +78,7 @@ namespace cgsw {
                 break;
 
             case scheme_type::cgsw1:
+            case scheme_type::cgsw2:
                 // Generating error matrix n0 x M
                 util::gen_normal_matrix(e, n0, m);
 

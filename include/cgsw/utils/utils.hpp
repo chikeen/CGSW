@@ -8,7 +8,6 @@
  * A collection of utility functions
  */
 
-#include "numth.h"
-#include "matrix.h"
-#include "gadget_matrix.h"
-
+#include "gadget_matrix.hpp"
+#include "matrix.hpp"
+#include "numth.hpp"
