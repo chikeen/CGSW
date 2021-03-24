@@ -4,12 +4,12 @@
 
 #pragma once
 
-#include "encryptionparams.h"
+#include "cgsw/utils/utils.hpp"
+#include "common.hpp"
+#include "encryptionparams.hpp"
+#include "publickey.hpp"
+#include "secretkey.hpp"
 #include <cstddef>
-#include "common.h"
-#include "utils/utils.h"
-#include "secretkey.h"
-#include "publickey.h"
 
 namespace cgsw {
 

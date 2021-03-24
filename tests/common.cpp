@@ -3,7 +3,7 @@
 //
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
-#include <cgsw/cgsw.h>
+#include <cgsw/cgsw.hpp>
 
 using namespace std;
 

@@ -3,11 +3,11 @@
 //
 #pragma once
 
-#include "common.h"
-#include "utils/utils.h"
-#include "encryptionparams.h"
-#include "ciphertext.h"
-#include "plaintext.h"
+#include "cgsw/utils/utils.hpp"
+#include "ciphertext.hpp"
+#include "common.hpp"
+#include "encryptionparams.hpp"
+#include "plaintext.hpp"
 
 namespace cgsw {
 

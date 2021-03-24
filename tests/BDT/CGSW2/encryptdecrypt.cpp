@@ -1,4 +1,8 @@
 //
+// Created by Chi Keen Tan on 16/03/2021.
+//
+
+//
 // Created by Chi Keen Tan on 14/01/2021.
 //
 
@@ -8,12 +12,11 @@
 using namespace cgsw;
 using namespace std;
 
-TEST_CASE("EncryptCompressDecrypt CGSW1 tests"){
-    auto k = GENERATE(2);
-    auto rate = GENERATE(0.5);
+TEST_CASE("EncryptCompressDecrypt CGSW2 tests"){
+    auto k = GENERATE(1);
+    auto rate = GENERATE(0.5); // should we be setting rate ourself?
 
-    EncryptionParameters params(scheme_type::cgsw1);
-    params.set_circuit_depth(3);
+    EncryptionParameters params(scheme_type::cgsw2);
     params.set_security_level(k);
     params.set_rate(rate);
     params.compute();
@@ -24,6 +27,9 @@ TEST_CASE("EncryptCompressDecrypt CGSW1 tests"){
     SecretKey secret_key = keygen.secret_key();
     PublicKey public_key = keygen.create_public_key();
 
+    INFO("Pk: " << public_key.data());
+    INFO("sk: " << secret_key.sk());
+
     Encrypter encryptor(params, public_key);
     Decrypter decryptor(params, secret_key);
 
@@ -31,11 +37,12 @@ TEST_CASE("EncryptCompressDecrypt CGSW1 tests"){
 
     // 1. Generate a random m matrix
     int p;
-    conv(p, params.getPlainModulus());
+    conv(p, params.getCipherModulus());
     CGSW_mat_uint m;
     util::gen_random_uint_matrix(m, n0, n0, p);
 
     INFO("message matrix, m = " << m);
+
 
     // 2. initialize a CGSWPlaintext
     CGSWPlaintext plain(params, m);
@@ -50,6 +57,7 @@ TEST_CASE("EncryptCompressDecrypt CGSW1 tests"){
     INFO("size of ciphertexts: " << ciphertexts.size() << ", " << ciphertexts[0].size()
                                  << ", " << ciphertexts[0][0].size());
 
+
     // "ciphertexts should have size l x (n x n)"
     REQUIRE(ciphertexts.size() == params.getPL());
     REQUIRE(ciphertexts[0].size() == params.getLatticeDimension0());
@@ -59,11 +67,14 @@ TEST_CASE("EncryptCompressDecrypt CGSW1 tests"){
     Ciphertext c = encryptor.compress(ciphertexts);
     INFO("Compressed: \n" << c.data());
 
+    REQUIRE( 1 == 2);
 
-    // 4. Compressed decryptions
-    CGSWPlaintext decrypted;
-    decryptor.compressed_decrypt(c, decrypted);
-    INFO("Decrypted message: \n" << decrypted.data());
-    REQUIRE(1 == 2);
+
+//
+//    // 4. Compressed decryptions
+//    CGSWPlaintext decrypted;
+//    decryptor.compressed_decrypt(c, decrypted);
+//    INFO("Decrypted message: \n" << decrypted.data());
+//    REQUIRE(1 == 2);
 
 }

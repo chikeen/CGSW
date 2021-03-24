@@ -2,7 +2,7 @@
 // Created by Chi Keen Tan on 14/03/2021.
 //
 #include "../../catch.hpp"
-#include <cgsw/cgsw.h>
+#include <cgsw/cgsw.hpp>
 
 using namespace cgsw;
 using namespace std;

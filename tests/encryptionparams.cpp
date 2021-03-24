@@ -3,7 +3,7 @@
 //
 
 #include "catch.hpp"
-#include <cgsw/cgsw.h>
+#include <cgsw/cgsw.hpp>
 
 using namespace cgsw;
 using namespace std;
@@ -41,7 +41,7 @@ TEST_CASE("GSW: Encryption Params Test: Given security level"){
 }
 
 
-TEST_CASE("CGSW: EncryptionParameters tests"){
+TEST_CASE("CGSW1: EncryptionParameters tests"){
     auto k = GENERATE(4, 16, 64, 128, 256);
     auto p_bits = GENERATE(4, 8, 16, 32);
 //    auto k = GENERATE(16);
@@ -66,7 +66,7 @@ TEST_CASE("CGSW: EncryptionParameters tests"){
     }
 }
 
-TEST_CASE("CGSW: Test set_cgsw_modulus"){
+TEST_CASE("CGSW1: Test set_cgsw_modulus"){
 
     auto k = GENERATE(16);
     auto rate = GENERATE(0.5);

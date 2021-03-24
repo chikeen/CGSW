@@ -2,7 +2,7 @@
 // Created by Chi Keen Tan on 16/12/2020.
 //
 
-#include "../../include/cgsw/decrypter.h"
+#include "../../include/cgsw/decrypter.hpp"
 
 
 //dynMatrix powers_of_2(dynMatrix m, uint64_t l){
@@ -91,9 +91,8 @@ namespace cgsw {
 
         // 1. XF = SCF = MHF + EF = EF  - rmb HF = 0
         // TODO:- where to get H?
-        CGSW_mat F;
-        util::gen_f_trapdoor_matrix(F);
-        CGSW_mat EF = SC * F;
+        CGSW_mat EF = SC * params_.getFTrapdoorMat();
+        // since we have no error this should be zero
 
         // 2. TODO:- EF x F-1 = E ( or somehow calculate E using the fact that F has full rank over the reals)
         CGSW_mat E;

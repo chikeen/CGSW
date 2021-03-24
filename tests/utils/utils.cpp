@@ -2,7 +2,7 @@
 // Created by Chi Keen Tan on 13/01/2021.
 //
 #include "../catch.hpp"
-#include <cgsw/cgsw.h>
+#include <cgsw/cgsw.hpp>
 
 using namespace cgsw;
 using namespace std;
@@ -97,42 +97,5 @@ TEST_CASE("Utils Matrix Tests"){
             REQUIRE( 1== 2);
         }
         // TODO:- How to test normal ?
-    }
-
-    SECTION("test gen_g_gadget_matrix"){
-        CGSW_mat a;
-        util::gen_g_gadget_matrix(a, n, m);
-        INFO( "a:" << a);
-
-        SECTION("size ? "){
-            REQUIRE(a.NumRows() == n);
-            REQUIRE(a.NumCols() == m);
-        }
-    }
-
-    SECTION("test bit_decompose_matrix"){
-
-        SECTION("test G then G-1") {
-            CGSW_mat random, g;
-
-            // Generate a random matrix
-            util::gen_random_matrix(random, n, m);
-            INFO( "random:" << random);
-
-            // G
-            util::gen_g_gadget_matrix(g, n, m);
-            INFO( "g:" << g);
-
-            // C = G . G-1(C)
-            CGSW_mat g_inverse_random;
-            util::bit_decompose_matrix(g_inverse_random, random, l_q);
-            INFO( "g_inverse_random:" << g_inverse_random);
-
-            CGSW_mat random_p = g * g_inverse_random;
-
-            REQUIRE(random.NumRows() == random_p.NumRows());
-            REQUIRE(random.NumCols() == random_p.NumCols());
-            REQUIRE(random == random_p);
-        }
     }
 }

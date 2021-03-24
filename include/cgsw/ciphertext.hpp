@@ -3,8 +3,8 @@
 //
 #pragma once
 
-#include "common.h"
-#include "encryptionparams.h"
+#include "common.hpp"
+#include "encryptionparams.hpp"
 
 namespace cgsw {
 

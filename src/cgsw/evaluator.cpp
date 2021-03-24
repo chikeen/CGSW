@@ -2,7 +2,7 @@
 // Created by Chi Keen Tan on 17/12/2020.
 //
 
-#include "../../include/cgsw/evaluator.h"
+#include "../../include/cgsw/evaluator.hpp"
 
 
 namespace cgsw {
