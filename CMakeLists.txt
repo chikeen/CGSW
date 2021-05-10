@@ -111,3 +111,6 @@ add_subdirectory(tests)
 # The testbench(benchmarks) are here
 add_subdirectory(benchmarks)
 
+# The utils are here
+add_subdirectory(utils)
+
