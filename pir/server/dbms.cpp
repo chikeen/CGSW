@@ -12,6 +12,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <cgsw/cgsw.hpp>
 
 
@@ -19,7 +20,7 @@ using namespace cgsw;
 using namespace std;
 
 // Utility function to read <K,V> CSV data from file
-std::vector<std::pair<std::string, std::string>> read_csv(std::string filename) {
+std::vector<std::pair<std::string, std::string>> read_csv(std::string filename){
     std::vector<std::pair<std::string, std::string>> dataset;
     std::ifstream data_file(filename);
 
@@ -64,7 +65,7 @@ int main(int argc, char* argv[]){
     bool debug = false;
 
     std::cout << "\n*********************************************************";
-    std::cout << "\n*          Privacy Preserving Search Example           *";
+    std::cout << "\n*           Privacy Preserving Search Example           *";
     std::cout << "\n*           =================================           *";
     std::cout << "\n*                                                       *";
     std::cout << "\n* This is a sample program for education purposes only. *";

@@ -5,7 +5,6 @@
 #pragma once
 
 #include <iostream>
-#include <Eigen/Dense>
 #include <NTL/ZZ_p.h>
 #include <NTL/vec_ZZ_p.h>
 #include <vector>
