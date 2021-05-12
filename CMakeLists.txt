@@ -95,10 +95,6 @@ find_package(GMP "${GMP_MINIMAL_VERSION}" REQUIRED)
 find_package(NTL "${NTL_MINIMAL_VERSION}" REQUIRED)
 
 
-find_package(Eigen3 3.3 REQUIRED NO_MODULE)
-include_directories(${EIGEN3_INCLUDE_DIR})
-
-
 # The compiled library code is here
 add_subdirectory(src)
 
