@@ -143,6 +143,8 @@ namespace cgsw {
 
         void compute_cgsw2_params();
 
+        bool check_cgsw1_params();
+
         // encryption params
         scheme_type scheme_{scheme_type::gsw};
 

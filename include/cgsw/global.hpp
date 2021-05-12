@@ -9,7 +9,7 @@
 namespace cgsw::config{
 
     // Keygenerator
-    inline constexpr uint32_t g_cgsw1_modulus_constant {3};
+    inline constexpr uint32_t g_cgsw1_modulus_constant {15};
 
     // Constructor (matrix.cpp)
     inline constexpr double g_gaussian_stddev {0.5};

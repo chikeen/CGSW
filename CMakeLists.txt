@@ -114,3 +114,6 @@ add_subdirectory(benchmarks)
 # The utils are here
 add_subdirectory(utils)
 
+# The pir application are here
+add_subdirectory(pir)
+

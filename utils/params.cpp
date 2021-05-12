@@ -20,32 +20,41 @@ void print_cgsw1_params_table(){
     file << "CGSW1 EncryptionParams table\n";
     file << "\n";
 
-    file << "k, rate, p, q, n0, n1, n2, m, l_p, l_q, f_ \n";
+    file << "k, rate, p, q, n0, n1, n2, m, l_p, l_q, f_, lhs, rhs\n";
 
-    for (int k = 1; k < 10; k ++){
+    for (int k = 1; k < 3; k ++){
 
-        for (int rate = 1; rate < 5; rate ++){
+        for (int rate = 1; rate < 3; rate ++){
             file << k << ",";
-            file << rate * 0.2 << ",";
+            file << rate * 0.1<< ",";
 
-            try {
-                params.set_security_level(k);
-                params.set_rate(rate * 0.2);
-                params.compute();
+            params.set_security_level(k);
+            params.set_rate(rate * 0.2);
+            params.compute();
 
-                file << params.getPlainModulus() << ",";
-                file << params.getCipherModulus() << ",";
-                file << params.getLatticeDimension0() << ",";
-                file << params.getLatticeDimension1() << ",";
-                file << params.getLatticeDimension2() << ",";
-                file << params.getM() << ",";
-                file << params.getPL() << ",";
-                file << params.getQL() << ",";
-                file << params.getF() << "\n";
+            file << params.getPlainModulus() << ",";
+            file << params.getCipherModulus() << ",";
+            file << params.getLatticeDimension0() << ",";
+            file << params.getLatticeDimension1() << ",";
+            file << params.getLatticeDimension2() << ",";
+            file << params.getM() << ",";
+            file << params.getPL() << ",";
+            file << params.getQL() << ",";
+            file << params.getF() << ",";
 
-            } catch (...) {
-            }
+            auto alpha = 1; //noise of GSW fresh-ciphertext
+            auto epsilon = 1 - rate;
+            auto lhs =  power(params.getPlainModulus(), 0.5 * epsilon)/2;
+            auto rhs = alpha * pow(params.getM(), 3)
+                       * pow(params.getLatticeDimension0(), 2)
+                       * log2(params.getP());
 
+            file << lhs << "," << rhs <<",";
+
+            if (lhs > rhs)
+                file << "pass \n";
+            else
+                file << "fail \n";
         }
     }
 

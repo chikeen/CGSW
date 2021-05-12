@@ -9,8 +9,8 @@ using namespace std;
 
 TEST_CASE("CGSW Addition Tests") {
 
-    auto k = GENERATE(2);
-    auto rate = GENERATE(0.5);
+    auto k = GENERATE(4);
+    auto rate = GENERATE(0.4);
 
     EncryptionParameters params(scheme_type::cgsw1);
     params.set_circuit_depth(3);
@@ -41,8 +41,7 @@ TEST_CASE("CGSW Addition Tests") {
     INFO("message matrix, m1 = \n" << m1);
     INFO("message matrix, m2 = \n" << m2);
 
-    CGSWPlaintext p1(params, m1),
-                p2(params, m2);
+    CGSWPlaintext p1(params, m1), p2(params, m2);
     p1.generate_bit_decomposed_plaintexts();
     p2.generate_bit_decomposed_plaintexts();
 

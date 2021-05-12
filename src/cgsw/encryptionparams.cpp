@@ -171,13 +171,17 @@ namespace cgsw {
 
     void EncryptionParameters::set_cgsw1_modulus() {
 
+        // TODO:- Modulus has to be prime right?
+
         auto epsilon = 1 - rate_;
 
         uint64_t p_min = pow(sec_level_, config::g_cgsw1_modulus_constant/epsilon);
-        uint64_t p = NTL::NextPrime(p_min);
+//        uint64_t p = NTL::NextPrime(p_min);
+        uint64_t p = p_min + 2;
 
         uint64_t q_min = pow(p, 1 + epsilon/2);
-        uint64_t q = NTL::NextPrime(q_min);
+//        uint64_t q = NTL::NextPrime(q_min);
+        uint64_t q = q_min;
 
         plain_modulus_ = p;
         cipher_modulus_ = q;
@@ -206,7 +210,7 @@ namespace cgsw {
     void EncryptionParameters::compute_cgsw1_params() {
         double epsilon = 1 - rate_;
 
-        lattice_dimension_0_ = ceil(sec_level_ * 2 / epsilon) + 2; // + 2 so that it is larger than
+        lattice_dimension_0_ = ceil(sec_level_ * 2 / epsilon) + 1; // + 1 so that it is larger than
         lattice_dimension_1_ = lattice_dimension_0_ + sec_level_;
 
         // Generate p and q modulus
@@ -277,6 +281,18 @@ namespace cgsw {
         CGSW_mod::init(cipher_modulus_);
 
 //        std::cout << "Sec: " << sec_level << ", Rate: " << rate << "->  q: " << q << std::endl;
+    }
+
+    bool EncryptionParameters::check_cgsw1_params() {
+        auto alpha = 1; //noise of GSW fresh-ciphertext
+        auto epsilon = 1 - rate_;
+        auto lhs =  power(plain_modulus_, 0.5 * epsilon)/2;
+        auto rhs = alpha * pow(m_, 3) * pow(lattice_dimension_0_, 2) * log2(plain_modulus_);
+
+        if (lhs > rhs)
+            return true;
+
+        return false;
     }
 
 }
