@@ -133,6 +133,8 @@ namespace cgsw {
 
         void find_cgsw2_modulus(uint64_t sec_level, double rate);
 
+        uint32_t getNumSlots() const;
+
 
     private:
         void set_cgsw1_modulus();

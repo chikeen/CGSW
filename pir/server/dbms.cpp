@@ -60,11 +60,11 @@ int main(int argc, char* argv[]){
     auto rate = 0.1;
     auto k = 2;
 
-    std::string db_filename = "./countries_dataset.csv";
+    std::string db_filename = "./data/country_dataset_minimal.csv";
     bool debug = false;
 
     std::cout << "\n*********************************************************";
-    std::cout << "\n*           Privacy Preserving Search Example           *";
+    std::cout << "\n*          Privacy Preserving Search Example           *";
     std::cout << "\n*           =================================           *";
     std::cout << "\n*                                                       *";
     std::cout << "\n* This is a sample program for education purposes only. *";
@@ -94,6 +94,7 @@ int main(int argc, char* argv[]){
         std::cerr << "\n" << e.what() << std::endl;
         exit(1);
     }
+
 
 
     return 0;

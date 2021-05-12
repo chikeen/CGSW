@@ -100,6 +100,14 @@ namespace cgsw {
         return f_mat_;
     }
 
+    uint32_t EncryptionParameters::getNumSlots() const {
+        if (scheme_ == scheme_type::cgsw1)
+            return (lattice_dimension_0_ * lattice_dimension_1_);
+        return 0;
+    }
+
+
+
     std::ostream& operator<<(std::ostream& os, const EncryptionParameters& parms){
         std::string scheme_name;
         switch (parms.getScheme())
@@ -134,6 +142,7 @@ namespace cgsw {
                 os << "|   l_p: " << parms.getPL() << std::endl;
                 os << "|   l_q: " << parms.getQL() << std::endl;
                 os << "|   f: " << parms.getF() << std::endl;
+                os << "|   no of slots: " << parms.getNumSlots() << std::endl;
                 os << "\\" << std::endl;
                 break;
             case scheme_type::cgsw2:
