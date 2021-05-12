@@ -40,13 +40,12 @@ namespace cgsw {
             mat.SetDims(n, m);
             const CGSW_long modulus = CGSW_mod::modulus();
             const int mean(0);
-            const double stddev(0);// TODO:- how to calculate the standard deviation?
-            //TODO:- temperorary setting stddev to 0 meaning no noise
+
 
             mat.SetDims(n, m);
 
             // Since the normal distribution matrix centered around 0, can use int instead of NTL:ZZ
-            std::normal_distribution<double> distribution(mean, stddev);
+            std::normal_distribution<double> distribution(mean, config::g_gaussian_stddev);
             double random_num;
 
             for(int i = 0; i < n; i ++){

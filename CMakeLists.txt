@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.17)
+cmake_minimum_required(VERSION 3.16)
 
 project(CGSW20
         VERSION 0.1
@@ -110,4 +110,10 @@ add_subdirectory(tests)
 
 # The testbench(benchmarks) are here
 add_subdirectory(benchmarks)
+
+# The utils are here
+add_subdirectory(utils)
+
+# The pir application are here
+add_subdirectory(pir)
 

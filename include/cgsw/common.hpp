@@ -13,6 +13,7 @@
 #include <NTL/matrix.h>
 #include <NTL/mat_ZZ_p.h>
 #include <NTL/tools.h>
+#include "global.hpp"
 
 
 // Common typedef

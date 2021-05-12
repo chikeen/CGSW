@@ -133,15 +133,19 @@ namespace cgsw {
 
         void find_cgsw2_modulus(uint64_t sec_level, double rate);
 
+        uint32_t getNumSlots() const;
+
 
     private:
-        void set_cgsw_modulus();
+        void set_cgsw1_modulus();
 
         void compute_gsw_params();
 
         void compute_cgsw1_params();
 
         void compute_cgsw2_params();
+
+        bool check_cgsw1_params();
 
         // encryption params
         scheme_type scheme_{scheme_type::gsw};

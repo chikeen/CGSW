@@ -70,6 +70,7 @@ namespace cgsw {
                 // Generating error matrix (vector) 1 x M
                 util::gen_normal_matrix(e, 1, m);
 
+
                 // Generating random matrix B (n x m)
                 util::gen_random_matrix(B, n0, m);
 
@@ -81,6 +82,8 @@ namespace cgsw {
             case scheme_type::cgsw2:
                 // Generating error matrix n0 x M
                 util::gen_normal_matrix(e, n0, m);
+
+                std::cout << "Noise matrix in public key:" << e << std::endl;
 
                 // Generating random matrix B (k x m)
                 util::gen_random_matrix(B, k, m);
