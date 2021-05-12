@@ -7,10 +7,10 @@
 using namespace cgsw;
 using namespace std;
 
-TEST_CASE("CGSW Addition Tests") {
+TEST_CASE("CGSW1: Basic Addition") {
 
     auto k = GENERATE(2);
-    auto rate = GENERATE(0.4);
+    auto rate = GENERATE(0.2);
 
     EncryptionParameters params(scheme_type::cgsw1);
     params.set_circuit_depth(3);
@@ -62,23 +62,12 @@ TEST_CASE("CGSW Addition Tests") {
         INFO("error in decrypting message:\n" << p_ans.data() - (p1 + p2).data());
         REQUIRE(p_ans == (p1 + p2));
     }
-
-    WHEN("Normal Substraction"){
-        // TODO:- will need to consider unsigned integer overflowing.
-        // actually what is the expected behaviour here?
-        evaluator.sub_inplace(c1, c2);
-        decrypter.compressed_decrypt(c1, p_ans);
-
-        INFO("Addition, ans = \n" << p_ans.data());
-        INFO("Addition, check_ans = \n" << (p1 - p2).data());
-        REQUIRE(p_ans == (p1 - p2)); // shouldn't overload?
-    }
 }
 
 TEST_CASE("CGSW1: Triple Addition Tests") {
 
     auto k = GENERATE(2);
-    auto rate = GENERATE(0.4);
+    auto rate = GENERATE(0.2);
 
     EncryptionParameters params(scheme_type::cgsw1);
     params.set_security_level(k);
@@ -136,15 +125,10 @@ TEST_CASE("CGSW1: Triple Addition Tests") {
     }
 }
 
-
-TEST_CASE("CGSW1: PlainA - PlainA == 0"){
-
-}
-
-TEST_CASE("CGSW Multiplication with GSW Ciphertext Tests") {
+TEST_CASE("CGSW: Multiplication tests") {
 
     auto k = GENERATE(2);
-    auto rate = GENERATE(0.5);
+    auto rate = GENERATE(0.2);
 
     EncryptionParameters params(scheme_type::cgsw1);
     params.set_circuit_depth(3);
