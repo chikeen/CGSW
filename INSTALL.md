@@ -65,11 +65,6 @@ step 4 may require `sudo` privileges.
 
 ## Building dependencies (for option 2)
 
-## Eigen
-For mac users, if you have homebrew installed, installing Eigen is just a one-liner:
-```bash
-brew install eigen
-```
 > TODO: Installation steps for non-mac users
 
 ## GMP
@@ -102,6 +97,17 @@ This should install NTL into `/usr/local`.
 **NOTE**: For futher options when building NTL, run `./configure --help` in step 3.
 **NOTE**: if linking against a non-system GMP, pass `GMP_PREFIX=<path/to/gmp>` to the `./configure` step.
 
+## Building CGSW
+Within the CGSW root folder,
+```bash
+mkdir build
+cd build
+cmake ..
+cmake --build .
+```
+
+All the executable binary (target) will then be generated inside `build/bin`. To run any specific test cases,
+do `./tests "CGSW1: Basic Addition"`, where `CGSW1: Basic Addition` is the test case of interest.
 
 
 ## CGSW build options
