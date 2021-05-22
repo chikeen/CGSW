@@ -224,7 +224,7 @@ namespace cgsw {
         util::gen_random_matrix(r,
                                 params_.getM(),
                                 params_.getM(),
-                                2);// generate random binary matrix
+                                2);// generate random binary matrix¨
 
         C = public_key_.data() * r + input * gadget_matrix_;
 

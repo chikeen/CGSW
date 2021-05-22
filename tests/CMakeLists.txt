@@ -34,7 +34,8 @@ add_executable(tests
         BDT/GSW/encryptdecrypt.cpp
         BDT/GSW/operation.cpp
         BDT/CGSW1/encryptdecrypt.cpp
-        BDT/CGSW1/operation.cpp
+        BDT/CGSW1/addition.cpp
+        BDT/CGSW1/multiplication.cpp
         BDT/CGSW2/encryptdecrypt.cpp
 
         microtestbench/gsw.cpp

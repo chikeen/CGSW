@@ -73,6 +73,54 @@ TEST_CASE("CGSW1: Basic encryptdecrypt test"){
 
 }
 
+TEST_CASE("CGSW1: Encrypting 0"){
+
+    auto k = GENERATE(2);
+    auto rate = GENERATE(0.2);
+
+    EncryptionParameters params(scheme_type::cgsw1);
+    params.set_circuit_depth(3);
+    params.set_security_level(k);
+    params.set_rate(rate);
+    params.compute();
+
+    INFO("Params: " << params);
+
+    KeyGenerator keygen(params);
+    SecretKey secret_key = keygen.secret_key();
+    INFO("Secret key: " << secret_key.sk());
+    PublicKey public_key = keygen.create_public_key();
+
+    Encrypter encryptor(params, public_key);
+    Decrypter decryptor(params, secret_key);
+
+    uint64_t n0 = params.getLatticeDimension0();
+
+    // 1. Generate a zero matrix
+    int p;
+    conv(p, params.getPlainModulus());
+    CGSW_mat_uint m;
+    m.SetDims(n0, n0);
+
+    INFO("message matrix, m = \n" << m);
+
+    // 2. initialize a CGSWPlaintext
+    CGSWPlaintext plain(params, m);
+    plain.generate_bit_decomposed_plaintexts();
+
+    // 3. Compressing the ciphertexts
+    CGSWCiphertext c;
+    encryptor.encrypt_compress(plain, c);
+
+    // 4. Compressed decryptions
+    CGSWPlaintext decrypted;
+    decryptor.compressed_decrypt(c, decrypted);
+    INFO("Decrypted message: \n" << decrypted.data());
+    INFO("error in decrypting message:\n" << decrypted.data() - plain.data());
+    REQUIRE(1 == 2);
+}
+
+
 TEST_CASE("CGSW1: encrypt same plaintext give diff ciphertext"){
 
     auto k = GENERATE(2);

@@ -1,5 +1,5 @@
 
-#include "examples.h"
+#include "examples.hpp"
 
 using namespace std;
 using namespace cgsw;

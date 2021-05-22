@@ -39,12 +39,23 @@ namespace cgsw {
 
     class CGSWPlaintext {
         public:
-    //            Plaintext(const EncryptionParameters &params){}; //TODO:- how to convert this into a matrix //
+    //      Plaintext(const EncryptionParameters &params){}; //TODO:- how to convert this into a matrix //
             CGSWPlaintext(EncryptionParameters params, CGSW_mat_uint data_in):data_(data_in), params_(params){
                 long tmp;
                 NTL::conv(tmp, params.getPlainModulus());
                 modulus_uint_ = tmp;
             };
+
+            CGSWPlaintext(EncryptionParameters params):params_(params){
+                long tmp;
+                NTL::conv(tmp, params.getPlainModulus());
+                modulus_uint_ = tmp;
+
+                CGSW_mat_uint m;
+                m.SetDims(params_.getLatticeDimension0(), params_.getLatticeDimension0());
+                data_ = m;
+            };
+
 
             CGSWPlaintext(){};
 
@@ -140,6 +151,16 @@ namespace cgsw {
                 }
 
                 return CGSWPlaintext(params_, data);
+            }
+
+            inline auto &at(uint32_t i) {
+                assert(i < params_.getNumSlots());
+                return data_[i/params_.getLatticeDimension0()][i%params_.getLatticeDimension0()];
+            }
+
+            inline auto &at(uint32_t i) const {
+                assert(i < params_.getNumSlots());
+                return data_[i/params_.getLatticeDimension0()][i%params_.getLatticeDimension0()];
             }
 
         private:

@@ -2,8 +2,8 @@
 // Created by Chi Keen Tan on 16/12/2020.
 //
 
+#include "examples.hpp"
 #include <iostream>
-#include "examples.h"
 
 using namespace cgsw;
 
