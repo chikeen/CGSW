@@ -134,7 +134,7 @@ void example_simplest_str(){
     }
 
 
-    /************ Client decrypt reply ****************************/
+    /************ Client decrypt_gsw reply ****************************/
     /*
      * input: reply
      * output: final result

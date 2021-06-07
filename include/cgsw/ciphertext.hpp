@@ -55,8 +55,8 @@ namespace cgsw {
 
     class CGSWCiphertext : public Ciphertext {
 
-    public:
-        CGSWCiphertext(){};
+        public:
+            CGSWCiphertext(){};
     };
 
 

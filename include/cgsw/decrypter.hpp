@@ -18,7 +18,7 @@ namespace cgsw {
         public:
             Decrypter(const EncryptionParameters &context, const SecretKey &secret_key);
 
-            void decrypt(const Ciphertext &encrypted, GSWPlaintext &decrypted);
+            void decrypt_gsw(const Ciphertext &encrypted, GSWPlaintext &decrypted);
 
             void compressed_decrypt(const Ciphertext &encrypted, CGSWPlaintext &decrypted);
 

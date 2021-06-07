@@ -2,16 +2,17 @@
 // Created by Chi Keen Tan on 19/05/2021.
 //
 
-
+#include <chrono>
 #include "../client/client.hpp"
 #include "../server/server.hpp"
 #include "examples.hpp"
 
 using namespace std;
 using namespace cgsw;
+using namespace std::chrono;
 
 
-void example_simplest_int(){
+void example_compressed_query(){
 
     auto rate = 0.2;
     auto k = 2;
@@ -38,25 +39,35 @@ void example_simplest_int(){
         exit(1);
     }
 
-    for(int i = 0; i < simplest_db.size(); i++){
-        cout << simplest_db[i].first << ", " << simplest_db[i].second << endl;
+    for(auto & i : simplest_db){
+        cout << i.first << ", " << i.second << endl;
     }
 
     cout << "Encrypting database......." << endl;
+    auto start = high_resolution_clock::now();
     server.encrypt_database(client.getPublicKey(), simplest_db);
+    auto stop = high_resolution_clock::now();
+    cout << "Time taken: " << duration_cast<microseconds>(stop - start).count() << endl;
 
     cout << "Client generating query ......." << endl;
-    int target = 1; // element 2
-    PIRQuery query = client.generate_query(target, server.getDatabaseSize());
-
+    int target = 1; // 2nd element
+    start = high_resolution_clock::now();
+    PIRQuery query = client.generate_compressed_query(target, server.getDatabaseSize());
+    stop = high_resolution_clock::now();
+    cout << "Time taken: " << duration_cast<microseconds>(stop - start).count()
+            << ", (seconds)" << duration_cast<seconds>(stop - start).count() << endl;
 
     cout << "Server generating reply ......." << endl;
-    PIRReply reply = server.generate_reply(query);
-
+    start = high_resolution_clock::now();
+    PIRReply reply = server.generate_reply_compressed_query(query);
+    stop = high_resolution_clock::now();
+    cout << "Time taken: " << duration_cast<microseconds>(stop - start).count() << endl;
 
     cout << "Client decrypting reply ......." << endl;
-
+    start = high_resolution_clock::now();
     std::string answer = client.extract_reply(reply);
+    stop = high_resolution_clock::now();
+    cout << "Time taken: " << duration_cast<microseconds>(stop - start).count() << endl;
     cout << "final answer: " << answer << ";" << endl;
 
 }

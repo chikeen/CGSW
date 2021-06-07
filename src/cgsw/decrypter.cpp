@@ -25,10 +25,17 @@ namespace cgsw {
                                   params_.getM());
     }
 
-    void Decrypter::decrypt(const Ciphertext &encrypted, GSWPlaintext &decrypted){
+    void Decrypter::decrypt_gsw(const Ciphertext &encrypted, GSWPlaintext &decrypted){
 
         auto m = params_.getM();
         CGSW_mat SC = secret_key_.sk() * encrypted.data();
+
+        std::cout << "SC: " << SC << std::endl;
+
+        auto s = util::get_sum(SC);
+        auto t = m * params_.getF();
+
+        std::cout << "t: " << t << ", s: " << s << std::endl;
 
         if(util::get_sum(SC) < m * params_.getF()){
             decrypted.set_data( 0);

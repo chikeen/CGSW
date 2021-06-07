@@ -102,7 +102,7 @@ namespace cgsw {
 
     uint32_t EncryptionParameters::getNumSlots() const {
         if (scheme_ == scheme_type::cgsw1)
-            return (lattice_dimension_0_ * lattice_dimension_1_);
+            return (lattice_dimension_0_ * lattice_dimension_0_);
         return 0;
     }
 

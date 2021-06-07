@@ -49,7 +49,7 @@ namespace cgsw {
 
        @param[in] source The SecretKey to move from
        */
-        SecretKey(SecretKey &&source) = default;
+//        SecretKey(SecretKey &&source) = default;
 
         /**
         Copies an old SecretKey to the current one.
@@ -69,7 +69,7 @@ namespace cgsw {
 
         @param[in] assign The SecretKey to move from
         */
-        SecretKey &operator=(SecretKey &&assign) = default;
+//        SecretKey &operator=(SecretKey &&assign) = default;
 
         inline auto &sk() noexcept
         {

@@ -61,7 +61,7 @@ TEST_CASE("Microtestbench GSW"){
         GSWPlaintext decrypted;
 
     ta = NTL::GetTime();
-        decryptor.decrypt(encrypted_ans, decrypted);
+    decryptor.decrypt_gsw(encrypted_ans, decrypted);
     tb = NTL::GetTime();
     dec_t = tb - ta;
 

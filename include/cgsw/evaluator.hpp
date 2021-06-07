@@ -32,7 +32,7 @@ namespace cgsw {
 
         void multiply_inplace_gsw(CGSWCiphertext &encrypted1, const GSWCiphertext &encrypted2);
 
-        void multiply_inplace_plaintext(CGSWCiphertext &encrypted, const CGSWPlaintext);
+        void multiply_inplace_plaintext(CGSWCiphertext &encrypted, CGSWPlaintext);
 
 
         inline void negate(const Ciphertext &encrypted, Ciphertext &destination)
@@ -56,16 +56,8 @@ namespace cgsw {
         
         inline void sub(const Ciphertext &encrypted1, const Ciphertext &encrypted2, Ciphertext &destination)
         {
-            if (&encrypted2 == &destination)
-            {
-                sub_inplace(destination, encrypted1);
-                negate_inplace(destination);
-            }
-            else
-            {
-                destination = encrypted1;
-                sub_inplace(destination, encrypted2);
-            }
+            CGSW_mat result = encrypted1.data() - encrypted2.data();
+            destination.set_data(result);
         }
 
         inline void multiply(const Ciphertext &encrypted1, const Ciphertext &encrypted2, Ciphertext &destination){
@@ -79,8 +71,6 @@ namespace cgsw {
                 multiply_inplace(destination, encrypted2);
             }
         }
-
-        inline void divide(const Ciphertext &encrypted1, const Ciphertext &encrypted2, Ciphertext &destination);
 
 
     private:

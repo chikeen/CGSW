@@ -77,7 +77,7 @@ void example_gsw_basics() {
     GSWPlaintext x_decrypted;
     GSWPlaintext y_decrypted;
 //    cout << "    + decryption of x_encrypted: ";
-    decryptor.decrypt(x_encrypted, x_decrypted);
-    decryptor.decrypt(y_encrypted, y_decrypted);
+    decryptor.decrypt_gsw(x_encrypted, x_decrypted);
+    decryptor.decrypt_gsw(y_encrypted, y_decrypted);
 //    cout << "0x" << x_decrypted.data() << " ...... Correct." << endl;
 }

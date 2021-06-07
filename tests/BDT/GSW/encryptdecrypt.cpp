@@ -39,7 +39,7 @@ TEST_CASE("EncryptDecrypt GSW tests"){
             encryptor.encrypt_gsw(plain, encrypted);
 
             GSWPlaintext decrypted;
-            decryptor.decrypt(encrypted, decrypted);
+            decryptor.decrypt_gsw(encrypted, decrypted);
             REQUIRE(decrypted.data() == 0);
         }
 
@@ -49,7 +49,7 @@ TEST_CASE("EncryptDecrypt GSW tests"){
             encryptor.encrypt_gsw(plain, encrypted);
 
             GSWPlaintext decrypted;
-            decryptor.decrypt(encrypted, decrypted);
+            decryptor.decrypt_gsw(encrypted, decrypted);
             REQUIRE(decrypted.data() == 1);
         }
 
