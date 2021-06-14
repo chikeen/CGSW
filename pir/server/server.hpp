@@ -16,11 +16,11 @@ class PIRServer {
 public:
     PIRServer(cgsw::EncryptionParameters enc_params) :enc_params_(enc_params){}
 
-    void encrypt_database(cgsw::PublicKey pk, stringDatabase db);
+    void encryptDatabase(cgsw::PublicKey pk, stringDatabase db);
 
-    PIRReply generate_reply(PIRQuery query);
+    PIRReply generateReply(PIRQuery query);
 
-    PIRReply generate_reply_compressed_query(PIRQuery query);
+    PIRReply generateReplyCompressedQuery(PIRQuery query);
 
     size_t getDatabaseSize(){
         return db_.size();

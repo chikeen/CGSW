@@ -10,8 +10,7 @@
 using namespace std;
 using namespace cgsw;
 
-
-void example_simplest_int(){
+void example_simplest_str(){
 
     auto rate = 0.2;
     auto k = 2;
@@ -43,15 +42,15 @@ void example_simplest_int(){
     }
 
     cout << "Encrypting database......." << endl;
-    server.encrypt_database(client.getPublicKey(), simplest_db);
+    server.encryptDatabase(client.getPublicKey(), simplest_db);
 
     cout << "Client generating query ......." << endl;
-    int target = 1; // element 2
+    int target = 1; // 2nd element
     PIRQuery query = client.generate_query(target, server.getDatabaseSize());
 
 
     cout << "Server generating reply ......." << endl;
-    PIRReply reply = server.generate_reply(query);
+    PIRReply reply = server.generateReply(query);
 
 
     cout << "Client decrypting reply ......." << endl;

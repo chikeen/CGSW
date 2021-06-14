@@ -13,7 +13,7 @@
 
 
 
-void example_simplest_int();
+void example_simplest_str_old();
 void example_simplest_str();
 void example_compressed_query();
 

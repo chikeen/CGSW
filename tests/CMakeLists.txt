@@ -36,12 +36,21 @@ add_executable(tests
         BDT/CGSW1/encryptdecrypt.cpp
         BDT/CGSW1/addition.cpp
         BDT/CGSW1/multiplication.cpp
-        BDT/CGSW2/encryptdecrypt.cpp
-
-        microtestbench/gsw.cpp
-        microtestbench/cgsw.cpp
         )
 
 
 TARGET_LINK_LIBRARIES(tests
+        CGSW20)
+
+
+add_executable(testbench_gsw
+        testbench/gsw.cpp)
+
+TARGET_LINK_LIBRARIES(testbench_gsw
+        CGSW20)
+
+add_executable(testbench_cgsw
+        testbench/cgsw.cpp)
+
+TARGET_LINK_LIBRARIES(testbench_cgsw
         CGSW20)

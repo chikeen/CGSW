@@ -45,7 +45,7 @@ void example_compressed_query(){
 
     cout << "Encrypting database......." << endl;
     auto start = high_resolution_clock::now();
-    server.encrypt_database(client.getPublicKey(), simplest_db);
+    server.encryptDatabase(client.getPublicKey(), simplest_db);
     auto stop = high_resolution_clock::now();
     cout << "Time taken: " << duration_cast<microseconds>(stop - start).count() << endl;
 
@@ -59,7 +59,7 @@ void example_compressed_query(){
 
     cout << "Server generating reply ......." << endl;
     start = high_resolution_clock::now();
-    PIRReply reply = server.generate_reply_compressed_query(query);
+    PIRReply reply = server.generateReplyCompressedQuery(query);
     stop = high_resolution_clock::now();
     cout << "Time taken: " << duration_cast<microseconds>(stop - start).count() << endl;
 

@@ -9,7 +9,7 @@ using namespace std;
 using namespace cgsw;
 
 
-void example_simplest_str(){
+void example_simplest_str_old(){
 
     auto rate = 0.2;
     auto k = 2;
@@ -41,6 +41,7 @@ void example_simplest_str(){
         cout << simplest_db[i].first << ", " << simplest_db[i].second << endl;
     }
 
+    cout << endl;
 
     /************ Setup ****************************/
     EncryptionParameters enc_params(scheme_type::cgsw1);
@@ -48,7 +49,7 @@ void example_simplest_str(){
     enc_params.set_rate(rate);
     enc_params.compute();
 
-    cout << "Enc params" << enc_params << endl;
+    cout << "Enc params:" << endl << enc_params << endl;
 
     KeyGenerator keygen(enc_params);
     SecretKey secret_key = keygen.secret_key();

@@ -118,12 +118,12 @@ namespace cgsw {
                 os << "| Encryption parameters :" << std::endl;
                 os << "|   scheme: " << scheme_name << std::endl;
                 os << "|   security level (k): " << parms.getSecLevel() << std::endl;
-                os << "|   depth (d): " << parms.getDepth() << std::endl;
+//                os << "|   depth (d): " << parms.getDepth() << std::endl;
                 os << "|   ciphertext modulus (q): " << parms.getCipherModulus() << std::endl;
                 os << "|   lattice dimension (n): " << parms.getLatticeDimension0() << std::endl;
                 os << "|   second lattice dimension (m): " << parms.getM() << std::endl;
                 os << "|   l_p: " << parms.getPL() << std::endl;
-                os << "|   l_q: " << parms.getPL() << std::endl;
+                os << "|   l_q: " << parms.getQL() << std::endl;
                 os << "|   f: " << parms.getF() << std::endl;
                 os << "\\" << std::endl;
                 break;
@@ -133,7 +133,7 @@ namespace cgsw {
                 os << "| Encryption parameters :" << std::endl;
                 os << "|   scheme: " << scheme_name << std::endl;
                 os << "|   security level (k): " << parms.getSecLevel() << std::endl;
-                os << "|   depth (d): " << parms.getDepth() << std::endl;
+//                os << "|   depth (d): " << parms.getDepth() << std::endl;
                 os << "|   rate (1-epsilon): " << parms.getRate() << std::endl;
                 os << "|   plaintext modulus (p): " << parms.getPlainModulus()<< std::endl;
                 os << "|   ciphertext modulus (q): " << parms.getCipherModulus() << std::endl;
@@ -198,19 +198,20 @@ namespace cgsw {
 
     void EncryptionParameters::compute_gsw_params() {
 
-        lattice_dimension_0_ = sec_level_;
-        lattice_dimension_1_ = lattice_dimension_0_ + 1;
+        lattice_dimension_0_ = config::g_gsw_constant * sec_level_ / 4;
+        lattice_dimension_1_ = lattice_dimension_0_ + 1; // not actually used in GSW
         plain_modulus_ = 3; //default for binary operation
-        cipher_modulus_ = util::gen_prime(sec_level_);
+        cipher_modulus_ = util::gen_prime(config::g_gsw_constant * sec_level_);
         CGSW_mod::init(cipher_modulus_);
+        l_p_ = ceil(log2(plain_modulus_));
         l_q_ = ceil(log2(cipher_modulus_));
-        m_ = lattice_dimension_1_ * l_q_;
+        m_ = lattice_dimension_0_ * l_q_;
 
         // TODO:- downcastting modulus, again modulus must below 64 bit
         long p, q;
         conv(p, plain_modulus_);
         conv(q, cipher_modulus_);
-        f_ = util::round_division(q, p);
+        f_ = util::round_division(q, p); // not actually used in GSW
 
         util::gen_g_gadget_matrix(g_mat_, lattice_dimension_1_, m_);
 

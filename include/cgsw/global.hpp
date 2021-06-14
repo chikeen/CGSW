@@ -8,7 +8,8 @@
 
 namespace cgsw::config{
 
-    // Keygenerator
+    // Encryption Parameters
+    inline constexpr uint32_t g_gsw_constant {16};
     inline constexpr uint32_t g_cgsw1_modulus_constant {34}; // 34
 
     // Constructor (matrix.cpp)

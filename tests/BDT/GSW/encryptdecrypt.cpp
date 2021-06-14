@@ -12,14 +12,13 @@ using namespace std;
 TEST_CASE("EncryptDecrypt GSW tests"){
 
     auto k = GENERATE(3);
-    uint64_t d = 3;
 
     EncryptionParameters params(scheme_type::gsw);
-    params.set_circuit_depth(d);
     params.set_security_level(k);
     params.compute();
 
     INFO("Params:" << params);
+    cout << params << endl;
 
     KeyGenerator keygen(params);
     SecretKey secret_key = keygen.secret_key();
@@ -54,7 +53,8 @@ TEST_CASE("EncryptDecrypt GSW tests"){
         }
 
 //        WHEN("Encrypting 2"){
-//            Plaintext plain(2);
+//
+        //            Plaintext plain(2);
 //            Ciphertext encrypted;
 //            encryptor.encrypt_gsw(plain, encrypted);
 //

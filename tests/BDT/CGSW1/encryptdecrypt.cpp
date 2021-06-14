@@ -79,10 +79,10 @@ TEST_CASE("CGSW1: Encrypting 0"){
     auto rate = GENERATE(0.2);
 
     EncryptionParameters params(scheme_type::cgsw1);
-    params.set_circuit_depth(3);
     params.set_security_level(k);
     params.set_rate(rate);
     params.compute();
+    cout << params << endl;
 
     INFO("Params: " << params);
 

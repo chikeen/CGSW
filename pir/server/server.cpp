@@ -4,7 +4,7 @@ using namespace std;
 using namespace cgsw;
 
 
-PIRReply PIRServer::generate_reply(PIRQuery query) {
+PIRReply PIRServer::generateReply(PIRQuery query) {
     Evaluator evaluator(enc_params_);
 
 
@@ -21,7 +21,7 @@ PIRReply PIRServer::generate_reply(PIRQuery query) {
     return reply;
 }
 
-PIRReply PIRServer::generate_reply_compressed_query(PIRQuery query) {
+PIRReply PIRServer::generateReplyCompressedQuery(PIRQuery query) {
     Evaluator evaluator(enc_params_);
     Encrypter encrypter(enc_params_, pk_);
 
@@ -60,7 +60,7 @@ PIRReply PIRServer::generate_reply_compressed_query(PIRQuery query) {
     return reply;
 }
 
-void PIRServer::encrypt_database(cgsw::PublicKey pk, stringDatabase db) {
+void PIRServer::encryptDatabase(cgsw::PublicKey pk, stringDatabase db) {
     db_ = std::move(db);
     pk_ = std::move(pk);
 
