@@ -13,7 +13,7 @@ using namespace std;
 int main(){
 
     auto k = 2;
-    auto rate = 0.2;
+    auto rate = 0.1;
 
     // can reach multiplicative depth of 20
 

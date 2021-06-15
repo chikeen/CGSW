@@ -6,8 +6,6 @@ There are two different ways to build and install CGSW. The first one will autom
 all dependencies and pack the library in a relocatable folder. The second way, instead, requires the dependencies
 to be installed by you and available in the system.
 
-**Please read these instructions in full to better choose the type of build that is better for you.**
-
 ## General prerequisites
 - GNU make >= 3.82
 - git >= 1.8.3
@@ -26,7 +24,7 @@ and [Homebrew](https://brew.sh/) as packages)
 This option bundles CGSW and its dependencis in one directory which can then be moved around freely 
 on the system. 
 
-> TODO: Not yet available, WIP
+> Not yet available, WIP
 
 ## Option 2: library build (advanced)
 This option involves building CGSW on its own, linking against pre-existing dependencies(Eigen, NTL and GMP) on the system.
@@ -47,11 +45,14 @@ cd build
 2. Run the cmake configuration step, specifying where to find Eigen, NTL and GMP. If not specified, system-wide
 locations such as `/usr/local/lib` will be searched. To install in `/home/alice/cgsw_install`, for example:
    ```bash
-   cmake -DEIGEN_DIR="${EIGENDIR}" -DGMP_DIR="${GMPDIR}" -DNTL_DIR="${NTLDIR}" -DCMAKE_INSTALL_PREFIX=/home/alice/cgsw_install ..
+   cmake  -DGMP_DIR="${GMPDIR}" -DNTL_DIR="${NTLDIR}" -DCMAKE_INSTALL_PREFIX=/home/alice/cgsw_install ..
    ```
    
 3. Compile, with an optional number of threads specified(16 in this example):
-> TODO: Again, not sure about this, need to verify how to run threading and should we use threading
+```bash
+make
+```
+or
 ```bash
 make -j16
 ```
@@ -65,7 +66,6 @@ step 4 may require `sudo` privileges.
 
 ## Building dependencies (for option 2)
 
-> TODO: Installation steps for non-mac users
 
 ## GMP
 Many distributions come with GMP pre-installed. If not, you can install GMP as follows.
@@ -110,26 +110,6 @@ All the executable binary (target) will then be generated inside `build/bin`. To
 do `./tests "CGSW1: Basic Addition"`, where `CGSW1: Basic Addition` is the test case of interest.
 
 
-## CGSW build options
-> Not supporting any build options at the moment, WIP
 
 
-# Using CGSW in a project
-## Standard method
-
-After `make install` has been run in either option 1 or option 2, one can find the required shared library
-files to link against in `lib` and the header files in `include`. These can be used in the preferred way with 
-your build system of choice.
-
-## Package build with cmake
-Another, easier way is possible if you are using CGSW in a cmake project.
-1. Include the following line in your `CMakeLists.txt`:
-```cmake
-find_package(cgsw1)
-```
-
-2. Run your `cmake` step with `-Dcgsw_DIR=<cgsw1 install prefix>/share/cmake/cgsw1`.
-> above need to be revisited (flags part is not yet available) !
-
-## Example
-Full working examples of cmake-based projects whcih uses CGSW can be found in the `examples` directory.
+xamples of cmake-based projects whcih uses CGSW can be found in the `examples` directory.
